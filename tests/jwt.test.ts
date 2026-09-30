@@ -4,7 +4,7 @@ import { verifyTokenString, createSessionCookie } from '@/lib/security/session';
 
 vi.mock('@/lib/env', () => ({
   env: {
-    JWT_SECRET: 'test-secret-key-at-least-32-chars-long-for-testing',
+    JWT_SECRET: 'not real just words for testing only change me',
   },
 }));
 

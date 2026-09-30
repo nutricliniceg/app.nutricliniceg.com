@@ -4,8 +4,8 @@ import { envSchema } from '@/lib/env';
 const validEnvData = {
   NODE_ENV: 'development',
   APP_URL: 'https://nutricliniceg.com',
-  JWT_SECRET: 'super-secret-key-at-least-32-chars-long-for-jwt',
-  ENCRYPTION_KEY: 'encryption-key-must-be-at-least-32-chars',
+  JWT_SECRET: 'not real just words for testing only change me',
+  ENCRYPTION_KEY: 'not real just words for testing only change me',
   DATABASE_HOST: 'localhost',
   DATABASE_PORT: '3306',
   DATABASE_USER: 'nutri_user',
@@ -16,7 +16,7 @@ const validEnvData = {
   SMTP_USER: 'info@nutricliniceg.com',
   SMTP_PASSWORD: 'smtp_password_goes_here',
   SMTP_FROM: 'info@nutricliniceg.com',
-  CRON_SECRET: 'cron-secret-must-be-at-least-16-chars-long',
+  CRON_SECRET: 'not real change me use your own value',
 };
 
 describe('Environment Variables Schema Validation', () => {

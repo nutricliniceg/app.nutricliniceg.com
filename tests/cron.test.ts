@@ -80,7 +80,7 @@ function req(secret: string | null): NextRequest {
 
 describe('P29 cron framework', () => {
   beforeEach(() => {
-    process.env.CRON_SECRET = 'test-secret-12345678';
+    process.env.CRON_SECRET = 'test-cron-secret-not-real';
   });
 
   it('rejects missing/wrong secrets with 404 (no enumeration)', async () => {
@@ -91,7 +91,7 @@ describe('P29 cron framework', () => {
   });
 
   it('rejects unknown tasks with 404', async () => {
-    const res = await runCronTask('no-such-task', req('test-secret-12345678'));
+    const res = await runCronTask('no-such-task', req('test-cron-secret-not-real'));
     expect(res.status).toBe(404);
   });
 
@@ -99,7 +99,7 @@ describe('P29 cron framework', () => {
     expect(CRON_TASKS.length).toBeGreaterThanOrEqual(15);
     for (const def of CRON_TASKS) {
       expect(cronTasks[def.id], `missing handler: ${def.id}`).toBeDefined();
-      const res = await runCronTask(def.id, req('test-secret-12345678'));
+      const res = await runCronTask(def.id, req('test-cron-secret-not-real'));
       expect(res.status, `task failed: ${def.id}`).toBe(200);
       const body = await res.json();
       expect(body.success).toBe(true);
@@ -108,8 +108,8 @@ describe('P29 cron framework', () => {
 
   it('running twice causes no duplicate effect (idempotent bodies)', async () => {
     const { billingTasks } = await import('@/lib/billing/tasks');
-    const first = await runCronTask('expire-subscriptions', req('test-secret-12345678'));
-    const second = await runCronTask('expire-subscriptions', req('test-secret-12345678'));
+    const first = await runCronTask('expire-subscriptions', req('test-cron-secret-not-real'));
+    const second = await runCronTask('expire-subscriptions', req('test-cron-secret-not-real'));
     expect(first.status).toBe(200);
     expect(second.status).toBe(200);
     expect(vi.mocked(billingTasks.expireTask).mock.calls.length).toBeGreaterThanOrEqual(2);
@@ -120,7 +120,7 @@ describe('P29 cron framework', () => {
   });
 
   it('restore-verification report generates with checksums', async () => {
-    const res = await runCronTask('backup-verify', req('test-secret-12345678'));
+    const res = await runCronTask('backup-verify', req('test-cron-secret-not-real'));
     const body = await res.json();
     expect(body.success).toBe(true);
     expect(body.data.match).toBe(true);
@@ -136,7 +136,7 @@ describe('P29 cron framework', () => {
     expect(body.data.components.smtp).toHaveProperty('ok');
     expect(body.data.components.ai).toHaveProperty('providers');
     expect(body.data.components.cron).toBeDefined();
-    expect(JSON.stringify(body)).not.toContain('test-secret-12345678');
+    expect(JSON.stringify(body)).not.toContain('test-cron-secret-not-real');
   });
 
   it('sentry scrubber strips PHI and redacts secret keys', () => {

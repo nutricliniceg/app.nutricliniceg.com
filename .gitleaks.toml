@@ -1,0 +1,7 @@
+# Allowlist for intentional dummy test secrets (vitest fixtures in tests/ only — SEC-06 still enforced everywhere else).
+[extend]
+useDefault = true
+
+[allowlist]
+description = "dummy test secrets"
+paths = ['''^tests/env\.test\.ts$''', '''^tests/setup\.ts$''']

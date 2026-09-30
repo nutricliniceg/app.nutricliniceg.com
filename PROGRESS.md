@@ -3,6 +3,7 @@
 ## STATE SNAPSHOT
 - **Modules Completed:** P01–P32 (CI/CD + cPanel deployment runbook; target: app.nutricliniceg.com) + P32 gitleaks-allowlist fix
 - **P32-fix (gitleaks allowlist):** `.gitleaks.toml` (NEW — test-fixture allowlist for `tests/env.test.ts` + `tests/setup.ts` only, defaults extended, SEC-06 intact elsewhere) + `ci.yml` (MODIFIED — gitleaks step now uses `config-path: .gitleaks.toml`); verified no hardcoded secrets outside `tests/`; commit `1060fd3` pushed to main; CI green pending user confirm (no `gh` CLI on this machine).
+- **P32-fix2 (durable):** `.gitleaks.toml` allowlist extended to `.env.example`; `.env.example` + `tests/{env.test,setup,jwt,cron}.ts` placeholders rewritten as plain-words low-entropy strings (schema lengths kept: JWT/ENC ≥32, CRON ≥16); invalid `config-path` input removed from gitleaks step (action auto-loads toml); commit `911b2f7` pushed; targeted vitest 19/19 green.
 - **Key Files Map (P32 additions):**
   - `.github/workflows/ci.yml` (NEW) — PR gate: npm ci → lint → typecheck → tests → gitleaks → build (server never builds, UI-19)
   - `.github/workflows/deploy.yml` (NEW) — tag/manual deploy: CI build → artifact → SSH upload → releases/NNN symlink switch (keep 2, R7) → Passenger restart → smoke verify → auto-rollback

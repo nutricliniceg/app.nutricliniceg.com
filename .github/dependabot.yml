@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    # UI-20: Carbon upgrades land staging-first — never auto-merge
+    # @carbon/* or next/react; they need the visual + bundle-gate check.
+    ignore:
+      - dependency-name: "@carbon/*"
+      - dependency-name: next
+      - dependency-name: react
+      - dependency-name: react-dom
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

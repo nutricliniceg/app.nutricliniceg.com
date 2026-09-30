@@ -1,0 +1,99 @@
+/* P19 patient portal — strict Mobile-First (PP-11, designed at 375px).
+   Single column, touch targets >= 44px, no app chrome. */
+
+.portal-wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 14px 48px;
+  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, Arial, sans-serif;
+  color: #132626;
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.portal-wrap h1 {
+  font-size: 22px;
+  margin: 4px 0 12px;
+}
+
+.portal-wrap h2 {
+  font-size: 17px;
+  margin: 20px 0 8px;
+  color: #005f73;
+}
+
+.portal-card {
+  border: 1px solid #d3e2e0;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #f6fbfb;
+}
+
+.portal-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.portal-card th,
+.portal-card td {
+  border-bottom: 1px solid #d3e2e0;
+  padding: 8px 6px;
+  text-align: start;
+}
+
+.portal-actions {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.portal-actions button,
+.portal-actions a {
+  min-height: 44px;
+}
+
+.portal-form {
+  display: grid;
+  gap: 10px;
+  margin: 8px 0 16px;
+}
+
+.portal-form input,
+.portal-form textarea {
+  min-height: 44px;
+  font-size: 16px;
+  border: 1px solid #d3e2e0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.portal-form button {
+  min-height: 44px;
+}
+
+.portal-error {
+  border: 1px solid #da1e28;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 32px;
+  text-align: center;
+}
+
+.portal-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 8px 0;
+}
+
+.portal-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 8px;
+}

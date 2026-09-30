@@ -1,0 +1,11 @@
+@use './ui/styles/theme';
+
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+/* UI-07: mirror directional icons in RTL locales. Apply class="flip-rtl"
+   (or flip-rtl className) to chevrons/arrows whose meaning is "forward". */
+[dir='rtl'] .flip-rtl {
+  transform: scaleX(-1);
+}

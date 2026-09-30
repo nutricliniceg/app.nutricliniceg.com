@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سلسلة برومبتات بناء NutriClinicEG — نسخة HTML قابلة للنسخ</title>
+<style>
+  :root{
+    --teal:#008080; --deep:#005F73; --accent:#0A9396;
+    --bg:#eef5f5; --card:#ffffff; --ink:#132626; --muted:#5b7472;
+    --line:#d3e2e0; --codebg:#0e2426; --codeink:#e6f4f1;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",Tahoma,"Noto Kufi Arabic","Noto Sans Arabic",Arial,sans-serif;
+    line-height:1.85;font-size:15.5px}
+  .container{max-width:1000px;margin:0 auto;padding:0 16px 80px}
+
+  .hero{background:linear-gradient(135deg,var(--deep) 0%,var(--teal) 60%,var(--accent) 100%);
+    color:#fff;padding:38px 16px 30px;text-align:center}
+  .hero h1{margin:0 0 10px;font-size:1.7rem;line-height:1.5}
+  .hero p{margin:6px auto;max-width:820px;opacity:.95}
+  .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;padding:4px 14px;font-size:.8rem}
+
+  .toolbar{position:sticky;top:0;z-index:50;background:rgba(238,245,245,.95);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--line);
+    padding:8px 16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .tbtn{background:#fff;border:1px solid var(--line);color:var(--deep);border-radius:8px;
+    padding:6px 14px;font:inherit;font-size:.85rem;cursor:pointer;transition:.15s}
+  .tbtn:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:24px 0;scroll-margin-top:70px}
+  .toc h2{margin:0 0 12px;font-size:1.05rem;color:var(--deep)}
+  .toc-part{font-weight:700;color:var(--accent);margin:14px 4px 4px;font-size:.9rem}
+  .toc-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+  .toc-chip{display:block;background:#f4fafa;border:1px solid var(--line);border-radius:8px;
+    padding:6px 12px;color:var(--deep);text-decoration:none;font-size:.83rem;transition:.15s;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .toc-chip:hover{background:var(--teal);color:#fff}
+
+  section.sec{margin:22px 0;scroll-margin-top:70px}
+  section.sec h1{font-size:1.45rem;color:var(--deep);border-bottom:3px solid var(--teal);
+    padding-bottom:8px;margin:34px 0 6px}
+  section.sec h2{font-size:1.18rem;color:#fff;background:linear-gradient(90deg,var(--deep),var(--teal));
+    border-radius:12px;padding:12px 16px;margin:26px 0 0;display:flex;align-items:center;gap:10px;
+    cursor:pointer;user-select:none}
+  section.sec h3{font-size:1.02rem;color:var(--accent);margin:22px 0 4px}
+  .tog{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);color:#fff;
+    border-radius:6px;width:30px;height:30px;font-size:1rem;cursor:pointer;flex:0 0 auto;
+    transition:transform .2s;margin-inline-start:auto}
+  section.sec.collapsed .tog{transform:rotate(-90deg)}
+  .secbody{background:var(--card);border:1px solid var(--line);border-top:none;
+    border-radius:0 0 12px 12px;padding:6px 22px 18px;overflow:hidden}
+  section.sec.collapsed .secbody{display:none}
+
+  .secbody p{margin:10px 0}
+  .secbody ul,.secbody ol{padding-inline-start:26px}
+  .secbody li{margin:4px 0}
+  .secbody hr{border:none;border-top:1px dashed var(--line);margin:20px 0}
+  blockquote{margin:12px 0;padding:10px 16px;background:#f2f9f8;border-inline-start:4px solid var(--accent);
+    border-radius:8px;color:var(--muted)}
+  code{background:#e8f2f1;border:1px solid var(--line);border-radius:6px;
+    padding:1px 7px;font-family:Consolas,Menlo,"Courier New",monospace;font-size:.86em;direction:ltr;unicode-bidi:embed}
+
+  .codecard{margin:16px 0;border-radius:12px;overflow:hidden;border:1px solid #0b3a3a;
+    box-shadow:0 3px 10px rgba(0,60,60,.10)}
+  .ccbar{display:flex;align-items:center;justify-content:space-between;background:#0b3a3a;
+    padding:7px 14px}
+  .cclabel{color:#9fd6cf;font-size:.78rem;letter-spacing:.4px}
+  .copybtn{background:var(--teal);color:#fff;border:none;border-radius:7px;padding:6px 16px;
+    font:inherit;font-size:.83rem;cursor:pointer;transition:.15s}
+  .copybtn:hover{background:var(--accent)}
+  .copybtn.ok{background:#1d8a4e}
+  .codecard pre{margin:0;background:var(--codebg);color:var(--codeink);padding:16px 18px;
+    direction:ltr;text-align:left;overflow:auto;max-height:460px;
+    font-family:Consolas,Menlo,"Courier New",monospace;font-size:.83rem;line-height:1.65}
+  .codecard pre code{background:none;border:none;color:inherit;padding:0;font-size:inherit}
+
+  .tablewrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:10px}
+  table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:560px}
+  th{background:var(--teal);color:#fff;padding:9px 12px;text-align:right;white-space:nowrap}
+  td{border-top:1px solid var(--line);padding:8px 12px;vertical-align:top}
+  tr:nth-child(even) td{background:#f6fbfb}
+
+  #toTop{position:fixed;bottom:22px;inset-inline-start:22px;z-index:60;background:var(--deep);
+    color:#fff;border:none;border-radius:999px;width:46px;height:46px;font-size:1.15rem;
+    cursor:pointer;box-shadow:0 4px 14px rgba(0,50,50,.3);display:none}
+  #toTop:hover{background:var(--teal)}
+
+  @media print{
+    .toolbar,.tog,.copybtn,#toTop{display:none!important}
+    body{background:#fff}
+    section.sec.collapsed .secbody{display:block}
+    section.sec h2{color:var(--deep);background:none;border:2px solid var(--deep)}
+    .secbody{border:none}
+    .codecard pre{max-height:none;background:#f4f8f8;color:#111}
+    .hero{background:var(--deep)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+  @media (max-width:640px){
+    body{font-size:14.5px}
+    .hero h1{font-size:1.25rem}
+    section.sec h2{font-size:1rem}
+    .codecard pre{font-size:.76rem}
+  }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🏗️ سلسلة برومبتات بناء NutriClinicEG من الصفر</h1>
+  <p>للاستخدام مع Google AI Studio (Gemini) — مبنية على PRD v3.8 (المرجع الوحيد) بترتيب اعتماديات صحيح يحاكي المراحل M0→M8 مع بناء الأمن منذ اليوم الأول.</p>
+  <div class="badges">
+    <span class="badge">34 برومبت تنفيذي (P00–P33)</span>
+    <span class="badge">37 كتلة كود قابلة للنسخ</span>
+    <span class="badge">RTL · HTML مستقل بلا إنترنت</span>
+  </div>
+</div>
+
+<div class="toolbar">
+  <button class="tbtn" type="button" onclick="expandAll(true)">توسيع الكل ▾</button>
+  <button class="tbtn" type="button" onclick="expandAll(false)">طي البرومبتات ▴</button>
+  <button class="tbtn" type="button" onclick="window.print()">🖨️ طباعة / PDF</button>
+  <a class="tbtn" href="#sec-ai-studio-settings">⚙️ إعدادات AI Studio</a>
+  <a class="tbtn" href="#toc">☰ الفهرس</a>
+</div>
+
+<div class="container">
+  <section class="sec lvl2" id="sec-ai-studio-settings" data-hid="ai-studio-settings">
+    <h2 id="h-ai-studio-settings">⚙️ إعدادات Google AI Studio قبل البدء — اضبطها مرة واحدة<button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button></h2>
+    <div class="secbody">
+      <p>اضبط هذه الإعدادات <strong>قبل لصق PROMPT 00</strong> — الإعدادات الافتراضية مصممة لمحادثات عامة، وليست لمشروع توليد كود طويل. الاستثمار 5 دقائق هنا يوفر عليك جلسات إعادة عمل كاملة.</p>
+      <div style="background:#fff4e5;border:1px solid #d97706;border-radius:10px;padding:12px 16px;margin:14px 0">
+        <strong>⚠️ مهم — من أين تبدأ؟</strong> كل ما في هذا القسم موجود في وضع <strong>Chat / Playground</strong> وليس في قسم <strong>Apps / Build</strong>:
+        <ul style="margin:8px 0 0">
+          <li><strong>Apps (<code>/apps</code>) = وضع «بناء التطبيقات»:</strong> تصف تطبيقًا بالكلام فيولّد نموذج React أوليًا بمعاينة حية — <strong>بلا</strong> Temperature، <strong>بلا</strong> System Instructions دائم، <strong>بلا</strong> لوحة أدوات. ❌ غير مناسب لمشروعك.</li>
+          <li><strong>Chat (Playground) = المطلوب ✅:</strong> من القائمة الجانبية اليسرى اختر <strong>Chat</strong> (أو Playground في بعض الحسابات). <strong>علامة أنك في المكان الصحيح:</strong> سترى لوحة Run settings بجانب الشاشة و<strong>عدّاد التوكنات</strong> أسفل مربع الإدخال.</li>
+        </ul>
+      </div>
+
+      <h3>1) اختيار النموذج (أعلى الشاشة)</h3>
+      <div class="tablewrap">
+      <table>
+        <tr><th>الإعداد</th><th>القيمة</th><th>السبب</th></tr>
+        <tr><td><strong>Model</strong></td><td><strong>Gemini 2.5 Pro</strong> — ليس Flash ولا الإصدارات التجريبية الأحدث</td><td>نافذة سياق <strong>مليون توكن</strong> + مخرجات حتى <strong>65,536 توكن</strong> — ضروري لبرومبتات تصب ملفات كاملة. نفس فلسفة الـ PRD (Next 15 المستقر لا 16): الناضج المُختبَر يتفوق على الأحدث التجريبي</td></tr>
+        <tr><td><strong>Thinking</strong></td><td>اتركه <strong>Auto</strong> (مفعّل)</td><td>مهام P13 (المُصالِح) وP14 (الخط أنابيب) تحتاج تفكيرًا عميقًا. في 2.5 Pro التفكير دائم الاشتغال — لا تقفل الـ budget يدويًا إلا في الإصلاحات الصغيرة</td></tr>
+      </table>
+      </div>
+
+      <h3>2) لوحة إعدادات التشغيل (أيقونة ⚙️ على يمين الشاشة)</h3>
+      <div class="tablewrap">
+      <table>
+        <tr><th>الإعداد</th><th>القيمة</th><th>السبب</th></tr>
+        <tr><td><strong>Temperature</strong></td><td><strong style="color:#008080">0.15 – 0.2</strong></td><td><strong>أهم إعداد على الإطلاق للكود.</strong> المنخفض = مخرجات حتمية متسقة عبر 34 برومبت، وتكوينات متطابقة (نفس نمط الـ repository في P04 يظل نفسه في P22). الافتراضي (1.0) سيرتكب «ابتكارات» تكسر الاتساق</td></tr>
+        <tr><td><strong>Top-P</strong></td><td>الافتراضي (0.95)</td><td>لا تعبث به — ضبط الحرارة يكفي، وتغييرهما معًا يصنع سلوكًا غير متوقع</td></tr>
+        <tr><td><strong>Max output tokens</strong></td><td><strong>الحد الأقصى (65,536)</strong> إن كان الحقل ظاهرًا</td><td>البرومبتات تشترط «ملفات كاملة بلا اختصار» — السقف الافتراضي المنخفض سيقصف الردود في منتصف الملفات</td></tr>
+        <tr><td><strong>Structured Output / JSON mode</strong></td><td>❌ مغلق</td><td>مخرجاتك Markdown حر مع كتل ملفات — أي قفل JSON سيفسدها</td></tr>
+        <tr><td><strong>Google Search grounding</strong></td><td>❌ مغلق — ⚠️ الاستثناء: فعّله مؤقتًا في <strong>P32 فقط</strong> (توثيق تكامل Paymob الحالي) ثم أغلقه</td><td>يشتت النموذج ويجعله «يبحث» بدل الالتزام بالـ PRD الملحق</td></tr>
+        <tr><td><strong>Code execution / Function calling / URL context</strong></td><td>❌ كلها مغلقة</td><td>لا فائدة منها في هذه السلسلة، وكل أداة مفتوحة تضيف فرص انحراف</td></tr>
+        <tr><td><strong>Safety settings</strong> (إن ظهرت)</td><td>خفّضها إلى <strong>Block none</strong></td><td>يمنع رفضًا عشوائيًا في P30 تحديدًا (نص اختبارات اختراق SQL/XSS قد يُقرأ خطأً كمحتوى خطر)</td></tr>
+      </table>
+      </div>
+
+      <h3>3) System Instructions — الخطوة الأهم</h3>
+      <p>افتح حقل <strong>System Instructions</strong> (أعلى يمين منطقة الإدخال) والصق فيه <strong>PROMPT 00 كاملًا</strong>.</p>
+      <blockquote><strong>لماذا هنا وليس كرسالة؟</strong> لأنه <strong>يُرسل مع كل استدعاء تلقائيًا</strong> — النموذج لا «ينسى» القواعد بعد 20 رسالة طويلة، وهو بالضبط ما يحميك من انهيار الالتزام بالمعمارية مع تقدم الجلسة.</blockquote>
+
+      <h3>4) رفع الملفات (زر ＋ في مربع الإدخال)</h3>
+      <ul>
+        <li>ارفع <strong>ملف الـ PRD كاملًا</strong> في أول رسالة (~190KB = ~45 ألف توكن، يدخل بسهولة في المليون).</li>
+        <li>في كل جلسة جديدة: <strong>PRD + آخر STATE SNAPSHOT + برومبت الاستكمال (A)</strong>.</li>
+      </ul>
+
+      <h3>5) الخصوصية والحدود المجانية (مهم لمنتج تجاري)</h3>
+      <ul>
+        <li><strong>الحدود المجانية:</strong> نموذج Pro في الطبقة المجانية له سقف طلبات يومي (يسدّ أثناء جلسة كثيفة). الحل: مفتاح API مدفوع من «Get API key» — يمنحك سقوفًا أعلى بكثير.</li>
+        <li><strong>الخصوصية:</strong> في الاستخدام المجاني قد تُستخدم محادثاتك لتحسين منتجات جوجل. كود منتج تجاري + PRD فيه قراراتك الاستراتيجية ← <strong>يُفضّل العمل بمفتاح API مدفوع</strong> (بياناته لا تُستخدم للتدريب).</li>
+        <li>وعلى أي حال: <strong>لا تلصق أسرارًا حقيقية أبدًا</strong> (مفاتيح Paymob/OpenAI) — قاعدة موجودة أصلًا في تعليمات P00.</li>
+      </ul>
+
+      <h3>6) عادات الجلسة</h3>
+      <ul>
+        <li>راقب <strong>عدّاد التوكنات</strong> أسفل الإدخال: عند تجاوز <strong>~60%</strong> من النافذة أو بدء ترهل الجودة ← <strong>محادثة جديدة فورًا</strong> ببرومبت الاستكمال. لا تكمل على محادثة مكتظة — إنها أول سبب لـ«النسيان».</li>
+        <li>احفظ المحادثة (أيقونة الحفظ) باسم مثل <code>P14-session</code> — لتسهيل الرجوع إلى STATE SNAPSHOT عند اللزوم.</li>
+      </ul>
+
+      <h3>7) 🛠️ إصلاح أعطال التشغيل الشائعة</h3>
+      <div class="tablewrap">
+      <table>
+        <tr><th>العَرَض</th><th>السبب المعتاد</th><th>العلاج</th></tr>
+        <tr><td><code>Failed to create interaction: permission denied</code></td><td>أدوات مفعّلة (Code execution / Grounding / URL context) رُفضت للحساب أو المنطقة</td><td>أطفئ الأدوات الثلاث من Run settings + احذف شرائحها من شريط الإدخال (×) ← محادثة جديدة ← أعد الإرسال</td></tr>
+        <tr><td><code>An internal error has occurred</code> (من Agent)</td><td>انهيار بيئة التنفيذ المعزولة (Environment) من جانب جوجل — عابر غالبًا</td><td>بنصّ عادي بلا أدوات يختفي. وإن تكرار: F5 ← محادثة جديدة ← Incognito ← متصفح آخر ← انتظر ساعة</td></tr>
+        <tr><td>الردود مقطوعة في منتصف الملفات</td><td>سقف مخرجات منخفض</td><td>ارفع Max output tokens للأقصى (65,536) وقل: «continue from the exact line you stopped»</td></tr>
+        <tr><td>النموذج «ينسى» القواعد بعد رسائل كثيرة</td><td>اكتظاظ النافذة أو P00 ليس في System Instructions</td><td>تحقق من حقل System Instructions ← محادثة جديدة ببرومبت الاستكمال A + آخر STATE SNAPSHOT</td></tr>
+        <tr><td><code>Couldn't find next-intl config file</code> أثناء البناء (prerender <code>/_not-found</code>)</td><td>بلجن next-intl غير مسجل في next.config.ts، وصفحة 404 التلقائية تُبنى خارج هيكل [locale]</td><td>سجّل <code>createNextIntlPlugin</code> في next.config.ts مشيرًا لملف request config ← أنشئ root <code>app/not-found.tsx</code> بلا next-intl hooks و404 المترجمة في <code>app/[locale]/not-found.tsx</code> ← أعد البناء للإثبات</td></tr>
+        <tr><td><code>FATAL ERROR: … JavaScript heap out of memory</code> أثناء <code>next build</code></td><td>سقف ذاكرة Node الافتراضي أقل من حاجة البناء بعد تراكم الصفحات (يزداد في P08+ وP26+)</td><td>فوري: <code>$env:NODE_OPTIONS="--max-old-space-size=4096"</code> ثم <code>npm run build</code> ← دائم: أضف حزمة <code>cross-env</code> وحدّث سكربت build إلى <code>cross-env NODE_OPTIONS=--max-old-space-size=4096 next build</code> ← تكرر مع 6144؟ اتهم كود P08 (حلقة لا نهائية في sitemap/markdown/tracking) واعزل المسار المسبب</td></tr>
+        <tr><td>خطأ PowerShell: <code>A positional parameter cannot be found…</code> عند أوامر الوكيل</td><td>الوكيل كتب صيغة Bash (<code>mkdir -p</code>، <code>&amp;&amp;</code>) وتيرمنالك PowerShell على ويندوز</td><td>أنشئ المجلدات يدويًا: <code>New-Item -ItemType Directory -Force -Path a/b, c/d</code> ← الصق للوكيل ملاحظة البيئة (Windows/PowerShell) ← <strong>أضف قسم ENVIRONMENT CONSTRAINTS إلى GEMINI.md</strong> (في بطاقتها أعلاه) — أو اجعل التيرمنال الافتراضي Git Bash</td></tr>
+        <tr><td>رسالة <code>Usage limit reached</code> في الـ CLI مع خيارَي Keep trying / Stop</td><td>استهلاك حصة النموذج (حد دقائق أو يومي — لكل نموذج حصة منفصلة)</td><td>اختر <strong>Stop</strong> ← <code>/stats</code> لمعرفة نوع الحد وموعد التصفير ← <code>/model</code> وبدّل لنموذج بحصة متبقية (فضّل <code>gemini-2.5-pro</code> للبرومبتات الثقيلة) ← استأنف بـ: «Continue TASK Pxx — re-check files on disk first»</td></tr>
+        <tr><td>سقف الطلبات اليومي يسدّ</td><td>حدود الطبقة المجانية/Pro على Playground</td><td>انتظر التصفير اليومي، أو انتقل إلى <strong>Gemini CLI</strong> بمفتاح API (نفس السلسلة تعمل حرفيًا — P00 في <code>GEMINI.md</code>)</td></tr>
+      </table>
+      </div>
+
+      <h3>8) 🖥️ البديل الموصى به عند تعطل Playground: Gemini CLI</h3>
+      <p>إن استمرت أخطاء وضع الوكيل في AI Studio (أو سدّ السقف اليومي)، انتقل إلى <strong>Gemini CLI</strong> — نفس نماذج Gemini لكن داخل تيرمنال مشروعك، يقرأ الكود الفعلي ويكتب الملفات مباشرة. <strong>الأنسب: تيرمنال VSCode الداخلي</strong> (Ctrl+`) ليجتمع الوكيل + بوابة الجودة + git في نافذة واحدة.</p>
+      <div class="codecard" id="code-gemini-cli-setup"><div class="ccbar"><span class="cclabel">💻 خطوات التثبيت والتشغيل</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code># 1) أنشئ مجلد المشروع وادخله (يتطلب Node.js 18+)
+mkdir nutricliniceg &amp;&amp; cd nutricliniceg
+
+# 2) ثبّت الأداة مرة واحدة
+npm install -g @google/gemini-cli
+
+# 3) شغّلها داخل مجلد المشروع ← اختر "Login with Google"
+gemini</code></pre></div>
+      <ul>
+        <li><strong>الطبقة المجانية</strong> بحساب Google الشخصي: 60 طلبًا/دقيقة و1000/يوم — تكفي جلسة كاملة يوميًا.</li>
+        <li><strong>الـ PRD:</strong> ضع <code>PRD-NutriClinicEG-Master.md</code> في <strong>جذر المشروع</strong> — الوكيل يقرأه من هناك بلا مرفقات.</li>
+        <li><strong>P00:</strong> بدل System Instructions، ضعه في ملف <code>GEMINI.md</code> بجذر المشروع — يُحمَّل تلقائيًا مع كل رسالة (نفس مبدأ عدم النسيان).</li>
+      </ul>
+      <div class="codecard" id="code-gemini-md"><div class="ccbar"><span class="cclabel">📄 محتوى GEMINI.md (P00 + إضافة وضع الـ CLI)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code>[الصق PROMPT 00 هنا حرفيًا من الفهرس أدناه]
+
+ADDITION FOR CLI MODE:
+- The file `PRD-NutriClinicEG-Master.md` in the project root is the single source of truth. Read it (or the relevant section) whenever a requirement ID is referenced.
+- Maintain `PROGRESS.md` in the project root: update the STATE SNAPSHOT at the end of every task.
+- Before finishing any task, run and report: lint, typecheck, tests.
+
+ENVIRONMENT CONSTRAINTS (Windows PowerShell — MANDATORY):
+- The shell is Windows PowerShell, NOT bash. Never issue bash-only syntax.
+- Directories: New-Item -ItemType Directory -Force -Path a/b, c/d   (mkdir -p does NOT work)
+- No &amp;&amp; chaining — use separate commands or ";".
+- No touch/export/grep/sed/head/tail — PowerShell equivalents only ($env:VAR="..." for env vars).
+- For anything complex (multi-file edits, renames, seed data), write a Node script under scripts/ and run it with node.</code></pre></div>
+      <h4>✅ أول 10 دقائق بعد تسجيل الدخول (بالترتيب)</h4>
+      <ol>
+        <li><strong>تحقق من المجلد:</strong> جلسة الـ CLI مرتبطة بالمجلد الذي شغّلتَه منها. إن لم تكن في <code>nutricliniceg</code> اكتب <code>/quit</code> ثم شغّل <code>gemini</code> من المجلد الصحيح.</li>
+        <li><strong>ضع الملفين في جذر المشروع:</strong> <code>PRD-NutriClinicEG-Master.md</code> + <code>GEMINI.md</code> (P00 + إضافة CLI — البطاقة أعلاه). ستلاحظ شاشة الترحيب تذكر <code>GEMINI.md</code> عند اكتشافها.</li>
+        <li><strong>الصق P01</strong> (من الفهرس أدناه) في مربع الإدخال واضغط Enter — في تيرمنال VSCode: <code>Ctrl+Shift+V</code> للصق متعدد الأسطر.</li>
+        <li><strong>وافق على الأدوات:</strong> سيطلب الوكيل تأكيدًا (Y/N) قبل كتابة الملفات أو تشغيل أوامر — راجع سطرًا سريعًا ثم وافق. ❌ لا تستخدم وضع <code>--yolo</code> (الموافقة التلقائية) في البداية.</li>
+        <li><strong>عند انتهاء P01:</strong> سيمنحك STATE SNAPSHOT ← شغّل البوابة في تيرمنال ثانٍ: <code>npm run lint && npm run typecheck && npm test && npm run build</code> ← ثم <code>git init && git add -A && git commit -m "P01: scaffold"</code> ← الصق P02.</li>
+        <li><strong>أوامر مفيدة:</strong> <code>/init</code> (يولّد GEMINI.md تلقائيًا — لا تحتاجه إن كتبته يدويًا) · <code>/stats</code> (استهلاك السياق والحصة) · <code>/compress</code> (تكثيف السياق عند الامتلاء) · <code>/clear</code> (جلسة جديدة مع إبقاء GEMINI.md) · <code>/quit</code>.</li>
+        <li><strong>حيلة للبرومبتات الطويلة:</strong> إن أعاق اللصق الطويل، احفظ كل برومبت في ملف <code>prompts/P01.md</code>... ثم اكتب فقط: <code>Read prompts/P01.md and execute it exactly.</code></li>
+      </ol>
+      <blockquote><strong>ميزة إضافية:</strong> في الـ CLI يرى الوكيل الكود القائم فلا يعيد اختراعه، ويكتب الملفات في مكانها مباشرة — جودة الاتساق أعلى درجة من النسخ اليدوي من Playground.</blockquote>
+
+      <h3>9) 🔁 طقس التحقق بعد كل برومبت (الأهم في الملف كله)</h3>
+      <p>«انتهى التنفيذ» ≠ «نجح». لا تنتقل للبرومبت التالي قبل إتمام هذا الطقس — <strong>أنت أنت الـ CI في هذه العملية</strong>:</p>
+      <ol>
+        <li><strong>البوابة الرئيسية:</strong> <code>npm run lint && npm run typecheck && npm test && npm run build</code> — أي خطأ أحمر ← الصقه للوكيل: <code>Fix this error: [...]</code> ← أعد البوابة.</li>
+        <li><strong>معايير القبول الخاصة بالبرومبت:</strong> كل برومبت ينتهي بـ ACCEPTANCE — اختبرها يدويًا (مثلًا في P01: إقلاع بلا JWT_SECRET يجب أن يفشل، والترويسات الأمنية ظاهرة في curl -I أو Network tab، و/api/health يعيد ok).</li>
+        <li><strong>حيلة الإثبات الذاتي:</strong> الصق للوكيل: <code>Run all acceptance checks from TASK Pxx yourself and show me the actual command outputs as proof. Do not fix anything unless a check fails.</code></li>
+        <li><strong>فحص بنيوي سريع:</strong> package.json سليم (لا Prisma — D-01) · الملفات في مواضعها · STATE SNAPSHOT محفوظ في PROGRESS.md.</li>
+        <li><strong>احفظ التقدم:</strong> <code>git add -A && git commit -m "Pxx: [اسم الوحدة]"</code> — الـ commit هو نقطة الاستعادة إن كسر برومبت لاحق شيئًا.</li>
+      </ol>
+      <blockquote><strong>بوابات التوقف الإجبارية:</strong> P02 (توافق Carbon/React 19 — حُكم GO/NO-GO في docs/carbon-t0.md: عند NO-GO توقف ولا تكمل) و P33 (تدقيق القبول النهائي). ومراجعة الجودة (برومبت C) بعد P08 وP18 وP28.</blockquote>
+
+      <div style="background:#e6f7f4;border:1px solid var(--teal);border-radius:10px;padding:12px 16px;margin:16px 0">
+        <strong>⚡ الخلاصة السريعة:</strong> <code>Gemini 2.5 Pro</code> + <code>Temperature 0.15</code> + <code>أقصى طول مخرجات</code> + <code>كل الأدوات مغلقة</code> + <code>P00 في System Instructions</code> + <code>الـ PRD مرفق</code> — ثم ابدأ P01.
+      </div>
+    </div>
+  </section>
+
+  <nav class="toc" id="toc">
+    <h2>📑 فهرس البرومبتات — انقر للانتقال (يُوسَّع تلقائيًا)</h2>
+    <a class="toc-chip" href="#sec-ai-studio-settings" style="background:#e6f7f4;border-color:var(--teal);font-weight:700">⚙️ إعدادات AI Studio قبل البدء (من هذا الملف)</a>
+    <div class="toc-part">🏗️ سلسلة برومبتات بناء NutriClinicEG من الصفر — للاستخدام مع Google AI Studio (Gemini)</div>
+<a class="toc-chip" href="#sec-h-1-طريقة-الاستخدام-مع-google-ai-studio-مهمة-اقرأها-أولا">1) طريقة الاستخدام مع Google AI Studio (مهمة — اقرأها أولًا)</a>
+<a class="toc-chip" href="#sec-h-2-خريطة-الترتيب-والاعتماديات">2) خريطة الترتيب والاعتماديات</a>
+<div class="toc-part">3) البرومبتات</div>
+<a class="toc-chip" href="#sec-h-prompt-00-القواعد-الرئيسية-للمشروع-تلصق-أولا-system-instructions-قواعد">PROMPT 00 — القواعد الرئيسية للمشروع (تُلصق أولًا / System Instructions) — 🧭 قواعد الحوكمة</a>
+<a class="toc-chip" href="#sec-h-prompt-01-هيكل-المشروع-وأساس-الأمان-project-scaffold-security-baseline">PROMPT 01 — هيكل المشروع وأساس الأمان — Project Scaffold & Security Baseline</a>
+<a class="toc-chip" href="#sec-h-prompt-02-أساس-carbon-ثيم-teal-خطوط-عربية-rtl-بوابة-t0-الإلزامية-carbo">PROMPT 02 — أساس Carbon: ثيم Teal + خطوط عربية + RTL (بوابة T0 الإلزامية) — Carbon Design Foundation (T0 Gate)</a>
+<a class="toc-chip" href="#sec-h-prompt-03-التدويل-ومبدل-اللغة-للزوار-i18n-visitor-language-switcher">PROMPT 03 — التدويل ومبدّل اللغة للزوار — i18n & Visitor Language Switcher</a>
+<a class="toc-chip" href="#sec-h-prompt-04-قاعدة-البيانات-39-جدولا-طبقة-repository-database-schema-repo">PROMPT 04 — قاعدة البيانات: 39 جدولًا + طبقة Repository — Database Schema & Repository Layer</a>
+<a class="toc-chip" href="#sec-h-prompt-05-محرك-البريد-والإشعارات-email-notification-engine">PROMPT 05 — محرك البريد والإشعارات — Email & Notification Engine</a>
+<a class="toc-chip" href="#sec-h-prompt-06-المصادقة-والجلسات-authentication-sessions">PROMPT 06 — المصادقة والجلسات — Authentication & Sessions</a>
+<a class="toc-chip" href="#sec-h-prompt-07-rbac-وسجل-التدقيق-ومنع-idor-rbac-audit-log-idor-guards">PROMPT 07 — RBAC وسجل التدقيق ومنع IDOR — RBAC, Audit Log & IDOR Guards</a>
+<a class="toc-chip" href="#sec-h-prompt-08-الموقع-العام-الكامل-public-website-seo-ai-agent-surfaces">PROMPT 08 — الموقع العام الكامل — Public Website, SEO & AI-Agent Surfaces</a>
+<a class="toc-chip" href="#sec-h-prompt-09-لوحة-الطبيب-والمرضى-والحسابات-الغذائية-doctor-dashboard-pati">PROMPT 09 — لوحة الطبيب والمرضى والحسابات الغذائية — Doctor Dashboard & Patients Core</a>
+<a class="toc-chip" href="#sec-h-prompt-10-الزيارات-والرسوم-البيانية-والرفع-الآمن-للملفات-visits-charts">PROMPT 10 — الزيارات والرسوم البيانية والرفع الآمن للملفات — Visits, Charts & Secure File Uploads</a>
+<a class="toc-chip" href="#sec-h-prompt-11-قوائم-الطعام-food-lists-module">PROMPT 11 — قوائم الطعام — Food Lists Module</a>
+<a class="toc-chip" href="#sec-h-prompt-12-البنية-التحتية-لمزودي-الذكاء-الاصطناعي-ai-provider-infrastru">PROMPT 12 — البنية التحتية لمزوّدي الذكاء الاصطناعي — AI Provider Infrastructure</a>
+<a class="toc-chip" href="#sec-h-prompt-13-المصالح-الحتمي-والحواجز-الطبية-macro-reconciler-medical-guar">PROMPT 13 — المُصالِح الحتمي والحواجز الطبية — Macro Reconciler & Medical Guards</a>
+<a class="toc-chip" href="#sec-h-prompt-14-خط-أنابيب-توليد-الخطط-بالوضعين-plan-generation-pipeline-from">PROMPT 14 — خط أنابيب توليد الخطط بالوضعين — Plan Generation Pipeline (from_list & ai_free)</a>
+<a class="toc-chip" href="#sec-h-prompt-15-محرر-الخطط-والتعديل-الشامل-والمراجعات-plan-editor-bulk-edit-">PROMPT 15 — محرر الخطط والتعديل الشامل والمراجعات — Plan Editor, Bulk Edit & Revisions</a>
+<a class="toc-chip" href="#sec-h-prompt-16-مكتبة-قوالب-الخطط-والخطط-التكيفية-template-library-adaptive-">PROMPT 16 — مكتبة قوالب الخطط والخطط التكيفية — Template Library & Adaptive Plans</a>
+<a class="toc-chip" href="#sec-h-prompt-17-خطط-التمارين-exercise-plans">PROMPT 17 — خطط التمارين — Exercise Plans</a>
+<a class="toc-chip" href="#sec-h-prompt-18-الطباعة-والعلامة-البيضاء-print-routes-white-label">PROMPT 18 — الطباعة والعلامة البيضاء — Print Routes & White-Label</a>
+<a class="toc-chip" href="#sec-h-prompt-19-بوابة-المريض-patient-portal-token-based">PROMPT 19 — بوابة المريض — Patient Portal (Token-Based)</a>
+<a class="toc-chip" href="#sec-h-prompt-20-المراسلة-والصندوق-الوارد-messaging-doctor-inbox">PROMPT 20 — المراسلة والصندوق الوارد — Messaging & Doctor Inbox</a>
+<a class="toc-chip" href="#sec-h-prompt-21-المساعد-الذكي-بسياق-المريض-ومحلل-التحاليل-ai-assistant-with-">PROMPT 21 — المساعد الذكي بسياق المريض ومحلل التحاليل — AI Assistant with Patient Context</a>
+<a class="toc-chip" href="#sec-h-prompt-22-لوحة-الأدمن-الأساسية-admin-panel-core">PROMPT 22 — لوحة الأدمن الأساسية — Admin Panel Core</a>
+<a class="toc-chip" href="#sec-h-prompt-23-إدارة-مزودي-ai-والأمان-والتدقيق-والتكلفة-admin-ai-providers-">PROMPT 23 — إدارة مزوّدي AI والأمان والتدقيق والتكلفة — Admin: AI Providers, Security, Audit & Cost</a>
+<a class="toc-chip" href="#sec-h-prompt-24-الفوترة-وpaymob-billing-paymob-integration">PROMPT 24 — الفوترة وPaymob — Billing & Paymob Integration</a>
+<a class="toc-chip" href="#sec-h-prompt-25-المدونة-الواجهة-العامة-والسيو-blog-public-seo">PROMPT 25 — المدونة: الواجهة العامة والسيو — Blog Public & SEO</a>
+<a class="toc-chip" href="#sec-h-prompt-26-لوحة-المدونة-ومكتبة-الوسائط-blog-admin-tiptap-media-library">PROMPT 26 — لوحة المدونة ومكتبة الوسائط — Blog Admin (TipTap) & Media Library</a>
+<a class="toc-chip" href="#sec-h-prompt-27-النشرة-الاشتراك-والموافقة-المزدوجة-newsletter-core-consent">PROMPT 27 — النشرة: الاشتراك والموافقة المزدوجة — Newsletter Core (Consent)</a>
+<a class="toc-chip" href="#sec-h-prompt-28-النشرة-الحملات-والإرسال-التلقائي-newsletter-campaigns-auto-s">PROMPT 28 — النشرة: الحملات والإرسال التلقائي — Newsletter Campaigns & Auto-Send</a>
+<a class="toc-chip" href="#sec-h-prompt-29-المهام-المجدولة-والمراقبة-والنسخ-الاحتياطي-cron-framework-ob">PROMPT 29 — المهام المجدولة والمراقبة والنسخ الاحتياطي — Cron Framework, Observability & Backups</a>
+<a class="toc-chip" href="#sec-h-prompt-30-التحصين-الأمني-والامتثال-security-compliance-hardening-pass">PROMPT 30 — التحصين الأمني والامتثال — Security & Compliance Hardening Pass</a>
+<a class="toc-chip" href="#sec-h-prompt-31-الأداء-وإمكانية-الوصول-performance-accessibility-pass">PROMPT 31 — الأداء وإمكانية الوصول — Performance & Accessibility Pass</a>
+<a class="toc-chip" href="#sec-h-prompt-32-ci-cd-والنشر-على-cpanel-ci-cd-cpanel-deployment">PROMPT 32 — CI/CD والنشر على cPanel — CI/CD & cPanel Deployment</a>
+<a class="toc-chip" href="#sec-h-prompt-33-غلاف-android-والتدقيق-النهائي-للقبول-android-wrapper-final-a">PROMPT 33 — غلاف Android والتدقيق النهائي للقبول — Android Wrapper & Final Acceptance Audit</a>
+<div class="toc-part">4) برومبتات مساعدة قابلة لإعادة الاستخدام</div>
+<a class="toc-chip" href="#sec-h-a-برومبت-الاستكمال-بعد-جلسة-جديدة-continuation-prompt">A) برومبت الاستكمال بعد جلسة جديدة — Continuation Prompt</a>
+<a class="toc-chip" href="#sec-h-b-برومبت-إصلاح-خلل-bug-fix-prompt-template">B) برومبت إصلاح خلل — Bug-Fix Prompt Template</a>
+<a class="toc-chip" href="#sec-h-c-برومبت-بوابة-الجودة-وإعادة-الهيكلة-quality-gate-refactor-pass">C) برومبت بوابة الجودة وإعادة الهيكلة — Quality Gate / Refactor Pass</a>
+<div class="toc-part">5) ملاحظات ختامية</div>
+<div class="toc-part">6) صراحة كاملة: ما الذي يمنع السباجيتي فعلًا؟</div>
+  </nav>
+  
+<section class="sec lvl1" id="sec-h-سلسلة-برومبتات-بناء-nutricliniceg-من-الصفر-للاستخدام-مع-google-ai-stud" data-hid="h-سلسلة-برومبتات-بناء-nutricliniceg-من-الصفر-للاستخدام-مع-google-ai-stud"><h1 id="h-سلسلة-برومبتات-بناء-nutricliniceg-من-الصفر-للاستخدام-مع-google-ai-stud">🏗️ سلسلة برومبتات بناء NutriClinicEG من الصفر — للاستخدام مع Google AI Studio (Gemini)</h1><div class="secbody">
+<blockquote>
+<p><strong>المصدر:</strong> PRD-NutriClinicEG-Master v3.8 (المرجع الوحيد — Single Source of Truth)
+<strong>الاستراتيجية:</strong> بناء Greenfield (من الصفر) للنسخة المستهدفة، بترتيب اعتماديات صحيح يحاكي مراحل M0→M8 في §17 من الوثيقة، مع <strong>بناء الأمان منذ اليوم الأول</strong> بدل "ترقية" لاحقة.
+<strong>عدد البرومبتات:</strong> 34 برومبت تنفيذي (P01–P33 + برومبت قواعد P00) + برومبتان مساعدان.</p>
+</blockquote>
+<hr />
+</div></section>
+<section class="sec lvl2" id="sec-h-1-طريقة-الاستخدام-مع-google-ai-studio-مهمة-اقرأها-أولا" data-hid="h-1-طريقة-الاستخدام-مع-google-ai-studio-مهمة-اقرأها-أولا"><h2 id="h-1-طريقة-الاستخدام-مع-google-ai-studio-مهمة-اقرأها-أولا">1) طريقة الاستخدام مع Google AI Studio (مهمة — اقرأها أولًا)</h2><div class="secbody">
+<ol>
+<li><strong>افتح</strong> <a href="https://aistudio.google.com">aistudio.google.com</a> → محادثة جديدة بنموذج <strong>Gemini 2.5 Pro</strong>.</li>
+<li><strong>ارفع ملف الـ PRD</strong> (<code>PRD-NutriClinicEG-Master.md</code>) كمرفق في المحادثة — حجمه ~190KB ويدخل بسهولة في سياق Gemini. كل برومبت يشير لمتطلباته بأرقام المعرفات (SEC-01، NUT-03…) فيقرأها النموذج من الملف المرفق. <strong>لا تشرح المتطلب بنفسك — اتركه للمعرف.</strong></li>
+<li><strong>الصق PROMPT 00 أولًا</strong> — الأفضل وضعه في حقل <strong>System Instructions</strong> إن كان متاحًا، وإلا فأول رسالة. احفظ نسخة منه في مستودعك باسم <code>PROJECT_RULES.md</code> وارفعه مع كل جلسة جديدة.</li>
+<li><strong>نفّذ البرومبتات بالترتيب</strong> P01 → P33، برومبت واحد في كل رسالة. لا تنتقل للبرومبت التالي قبل أن تنقل كود الحالي إلى مشروعك و <strong>تشغّل الاختبارات وتبني بنجاح</strong>.</li>
+<li>بعد كل برومبت: انسخ الملفات المولّدة إلى المشروع → <code>npm run lint &amp;&amp; npm run typecheck &amp;&amp; npm test &amp;&amp; npm run build</code> → <strong><code>git commit</code> برسالة تحمل رقم البرومبت</strong> (مثل <code>P14: plan generation pipeline</code>). هذه البوابة أنت من يشغّلها — النموذج لا يستطيع.</li>
+<li><strong>عند بدء جلسة جديدة</strong> (بعد انقطاع السياق أو طول المحادثة): ارفع PRD + <code>PROJECT_RULES.md</code> + الصق <strong>آخر STATE SNAPSHOT</strong> أنتجه النموذج (كل برومبت ينتهي به إلزاميًا) + البرومبت التالي.</li>
+<li><strong>لا تمرّر أسرارًا حقيقية</strong> (مفاتيح Paymob/OpenAI) للنموذج — استخدم placeholder في <code>.env.example</code> وأدخل القيم الحقيقية بنفسك على الخادم.</li>
+</ol>
+<hr />
+</div></section>
+<section class="sec lvl2" id="sec-h-2-خريطة-الترتيب-والاعتماديات" data-hid="h-2-خريطة-الترتيب-والاعتماديات"><h2 id="h-2-خريطة-الترتيب-والاعتماديات">2) خريطة الترتيب والاعتماديات</h2><div class="secbody">
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>المرحلة</th>
+<th>البرومبتات</th>
+<th>ماذا تبنيها</th>
+<th>تقابل في PRD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>أ — التأسيس</strong></td>
+<td>P01–P05</td>
+<td>الهيكل، Carbon/RTL/ثيم Teal (بوابة T0)، i18n، قاعدة البيانات (39 جدولًا) + طبقة Repository، البريد والإشعارات</td>
+<td>M0–M1</td>
+</tr>
+<tr>
+<td><strong>ب — الأمن والمصادقة</strong></td>
+<td>P06–P07</td>
+<td>المصادقة والجلسات، RBAC + سجل التدقيق + IDOR</td>
+<td>M0–M1</td>
+</tr>
+<tr>
+<td><strong>ج — الموقع العام</strong></td>
+<td>P08</td>
+<td>الصفحات العامة + SEO + وكلاء AI + تواصل معنا</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>د — نواة الطبيب</strong></td>
+<td>P09–P11</td>
+<td>الداشبورد والمرضى والحسابات الغذائية، الزيارات والملفات الآمنة، قوائم الطعام</td>
+<td>M1</td>
+</tr>
+<tr>
+<td><strong>هـ — محرك الخطط (القلب)</strong></td>
+<td>P12–P14</td>
+<td>بنية تحتية AI، المُصالِح الحتمي + الحواجز الطبية + اختبارات 500 حالة، خط أنابيب التوليد بالوضعين</td>
+<td>M2</td>
+</tr>
+<tr>
+<td><strong>و — المحرر والقوالب</strong></td>
+<td>P15–P18</td>
+<td>المحرر اللحظي والتعديل الشامل، مكتبة القوالب، التمارين، الطباعة والعلامة البيضاء</td>
+<td>M2/M5</td>
+</tr>
+<tr>
+<td><strong>ز — بوابة المريض والمراسلة</strong></td>
+<td>P19–P21</td>
+<td>بوابة التوكن، الصندوق الوارد، المساعد الذكي بسياق المريض + محلل التحاليل</td>
+<td>M3</td>
+</tr>
+<tr>
+<td><strong>ح — لوحة الأدمن</strong></td>
+<td>P22–P23</td>
+<td>إدارة المستخدمين/الاشتراكات/الإعدادات، مزوّدو AI والتكلفة والتدقيق</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>ط — الفوترة</strong></td>
+<td>P24</td>
+<td>Paymob + التفعيل التلقائي + المسار اليدوي + فترة السماح</td>
+<td>M4</td>
+</tr>
+<tr>
+<td><strong>ي — المدونة والنشرة</strong></td>
+<td>P25–P28</td>
+<td>المدونة العامة + محرر TipTap والوسائط، النشرة (Double opt-in + الإرسال التلقائي)</td>
+<td>M6–M7</td>
+</tr>
+<tr>
+<td><strong>ك — التشغيل</strong></td>
+<td>P29–P32</td>
+<td>Cron والمراقبة والنسخ الاحتياطي، التحصين الأمني، الأداء والوصولية، CI/CD</td>
+<td>M0/عمليات</td>
+</tr>
+<tr>
+<td><strong>ل — الإقفال</strong></td>
+<td>P33</td>
+<td>غلاف Android + تدقيق قبول شامل مقابل §20</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>قواعد ذهبية أثناء التنفيذ:</strong>
+- 🔴 <strong>بوابة T0 (R19):</strong> برومبت P02 هو إثبات جدوى Carbon مع React 19/Next 15. إن فشل التثبيت أو انفجر حجم الحزمة → أوقف السلسلة وقرر مع النموذج التراجع لـ shadcn بستايل موحّد قبل المتابعة.
+- كل برومبت يشترط <strong>اختبارات Vitest</strong> للمنطق الحرج + إعادة تشغيل كل الاختبارات السابقة.
+- لا تسمح للنموذج بحذف/تعديل بنيوي لما أنشأته في برومبت سابق إلا بذكره صراحةً.</p>
+<hr />
+</div></section>
+<section class="sec lvl1" id="sec-h-3-البرومبتات" data-hid="h-3-البرومبتات"><h1 id="h-3-البرومبتات">3) البرومبتات</h1><div class="secbody">
+<hr />
+</div></section>
+<section class="sec lvl2" id="sec-h-prompt-00-القواعد-الرئيسية-للمشروع-تلصق-أولا-system-instructions-قواعد" data-hid="h-prompt-00-القواعد-الرئيسية-للمشروع-تلصق-أولا-system-instructions-قواعد"><h2 id="h-prompt-00-القواعد-الرئيسية-للمشروع-تلصق-أولا-system-instructions-قواعد"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 00 — القواعد الرئيسية للمشروع (تُلصق أولًا / System Instructions) — 🧭 قواعد الحوكمة</h2><div class="secbody">
+<div class="codecard" id="code-1"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">You are the lead senior engineer building **NutriClinicEG** — a B2B SaaS for nutrition clinics in Egypt (nutricliniceg.com) — from scratch. The attached file `PRD-NutriClinicEG-Master.md` (v3.8) is the SINGLE SOURCE OF TRUTH. Every requirement has an ID (SEC-01, NUT-03, BLG-24, CRON-11, D-19 …) that resolves to that document. When anything is ambiguous or conflicts, the Decision Log in PRD §4 wins.
+
+## STACK (fixed — never substitute)
+- Next.js 15 (App Router, `output: standalone`), React 19, TypeScript 5.9
+- UI: `@carbon/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="13617672706753223d2222273d23">[email&#160;protected]</a>` + `@carbon/styles` + `@carbon/icons-react` + Dart `sass`. ❌ NEVER `carbon-components*`, `node-sass`, or mixing shadcn with Carbon in the same screen (UI-09/10)
+- Theme: custom Carbon theme tokens in Teal (#008080, #005F73, #0A9396) — ❌ never IBM blue #0f62fe, never raw hex in components (UI-03/11)
+- Fonts: IBM Plex Sans Arabic + IBM Plex Sans via @carbon/styles, loaded with unicode-range subsets only (UI-05/06)
+- RTL-first: Arabic is the default locale (dir=rtl); English secondary via `next-intl`, locale-prefixed routes /ar/... /en/... (D-03, PUB-13..15)
+- Data: MySQL 8 via `mysql2` pool + typed Repository layer. ❌ NO Prisma, ❌ NO SQL string interpolation — only prepared statements with `?`, ❌ NO SQL inside route handlers (D-01, §6.2)
+- Auth: bcrypt (12 rounds), JWT (HS256, 7 days) signed/verified with `jose`, stored ONLY in HttpOnly+Secure+SameSite=Strict cookie. ❌ NEVER localStorage (D-17, SEC-02/04/10/11)
+- Validation: Zod at EVERY API boundary — no exceptions (§6.5)
+- State/data-fetch: TanStack Query + Zustand + React Hook Form; charts: Recharts styled with Carbon tokens
+- Email: Nodemailer over cPanel SMTP; AI: OpenAI / Gemini / Anthropic / custom OpenAI-compatible with admin-ordered fallback chain (§5.4)
+- IDs: UUID v4 for every publicly exposed identifier — ❌ no auto-increment exposure (§6.3)
+
+## HARD INVARIANTS (violation = bug, in every prompt)
+1. Public IDs are UUIDs; foreign-resource access returns generic 404, never 403 (anti-enumeration).
+2. Secrets come from env with fail-fast at boot (no defaults). `/api/setup` &amp; `/api/seed` return 404 in production (SEC-01/03).
+3. No nutrition plan is ever published/active without `approved_by_doctor` (§8.1, AI-14).
+4. Safety rails are absolute: min 1200 kcal (female) / 1500 kcal (male) — no user request can bypass (DASH-09, NUT-18).
+5. All AI output is &quot;suggestion&quot; with a visible medical disclaimer; food values always recomputed from the FoodItem DB table, never trusted from the model (§8.2/8.3).
+6. Critical events (logins, role/subscription/key changes, deletions, bulk email, exports) write to `audit_log` (§6.7).
+7. External calls: explicit timeout + exponential backoff + circuit breaker (§12).
+8. ❌ No WebSockets, ❌ no Puppeteer/server PDF, ❌ no dark mode, ❌ no patient accounts (token-only portal), ❌ no hardcoded user-facing strings (everything through next-intl dictionaries), ❌ no hardcoded colors/spacing (tokens only).
+9. Cron endpoints protected by secret header; every task idempotent (§13.2).
+10. File uploads: whitelist image/jpeg|png|webp + application/pdf, real MIME via magic bytes, 10MB img / 20MB pdf, stored OUTSIDE webroot with UUID names, images re-encoded, downloads via signed 15-min URLs (§6.5).
+
+## CODE QUALITY ARCHITECTURE (anti-spaghetti rules — apply in EVERY prompt)
+- Strict layering, ONE direction: Route Handler (thin: auth → Zod parse → service call → response) → `lib/**/services/*.service.ts` (ALL business logic) → `lib/db/repositories/*.repo.ts` (ALL SQL). ❌ No SQL outside repositories, ❌ no business logic inside route handlers, ❌ repositories never import services, ❌ services never import route handlers.
+- Feature boundaries: features never import each other's internals — only via the feature's public `index.ts` or shared `lib/` modules. No circular dependencies: if two modules need each other, extract a shared lower-level module.
+- File discipline: one responsibility per file; hard ceiling ~250 lines per file (split into submodules when exceeded), ~150 lines per component (extract subcomponents), ~40 lines per function; ❌ no `utils.ts` dumping ground — name modules by domain (e.g. `lib/nutrition/macro-math.ts`, `lib/security/session.ts`).
+- Naming conventions enforced everywhere: `*.repo.ts` (data access), `*.service.ts` (business logic), `*.schema.ts` (Zod schemas colocated with their module and REUSED — never define a parallel duplicate schema), `*.test.ts`, components `PascalCase.tsx`, hooks `use*.ts`.
+- DRY with judgment: the same logic duplicated 3+ times → extract to a shared module NOW (in the current prompt); don't over-abstract single-use code.
+- Every response MUST include a **MODIFIED vs CREATED files list** — never silently rewrite or re-create files from earlier prompts; refactoring an earlier module is allowed only when required and must be explicitly declared with the reason.
+- End-of-prompt self-review: before finishing, re-check every file you produced against THIS section and report any violation + its fix (or state &quot;no violations&quot;).
+
+## OUTPUT CONTRACT (every response in this project)
+- Produce COMPLETE file contents with full paths — never diffs, never &quot;...&quot; placeholders, never TODOs.
+- Start with a short plan, then a FILE TREE of created/modified files, then the files grouped by directory.
+- End EVERY response with:
+  **STATE SNAPSHOT** — a compact block listing: modules completed so far (P01..Pnn), key files map, DB migrations applied, next planned step (next prompt number), open issues.
+- If output is too long for one message, stop at a file boundary and continue in the next message when I say &quot;continue&quot; — never truncate a file silently.
+- Include Vitest tests for any critical logic you introduce and re-run the full suite mentally (report expected results).
+- Ask at most 3 clarifying questions, only if truly blocking; otherwise make the PRD-compliant choice and note it.
+
+Confirm you understand by replying with a 10-line summary of the invariants, then wait for PROMPT 01.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-01-هيكل-المشروع-وأساس-الأمان-project-scaffold-security-baseline" data-hid="h-prompt-01-هيكل-المشروع-وأساس-الأمان-project-scaffold-security-baseline"><h2 id="h-prompt-01-هيكل-المشروع-وأساس-الأمان-project-scaffold-security-baseline"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 01 — هيكل المشروع وأساس الأمان — Project Scaffold &amp; Security Baseline</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> إنشاء مستودع Next.js 15 + React 19 + TS مع تحقق أسرار fail-fast، ترويسات أمان، Vitest، وهيكل مجلدات يطابق العمارة.</p>
+<div class="codecard" id="code-2"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P01 — Project scaffold &amp; security baseline.
+
+CONTEXT: Greenfield build per attached PRD v3.8. Nothing exists yet.
+
+BUILD:
+1. Next.js 15 App Router + TypeScript 5.9 + Sass app named `nutricliniceg`. `next.config.ts`: `output: 'standalone'`, `poweredByHeader: false`, global security headers (§6.5): X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy strict-origin-when-cross-origin, Permissions-Policy minimal, HSTS (prod), and a CSP placeholder using nonce strategy documented for later hardening (SEC-05 — full CSP comes in P30, but structure it now).
+2. Folder structure (create with .gitkeep/README stubs):
+   `app/(public)`, `app/(auth)`, `app/dashboard`, `app/admin`, `app/portal`, `app/print`, `app/api/**`,
+   `lib/db/repositories`, `lib/db/pool.ts`, `lib/security`, `lib/nutrition`, `lib/ai`, `lib/email`, `lib/files`, `lib/i18n`, `lib/validation`,
+   `ui/composites`, `messages/`, `prisma/schema.sql` (DDL home), `scripts/`, `docs/`, `tests/`.
+3. Env validation module `lib/env.ts` using Zod: JWT_SECRET (min 32 chars — boot FAILS if missing/weak, SEC-01), ENCRYPTION_KEY (32 bytes), DATABASE_*, SMTP_*, APP_URL, CRON_SECRET, optional SENTRY_DSN / PAYMOB_* / TURNSTILE_*. Fail-fast on boot. Generate `.env.example` fully documented.
+4. `app/api/setup/route.ts` and `app/api/seed/route.ts` exist but return 404 when NODE_ENV=production (SEC-03).
+5. Tooling: ESLint (incl. rule flagging SQL string interpolation patterns, §6.2), Prettier, `package-lock.json` committed (UI-20), scripts: dev/build/start/test/lint/typecheck/db:migrate/db:seed.
+6. Vitest setup + one smoke test (env validator accepts/rejects correctly).
+7. `app/api/health/route.ts` minimal: returns ok + db check stub (full checks in P29, PF-12).
+8. README with local setup steps (MySQL 8 requirement).
+
+ACCEPTANCE: `npm run build` green; boot without JWT_SECRET fails with clear error; headers present on a test request; vitest passes.
+
+STATE: after this, modules done = P01.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-02-أساس-carbon-ثيم-teal-خطوط-عربية-rtl-بوابة-t0-الإلزامية-carbo" data-hid="h-prompt-02-أساس-carbon-ثيم-teal-خطوط-عربية-rtl-بوابة-t0-الإلزامية-carbo"><h2 id="h-prompt-02-أساس-carbon-ثيم-teal-خطوط-عربية-rtl-بوابة-t0-الإلزامية-carbo"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 02 — أساس Carbon: ثيم Teal + خطوط عربية + RTL (بوابة T0 الإلزامية) — Carbon Design Foundation (T0 Gate)</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> تثبيت Carbon على React 19/Next 15 وقياس النتائج — هذه بوابة R19: إن فشلت نتوقف ونراجع.</p>
+<div class="codecard" id="code-3"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P02 — Carbon Design System foundation + mandatory T0 compatibility proof (PRD §5.8, risk R19).
+
+CONTEXT: Modules done: P01 (scaffold). Stack per PROJECT_RULES.
+
+BUILD:
+1. Install `@carbon/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0674636765724637283737322836">[email&#160;protected]</a>`, `@carbon/styles`, `@carbon/icons-react`, `sass` (Dart). ❌ No carbon-components*, no node-sass (§5.8 warning box).
+2. Custom Teal theme via Carbon token overrides (interactive-01, link-01, focus, etc. → #008080 primary, #005F73 hover/deep, #0A9396 accent) in `ui/theme/teal-theme.ts` + scss tokens file. Base theme: white; configure g100 support but disabled (UI-04, D-09).
+3. Fonts: IBM Plex Sans Arabic + IBM Plex Sans through @carbon/styles with `IBM-Plex-Sans-Arabic: true`, self-hosted woff2 subsets loaded via unicode-range only — no unused weights (UI-05/06).
+4. RTL: root layout `dir=&quot;rtl&quot;` `lang=&quot;ar&quot;` default; logical CSS properties everywhere; directional icon flip helper (chevrons/arrows/back) (UI-07).
+5. Selective `@use` imports only — ❌ never full Carbon CSS import (UI-14). Lazy-load plan: dynamic imports for DataTable, charts, DatePicker, FileUploader so they stay out of the first-load bundle (UI-13). Motion: Carbon motion tokens in-app (UI-15).
+6. **T0 PROOF SCREEN** (R19/§5.8.2): one dashboard-style page at `/dev/t0` using Carbon UI Shell (SideNav+Header) + DataTable (5 sample Arabic patient rows, sortable) + InlineNotification + a Teal primary button — full RTL. This screen proves React 19 + Next 15 + Carbon compatibility.
+7. Measure &amp; document: first-load bundle size, total build time, any peerDependency warnings → write `docs/carbon-t0.md` with a GO / NO-GO verdict and numbers (baseline for P31).
+
+ACCEPTANCE: `/dev/t0` renders correctly RTL in Arabic with Teal theme; `npm run build` succeeds; docs/carbon-t0.md exists with measurements. If install or build FAILS, stop and report a NO-GO with exact errors — do not silently switch libraries.
+
+STATE: modules done = P01, P02.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-03-التدويل-ومبدل-اللغة-للزوار-i18n-visitor-language-switcher" data-hid="h-prompt-03-التدويل-ومبدل-اللغة-للزوار-i18n-visitor-language-switcher"><h2 id="h-prompt-03-التدويل-ومبدل-اللغة-للزوار-i18n-visitor-language-switcher"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 03 — التدويل ومبدّل اللغة للزوار — i18n &amp; Visitor Language Switcher</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> next-intl بالعربية افتراضيًا RTL والإنجليزية ثانيًا، مبدّل لغة يحفظ نفس الصفحة، مسارات /ar /en مع hreflang.</p>
+<div class="codecard" id="code-4"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P03 — i18n foundation with next-intl (D-03, PUB-13/14/15, §14.5).
+
+CONTEXT: Modules done: P01 (scaffold), P02 (Carbon+RTL+Teal).
+
+BUILD:
+1. `next-intl` with locales `ar` (default, RTL) and `en` (LTR). Locale-prefixed routes `/ar/...` and `/en/...`; root `/` redirects based on `NEXT_LOCALE` cookie (default ar). Locale set server-side; `dir` + `lang` switch accordingly.
+2. Dictionaries in `messages/ar.json`, `messages/en.json` with namespaces (common, nav, auth, dashboard, admin, portal, blog, newsletter, errors, print). Migrate the P02 T0 screen strings into dictionaries. ESLint rule/scan to catch hardcoded JSX strings (§14.5 — zero hardcoded text).
+3. `LanguageSwitcher` component (Navbar + Footer placements): label &quot;العربية / English&quot;, available to logged-out visitors, navigates to the SAME page in the other locale (never to home), sets the cookie, flips dir/fonts/date-number formats instantly (PUB-13/14).
+4. Formatting helpers: dates/numbers via `ar-EG` / `en-US`, currency EGP (§14.5).
+5. `HreflangTags` utility emitting `&lt;link rel=&quot;alternate&quot;&gt;` ar/en + `x-default=ar` on every public page (PUB-15; blog-specific rules refined in P25 per BLG-48/51).
+6. Define `preferred_locale` handling interface: after login a user's saved preference overrides the visitor cookie (SET-07 — column added to User in P04; wire the logic behind a stub now).
+7. Update `/dev/t0` to include the switcher proving same-page switching both directions.
+
+ACCEPTANCE: switching language on /ar/dev/t0 lands on /en/dev/t0 with LTR + English strings; cookie persists across navigation; hreflang tags present in head.
+
+STATE: modules done = P01..P03.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-04-قاعدة-البيانات-39-جدولا-طبقة-repository-database-schema-repo" data-hid="h-prompt-04-قاعدة-البيانات-39-جدولا-طبقة-repository-database-schema-repo"><h2 id="h-prompt-04-قاعدة-البيانات-39-جدولا-طبقة-repository-database-schema-repo"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 04 — قاعدة البيانات: 39 جدولًا + طبقة Repository — Database Schema &amp; Repository Layer</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> DDL كامل للـ 39 جدولًا حسب §9، mysql2 pool، طبقة Repository مكتوبة بالأنواع، مشغّل ترحيلات، بذور تطوير.</p>
+<div class="codecard" id="code-5"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P04 — Full MySQL data model + repository layer (PRD §9 — all 39 tables).
+
+CONTEXT: Modules done: P01..P03.
+
+BUILD:
+1. `prisma/schema.sql` — complete DDL for ALL tables in PRD §9 (1–23 with their 🔧 modifications + 24–39). Non-negotiable details:
+   - All PKs `VARCHAR(36)` UUID; utf8mb4; InnoDB; the exact indexes and FKs in the PRD SQL blocks (§9.2/9.3/9.4/7.13.6) including `uq_slug_locale`, `uq_campaign_subscriber`.
+   - User: + orgId (nullable), clinic_logo_url, clinic_name, preferred_locale (SET-07). Patient: + chronic_conditions JSON, allergies JSON, consent_ai_sharing_at (CMP-02). PatientShareToken: token VARCHAR(36) + permissions JSON. NutritionPlan/ExercisePlan: + status enum incl. 'pending_doctor_approval', approved_at, approved_by, target_calories, reconciled_total_calories, deviation_kcal, reconciled_at, generation_mode enum('from_list','ai_free'), values_unverified, verified_items_ratio. FoodItem: + pairing_tags JSON, archived flag (FL-17). SubscriptionPlan: duration_days, is_active, sort_order. Subscription: payment_method, payment_reference, auto_renew. AiProvider: priority_order, is_enabled, failure_count, disabled_until. AiApiKey: encrypted_value, key_hint, last_rotated_at. AiUsageLog: estimated_cost, doctor_id. VerificationCode: used_at, attempts. SystemSettings: sensitive flag (ADM-11). CmsContent stays for static pages only (D-22).
+   - Add table `revoked_tokens` (jti, user_id, expires_at) for session invalidation (AUTH-08/14) and `schema_migrations` (filename, applied_at). Add `allergy_synonyms` table (admin-managed, NUT-02) and `food_requests` queue (FL-15). Add `pairing_rules` settings hook (§8.4 admin-editable).
+2. `lib/db/pool.ts`: mysql2/promise pool (connectionLimit 10, timezone Z, dateStrings true), prepared statements only.
+3. Repository layer `lib/db/repositories/*.repo.ts` (typed interfaces in `lib/db/types.ts`): users, subscriptions, patients, visits, shareTokens, selfReports, plans (nutrition+exercise+revisions), foods (+lists+requests+synonyms), aiProviders, aiKeys, aiUsage, conversations, cms, landing, settings, visitors, errors, verificationCodes, messages (patient), notifications, adminMessages, auditLog, blog (posts/categories/tags/revisions), media, newsletter (subscribers/campaigns/sends), templates, contacts. Every query uses `?` placeholders. ❌ zero SQL in route handlers (enforce by convention + note in each repo header).
+4. Migration runner `scripts/migrate.ts`: applies `prisma/migrations/*.sql` in order, records in schema_migrations, idempotent. Move schema.sql as migration 001.
+5. Dev seed `scripts/seed.ts` (guarded: refuses production): super admin + admin, 4 plans per D-19 (trial 14 days free / monthly 299 EGP / semi-annual 1,599 EGP flagged pending_commercial_approval / annual 2,999 EGP), ~40 real food items with per-100g macros + categories + tags + pairing_tags, default SystemSettings (SMTP hourly limit 300, password policy, generation defaults), allergy synonyms starter set.
+6. Unit test: run migrations against a throwaway MySQL (or parse-validate SQL) + repository CRUD round-trip for users and foods.
+
+ACCEPTANCE: `npm run db:migrate &amp;&amp; npm run db:seed` succeeds on fresh MySQL 8; all 39+ tables present; repositories compile typed.
+
+STATE: modules done = P01..P04.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-05-محرك-البريد-والإشعارات-email-notification-engine" data-hid="h-prompt-05-محرك-البريد-والإشعارات-email-notification-engine"><h2 id="h-prompt-05-محرك-البريد-والإشعارات-email-notification-engine"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 05 — محرك البريد والإشعارات — Email &amp; Notification Engine</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> Nodemailer بقوالب HTML موسومة بالعلامة، أسماء مستعارة (no-reply/info/admin)، جدول الإشعارات وخدمة إرسال مزدوجة القناة.</p>
+<div class="codecard" id="code-6"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P05 — Email infrastructure + notification engine (PRD §5.5, §13.1, ADM-18 base).
+
+CONTEXT: Modules done: P01..P04 (DB + repositories exist).
+
+BUILD:
+1. `lib/email/mailer.ts`: Nodemailer over SMTP env vars; connection pooling; honors hourly limit from SystemSettings (default 300/h — token-bucket limiter, NL-12 prep); explicit timeout + retry w/ exponential backoff; failures logged to SystemErrorLog (§12 integration rules).
+2. Template system `lib/email/templates/`: branded base layout (Teal header, logo placeholder, RTL + LTR variants, footer with company identity + sender alias), ALWAYS paired plain-text version (NL-13 prep). Templates: otp-code, reset-password, welcome-pending-activation, admin-new-doctor (with activation deep link, AUTH-16), new-patient-message, new-self-report, plan-published, subscription-expiry-reminder (7/3/0 days), contact-form-alert, generic-admin-broadcast, newsletter-base (skeleton for P28). Each template accepts locale (ar/en) and renders i18n strings from dictionaries (§14.5).
+3. Sender aliases helper `lib/email/aliases.ts`: no-reply@ / info@ / <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea8b8e878384aa849f9e98838986838483898f8dc4898587">[email&#160;protected]</a> selectable per message (ADM-18 concept).
+4. Notification service `lib/notifications/service.ts`: `notify({userId, title, body, type, link, channels})` — inserts into `notifications` table + optional email dispatch per the §13.1 channel matrix (super admin/admin/doctor/patient rows). Unread-count function. Types: new_message | new_report | subscription | system.
+5. Admin notification fan-out helper (to all admins + super admins) used by AUTH-16 flows later.
+6. API: `GET /api/notifications` (list + unread count, auth'd), `POST /api/notifications/read`.
+7. Vitest: template rendering snapshot tests ar+en; limiter unit test (respects cap, recovers hourly); notification service inserts + email stub dispatch test (use Nodemailer streamTransport for tests).
+
+ACCEPTANCE: rendering a template in ar produces RTL branded HTML + text; limiter blocks the 301st message within the same hour window; tests green.
+
+STATE: modules done = P01..P05.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-06-المصادقة-والجلسات-authentication-sessions" data-hid="h-prompt-06-المصادقة-والجلسات-authentication-sessions"><h2 id="h-prompt-06-المصادقة-والجلسات-authentication-sessions"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 06 — المصادقة والجلسات — Authentication &amp; Sessions</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> تسجيل/دخول/خروج بكامل ضوابط SEC-10..20 وAUTH-01..18: bcrypt، JWT في كوكي HttpOnly بتحقق jose، OTP، استعادة كلمة المرور، القفل المؤقت، Turnstile.</p>
+<div class="codecard" id="code-7"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P06 — Authentication &amp; session management (AUTH-01..18, SEC-10..20, §11.1).
+
+CONTEXT: Modules done: P01..P05. Repositories exist (users, verificationCodes, auditLog, notifications).
+
+BUILD:
+1. Register `/api/auth/register` + page (Zod): name, email, phone, password (policy from SystemSettings — length/complexity, SEC-20). Creates User isActive=false, emailVerified=false. Optional Cloudflare Turnstile verification when enabled (SEC-14/AUTH-13). On success: OTP email (if enabled in settings) + immediate fan-out email+in-app to ALL admins &amp; super admins with the doctor's name/email/phone/date and a direct activation deep link (AUTH-16), + notifications rows (AUTH-17 badge source). Audit-log the registration (§6.7).
+2. OTP verify (SEC-16/AUTH-03): 6-digit, 10-min expiry, single-use (used_at), max attempts (attempts counter), toggleable via settings. Resend throttled.
+3. Login `/api/auth/login`: rate limit 5 attempts/15min/IP (SEC-12); account lockout after 5 consecutive fails → 15 min + audit event + admin notification (SEC-15); rejects inactive accounts → redirect /activation-pending (AUTH-05); issues JWT HS256 7d (AUTH-04) with jti; sets cookie HttpOnly+Secure+SameSite=Strict+path=/ (SEC-11). ❌ token never touches localStorage (SEC-04).
+4. Middleware `lib/security/api-auth.ts` + Next middleware: verify signature with `jose` (Edge-compatible) on /dashboard, /admin, /print, protected /api/*; checks jti against revoked_tokens (SEC-02, R2 closed). Role extraction for later RBAC.
+5. Logout: clears cookie + inserts jti into revoked_tokens (server-side invalidation, AUTH-08). &quot;Sign out of all devices&quot;: revoke all user jtis (AUTH-14).
+6. Forgot/reset password: single-use signed token 30 min; on successful reset invalidate ALL sessions + audit (SEC-17/19, AUTH-06).
+7. Change password from settings later — expose service now with session invalidation of other devices (SEC-19).
+8. Pages (Carbon forms, RTL, both locales): /login, /register, /forgot-password, /reset-password, /verify-email, /activation-pending (AUTH-05).
+9. Stub hook for CRON-15 pending-activation reminder (task wired in P29).
+10. Vitest: jwt sign/verify/tamper-reject (R2 acceptance), lockout logic, OTP single-use/expiry, password policy.
+
+ACCEPTANCE: full happy paths work; tampered JWT rejected by middleware; 6th login attempt from same IP within window gets 429; inactive login lands on activation-pending; admins received registration alert.
+
+STATE: modules done = P01..P06.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-07-rbac-وسجل-التدقيق-ومنع-idor-rbac-audit-log-idor-guards" data-hid="h-prompt-07-rbac-وسجل-التدقيق-ومنع-idor-rbac-audit-log-idor-guards"><h2 id="h-prompt-07-rbac-وسجل-التدقيق-ومنع-idor-rbac-audit-log-idor-guards"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 07 — RBAC وسجل التدقيق ومنع IDOR — RBAC, Audit Log &amp; IDOR Guards</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> مصفوفة صلاحيات §3.2 كاملة، فحص ملكية الموارد مع 404 عام، خدمة audit_log بكل الأحداث الإلزامية، CSRF عبر Origin، مُحددات معدل عامة.</p>
+<div class="codecard" id="code-8"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P07 — RBAC matrix + audit log + access-control hardening (PRD §3.2, §6.3, §6.7, SEC-18).
+
+CONTEXT: Modules done: P01..P06 (auth + JWT middleware working).
+
+BUILD:
+1. Roles: doctor | admin | super_admin. `lib/security/rbac.ts`: permission map generated EXACTLY from the §3.2 matrix (manage own patients/plans/food-lists; admin: activate doctors, edit subscriptions, public food lists, CMS, AI providers, bulk email, error log, blog/newsletter/media/contacts; super admin only: promote/demote admins, create/delete admins, plan pricing CRUD, Paymob config, audit log, sensitive system settings). Helpers: `requireAuth()`, `requireRole(role)`, `requirePermission(perm)` as route wrappers; admins can never edit their own role or delete themselves.
+2. Ownership guard: for doctors, every patient/plan/visit/token/message/list access checks `resource.ownerId === session.userId`; on failure return **generic 404** (never 403) to prevent existence probing (§6.3). Super admin has NO direct UI to read doctor patient data — any exceptional access must go through an audited action stub (§3.2 rule).
+3. `newId()` UUID v4 helper — sweep: no auto-increment id may appear in any API response or URL (§6.3).
+4. Audit service `lib/security/audit.ts`: `logAction({actorId, actorRole, action, entityType, entityId, req, metadata})` with ip_hash (sha256+server salt — CMP-08) and user-agent; write automatically for the §6.7 mandatory event list (login/logout/failed-login, password change, user enable/disable, subscription edit, role change, patient/plan deletion, bulk email, AI key edit, system setting change, data export). Retrofit calls into P06 auth flows.
+5. CSRF: middleware verifying `Origin` header against APP_URL on every POST/PUT/PATCH/DELETE (SEC-18); reject otherwise (403).
+6. Generic rate limiter util `lib/security/rate-limit.ts` (in-memory Map + note: single-instance cPanel OK): named policies — auth 5/15min/IP, ai per-user (used in P12), contact 3/h/IP, newsletter 5/h/IP, messages 20/h/patient. Apply the auth one now (replace P06 ad-hoc if needed).
+7. Admin API for audit viewer (data only; UI lands in P23): `GET /api/admin/audit-log` with filters actor/action/entity/date, super_admin only, read-only (§6.7, ADM-22).
+8. Vitest: matrix-driven tests — doctor A cannot fetch doctor B's patient (expect 404), admin cannot access admin-management endpoints, super admin can, audit rows written on each protected action, CSRF rejects cross-origin POST.
+
+ACCEPTANCE: all RBAC tests green; audit_log populated for login/logout/failed-login; IDOR probe returns 404.
+
+STATE: modules done = P01..P07.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-08-الموقع-العام-الكامل-public-website-seo-ai-agent-surfaces" data-hid="h-prompt-08-الموقع-العام-الكامل-public-website-seo-ai-agent-surfaces"><h2 id="h-prompt-08-الموقع-العام-الكامل-public-website-seo-ai-agent-surfaces"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 08 — الموقع العام الكامل — Public Website, SEO &amp; AI-Agent Surfaces</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> صفحة رئيسية من CMS، الأسعار (4 خطط)، الخصوصية والشروط، حزمة SEO كاملة، Content Negotiation بـ Markdown، llms.txt و.well-known، نموذج تواصل بصندوق أدمن.</p>
+<div class="codecard" id="code-9"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P08 — Public website + contact backend + SEO + AI-agent discovery (PUB-01..19, §10.7/EXT, tables 39, ADM-25).
+
+CONTEXT: Modules done: P01..P07 (RBAC, audit, notifications, repositories, i18n, Carbon).
+
+BUILD:
+1. CMS-driven landing page per PUB-01: Hero / Features / Pricing / Testimonials / FAQ / CTA — content from LandingPageSection + LandingPageItem tables; pricing cards from SubscriptionPlan (the 4 plans, PUB-05) with EGP formatting.
+2. Pages: `/about` (CmsContent), `/faq` (dynamic), `/pricing`, `/privacy` + `/terms` (bilingual static pages, published — SEC-07/CMP-01), footer with newsletter mini-form placeholder (wired in P27) + language switcher (P03).
+3. SEO pack (PUB-07): per-page Metadata API (titles/descriptions ar+en), Open Graph, JSON-LD (Organization, WebSite, FAQPage), dynamic `sitemap.xml` (architecture ready to include blog URLs in P25) + `robots.txt`.
+4. Content Negotiation (PUB-08): public page handlers return `text/markdown` with front-matter when `Accept: text/markdown`; `Link` response headers (RFC 8288) advertising `&lt;/llms.txt&gt;`, `/.well-known/api-catalog`, `/.well-known/mcp/server-card.json` (PUB-09).
+5. Agent surfaces (D-13/EXT): serve `/llms.txt`, `/.well-known/api-catalog`, `/.well-known/mcp/server-card.json`, `/.well-known/agent-skills/index.json` — describe the public site + (later) blog/API; structured so new endpoints auto-append (keep a registry file).
+6. Visitor tracking: `POST /api/analytics/visit` upserting SiteVisitor with hashed IP (CMP-08) — fired from public layout.
+7. Contact us (PUB-16..19 + table 39 + ADM-25): `/contact` form (Zod + Turnstile optional + rate 3/h/IP — PUB-17) → saves `contact_messages` + immediate email to info@ + in-app notification to admins. Admin area `/admin/contacts`: DataTable list, status workflow new/read/replied/archived, reply from within the system (email via alias info@), delete (privacy), unread-count badge in admin shell (PUB-18/19).
+8. `GET /api/health` stays public; run Lighthouse on landing (report number in STATE SNAPSHOT — target SEO ≥ 95, PF-07).
+
+ACCEPTANCE: landing renders from DB sections (edit a section title in DB → reflects); Accept: text/markdown on `/ar/about` returns clean Markdown; llms.txt served; contact flow stores + notifies; sitemap/robots live.
+
+STATE: modules done = P01..P08.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-09-لوحة-الطبيب-والمرضى-والحسابات-الغذائية-doctor-dashboard-pati" data-hid="h-prompt-09-لوحة-الطبيب-والمرضى-والحسابات-الغذائية-doctor-dashboard-pati"><h2 id="h-prompt-09-لوحة-الطبيب-والمرضى-والحسابات-الغذائية-doctor-dashboard-pati"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 09 — لوحة الطبيب والمرضى والحسابات الغذائية — Doctor Dashboard &amp; Patients Core</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> هيكل UI Shell، إحصائيات، CRUD مرضى، حساب BMI/BMR/TDEE والأهداف مع حدود الأمان الملزمة 1200♀/1500♂.</p>
+<div class="codecard" id="code-10"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P09 — Doctor dashboard shell + patients module + nutrition calculations (DASH-01..09).
+
+CONTEXT: Modules done: P01..P08. Auth/RBAC/audit/notifications/email ready. DB schema ready.
+
+BUILD:
+1. Carbon UI Shell for `/dashboard/*` (SideNav sections: Dashboard, Patients, Food Lists, Templates, AI Assistant, Inbox, Settings; Header with notifications bell + unread badge from P05). Route layout enforces role=doctor (P07 guards).
+2. Dashboard home (DASH-01/02/03): stat cards (total patients, visits this week, active plans), weekly visits+plans chart (Recharts styled with Carbon tokens), quick actions (new patient / new visit / new plan).
+3. Patients: DataTable list with search + filters (DASH-04); create page (DASH-05) — name, gender, DOB, height, weight, activity level, goal (lose/maintain/gain), medical notes, chronic_conditions (multi: diabetes/kidney/liver/pregnancy/lactation), allergies (free tags), plus **AI data-sharing consent capture** with timestamp (CMP-02). Zod everywhere.
+4. Patient detail page with Carbon Tabs (DASH-06): info / visits / plans / self-reports / AI summary (stub until P12/P21 — button disabled with tooltip).
+5. `lib/nutrition/calc.ts` (pure TS, unit-tested): BMI; BMR Mifflin-St Jeor (DASH-07); TDEE via activity multipliers; goal adjustments; macro targets (protein/carbs/fat + water) (DASH-08).
+6. **Safety rails — server-enforced** (DASH-09, §8.5): computed targets never below 1200 kcal (female) / 1500 kcal (male); if a doctor requests lower, API clamps to the floor + returns explicit warning; chronic condition present → mandatory &quot;doctor review required&quot; notice attached to the patient record (no auto values for kidney patients).
+7. APIs `/api/patients/*` (Zod + ownership guard + audit on create/delete). Re-calculation endpoint when weight/height updated.
+8. Vitest: calc module edge cases (min/max ages, extremes), safety rail clamp behavior, ownership 404 tests.
+
+ACCEPTANCE: creating a 1000-kcal target for a female patient returns clamped 1200 with warning; diabetes patient shows review-required flag; dashboard stats accurate against seeded data.
+
+STATE: modules done = P01..P09.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-10-الزيارات-والرسوم-البيانية-والرفع-الآمن-للملفات-visits-charts" data-hid="h-prompt-10-الزيارات-والرسوم-البيانية-والرفع-الآمن-للملفات-visits-charts"><h2 id="h-prompt-10-الزيارات-والرسوم-البيانية-والرفع-الآمن-للملفات-visits-charts"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 10 — الزيارات والرسوم البيانية والرفع الآمن للملفات — Visits, Charts &amp; Secure File Uploads</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> تسجيل الزيارات، منحنيات تطور الوزن، بنية تحتية رفع ملفات آمنة (magic bytes، تخزين خارج webroot، روابط موقعة)، رفع InBody/تحاليل، تحليل تحاليل Vision بموافقة الطبيب.</p>
+<div class="codecard" id="code-11"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P10 — Visits + longitudinal charts + secure upload infrastructure + lab file uploads (DASH-10..14, §6.5, D-18).
+
+CONTEXT: Modules done: P01..P09.
+
+BUILD:
+1. Visits CRUD (DASH-10): weight, body fat %, muscle mass, water %, notes; auto-links to patient; triggers target re-calc suggestion.
+2. Longitudinal charts (DASH-14): weight/fat/muscle over time (Recharts + Carbon tokens) in patient file.
+3. **Secure upload infrastructure** `lib/files/` (§6.5 — used everywhere later):
+   - Endpoint `POST /api/files/upload` (auth'd, Zod): whitelist image/jpeg|png|webp + application/pdf ONLY; verify REAL MIME via magic bytes (not extension); limits 10MB images / 20MB PDF.
+   - Store OUTSIDE webroot (`STORAGE_DIR` env, e.g. /home/user/storage/uploads) with UUID-generated filenames (never user-supplied names); images re-encoded via `sharp` to strip payloads; directory has no execute permissions (document chmod).
+   - Downloads only via `GET /api/files/[id]` returning **HMAC-signed 15-minute URLs** (signed URL helper); access-checked against owner.
+   - Metadata in a `files` repository row (mime, size, owner, purpose).
+4. Patient documents (DASH-11): upload InBody PDF / lab images from patient file using the infra above, listed with signed-link downloads.
+5. AI Lab Analyzer (DASH-13 + D-18): endpoint taking an uploaded lab image or pasted text → AI Vision extraction (uses AI layer stub if P12 not built yet: implement against an interface `AiClient` with a mock impl + real impl later) → structured values view → values saved as DRAFT items in patient record, **explicit doctor approval click required** before they become official record entries (human-in-the-loop, D-18). Draft items visually distinct + &quot;Approve / Discard&quot; actions + audit on approve.
+6. AI patient summary (DASH-12): server route assembling anonymized patient context (CMP-03/11) → `AiClient` summary → displayed with mandatory disclaimer (AI-14).
+7. Client error reporting: `POST /api/errors/client` → SystemErrorLog with level/source/path/userId, message scrubbed of any PHI (OBS-05).
+8. Vitest: magic-byte rejection of fake image (script renamed .jpg), size limits, signed URL expiry + tamper rejection, approval-gate logic.
+
+ACCEPTANCE: uploading a .jpg that is really a script → rejected; signed link expires after 15 min; vision draft values do NOT appear in official record until approved.
+
+STATE: modules done = P01..P10.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-11-قوائم-الطعام-food-lists-module" data-hid="h-prompt-11-قوائم-الطعام-food-lists-module"><h2 id="h-prompt-11-قوائم-الطعام-food-lists-module"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 11 — قوائم الطعام — Food Lists Module</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> قوائم عامة للأدمن وخاصة للطبيب، استيراد Excel بفحص جودة ±15%، وسوم التوافق، طلب إضافة صنف → طابور الأدمن، أرشفة بدل الحذف.</p>
+<div class="codecard" id="code-12"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P11 — Food lists: public + private + Excel import + quality checks + request queue (FL-01..17, FL-09).
+
+CONTEXT: Modules done: P01..P10 (files, patients, repositories).
+
+BUILD:
+1. Data: FoodItem (per-100g kcal/protein/carbs/fat, category, tags[vegan/vegetarian/gluten-free], pairing_tags JSON, archived flag), FoodList grouping, both admin-global and doctor-private (ownerId). Admin manages public lists; doctors see public + their own (FL-01/02/10).
+2. Doctor UI `/dashboard/food-lists`: add/edit/delete OWN items only (FL-11) with the same ±15% consistency validation applied on save (FL-14); &quot;Copy public list as base&quot; action creating an editable private copy (FL-13).
+3. Excel import (FL-03/12): `FileUploader` + `xlsx` parsing → row-level validation report (duplicates by normalized ar/en name skipped — FL-04; inconsistent kcal vs 4p+4c+9f beyond ±15% rejected — FL-09; missing fields rejected). Admin import → public items; doctor import → items owned by doctor, never public (FL-12). Sample template xlsx downloadable.
+4. Search ar+en (FL-07); categories (protein/starch/vegetables/fruit/fats/…) and tags filterable (FL-05/06); pairing_tags editable JSON with helper UI chips (FL-08) — consumed by the pairing matrix in P13.
+5. Doctor &quot;request a food item&quot; (FL-15/16): form (name ar/en + per-100g values + category) → `food_requests` queue → `/admin/food-requests` approve (converts to GLOBAL item, notifying requesting doctor) or reject with reason (notified).
+6. Archive-not-delete (FL-17): public items referenced by any existing plan cannot be deleted — only `archived=true` (hidden from pickers, kept for plan integrity); API + UI enforce.
+7. Admin UI section for public lists inside admin shell (full admin shell comes in P22 — build the page now under /admin/food-lists).
+8. Vitest: consistency check math, dedupe logic, ownership scoping (doctor B cannot see/edit doctor A items), archive-prevents-delete rule, request→approve→global flow.
+
+ACCEPTANCE: importing an xlsx with one bad-kcal row rejects exactly that row with a readable report; doctor's private item invisible to other doctors; approving a request creates a global item visible to all.
+
+STATE: modules done = P01..P11.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-12-البنية-التحتية-لمزودي-الذكاء-الاصطناعي-ai-provider-infrastru" data-hid="h-prompt-12-البنية-التحتية-لمزودي-الذكاء-الاصطناعي-ai-provider-infrastru"><h2 id="h-prompt-12-البنية-التحتية-لمزودي-الذكاء-الاصطناعي-ai-provider-infrastru"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 12 — البنية التحتية لمزوّدي الذكاء الاصطناعي — AI Provider Infrastructure</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> سجل مزوّدين مع مفاتيح مشفرة AES-256-GCM، سلسلة fallback مرتبة، تعطيل تلقائي، إعادة محاولة أُسّية، JSON mode، سجل استهلاك، حصص وسقف تكلفة لكل طبيب، وضع متدهور.</p>
+<div class="codecard" id="code-13"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P12 — AI provider layer: vault, fallback chain, quotas, usage logging, degradation (§5.4, §6.6, AI-05..14, tables 12/13/14).
+
+CONTEXT: Modules done: P01..P11. `AiClient` interface stub exists from P10.
+
+BUILD:
+1. `lib/ai/` architecture: `AiClient` interface (chat, chatJson(schema), vision, continue) with adapters: OpenAI, Google Gemini, Anthropic Claude, Custom (OpenAI-compatible base URL). Timeouts + exponential backoff on 429/5xx (§5.4); `max_tokens` truncation → automatic continuation (AI-06); JSON Schema enforcement for structured calls (AI-07).
+2. Key vault (§6.6): AiApiKey.encrypted_value = AES-256-GCM with ENCRYPTION_KEY; plaintext NEVER persisted, never returned by API (only key_hint = prefix + last 4); decrypt in memory per call; every key read/edit/delete writes audit_log; `last_rotated_at` set on rotation.
+3. Fallback chain: AiProvider.priority_order (admin-editable later in P23) + is_enabled; on provider failure → next in chain; failure_count++ and after threshold auto-disable with disabled_until (AI-09); `lib/ai/health.ts` probe function (wired to CRON-09 in P29).
+4. Usage &amp; cost: every call inserts AiUsageLog (provider, model, tokens in/out, responseTime, success, errorMessage scrubbed of PHI, estimated_cost from a per-model price table in settings, doctor_id) (AI-08).
+5. Per-doctor monthly quota (AI-11): caps (calls/tokens/cost) from plan or SystemSettings; check before each call; warn notification at 80%; at 100% soft-stop with a clear Arabic/English message suggesting plan upgrade. Admin bypass flag.
+6. Graceful degradation (AI-12): all providers failing → clear user message + enqueue request in `ai_retry_queue` (table: payload JSON, attempts, status) processed by CRON-14 later (P29); max 5 attempts → dead-letter.
+7. Prompt-injection hygiene (AI-13): system prompts assembled server-side and isolated; `lib/ai/sanitize.ts` strips instruction-like content (&quot;ignore previous&quot;, &quot;system:&quot;, role-play hijacks) from untrusted/user inputs before inclusion; patient-derived text always wrapped in explicit data-fence delimiters.
+8. Medical disclaimer constant appended/rendered with EVERY AI output (AI-14).
+9. `lib/ai/client.ts` factory `getAiClient()` honoring chain + quota; refactor P10 lab analyzer + summary to use it (mock adapter remains for tests).
+10. Vitest: fallback order on simulated failures, auto-disable after threshold, encrypted-at-rest round trip (inspect DB shows ciphertext), quota warn/stop boundaries, sanitizer catches injection samples.
+
+ACCEPTANCE: with provider-1 mocked to fail, call routes to provider-2; DB shows only ciphertext keys; 100%-quota doctor gets the soft-stop message; AiUsageLog rows accurate.
+
+STATE: modules done = P01..P12.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-13-المصالح-الحتمي-والحواجز-الطبية-macro-reconciler-medical-guar" data-hid="h-prompt-13-المصالح-الحتمي-والحواجز-الطبية-macro-reconciler-medical-guar"><h2 id="h-prompt-13-المصالح-الحتمي-والحواجز-الطبية-macro-reconciler-medical-guar"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 13 — المُصالِح الحتمي والحواجز الطبية — Macro Reconciler &amp; Medical Guards</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> قلب دقة السعرات: مصالِح حتمي بلا AI، حاجز حساسية بمرادفات، موانع استطباب، مصفوفة توافق، ترتيب فحص ملزم، واختبار 500 حالة (QA-02).</p>
+<div class="codecard" id="code-14"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P13 — Deterministic Macro Reconciler + allergy/contraindication guards + pairing matrix (§8.3, §8.4, §8.5, §8.6, QA-02) — pure TypeScript, NO AI.
+
+CONTEXT: Modules done: P01..P12 (foods + patients + allergies data exist).
+
+BUILD (`lib/nutrition/`):
+1. `reconciler.ts` implementing §8.3 EXACTLY:
+   - Source of truth: for each item read per-100g values from FoodItem and compute from actual grams (`value = per100 * grams / 100`) — never trust model-supplied numbers (§8.2 note 3).
+   - Accept if `|total − target| ≤ 1` kcal immediately; else constrained optimization: decision vars = grams with bounds [0.5×, 2×] original; objective = min |Σkcal − target| + λ·macro deviation; method: spiral gradient — distribute deficit/surplus onto highest-kcal items in 5g steps, then 1g refinement, max 200 iterations.
+   - Patient-facing rounding: round grams to nearest 5g once within ±3 kcal.
+   - Final acceptance: `|total − target| ≤ 5` kcal after rounding; else signal retry (caller regenerates, max 3 attempts, then notify doctor with suggested nearby target — never publish off-target).
+   - Safety rails ABSOLUTE (DASH-09/NUT-18): clamp floor 1200♀/1500♂ + doctor notification; output fields target_calories, reconciled_total_calories, deviation_kcal, reconciled_at.
+2. `allergy-guard.ts` (NUT-01/02): patient allergies JSON matched against item names + tags via admin-managed `allergy_synonyms` (e.g. &quot;حليب&quot; ↔ لبن/زبادي/جبن/زبدة/قشطة) + normalized substring/root matching; matching items REMOVED pre-draft; saving a plan containing an allergen is HARD-BLOCKED.
+3. `contraindications.ts` (NUT-03): kidney/liver/diabetes/pregnancy/lactation caps (protein g/kg ideal weight, potassium, phosphorus, sodium, added sugar) enforced AFTER reconciler, BEFORE save; kidney patients get NO auto-suggested values (§8.5).
+4. `pairing.ts` (§8.4): matrix validation — HARD: fish/seafood + egg/dairy same meal → invalid; WARNINGS (admin-editable via pairing_rules settings): tea/coffee near iron source (2h separation advice), citrus + dairy, two heavy animal proteins in one meal. `culinary_pairings_valid` verified SERVER-SIDE, model's claim ignored.
+5. `pipeline.ts` — MANDATORY check order (NUT-05): allergies → contraindications → pairing → reconciler → safety rails. First failing stage wins.
+6. Incident hook (NUT-06): `reportIncident(planId)` archives plan + appends a QA regression case file.
+7. **Vitest per QA-02: property-based test with 500 randomized cases — 100% must end with deviation ≤ 5 kcal AND rails respected** (no female plan &lt; 1200, none &lt; 1500 male), plus allergen block tests, contraindication block tests, pairing invalid/warn tests.
+
+ACCEPTANCE: `npm test` shows 500/500 property cases green; kidney patient with 2.0g/kg protein cap gets blocked plan; &quot;حليب&quot; allergy blocks زبادي via synonyms.
+
+STATE: modules done = P01..P13.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-14-خط-أنابيب-توليد-الخطط-بالوضعين-plan-generation-pipeline-from" data-hid="h-prompt-14-خط-أنابيب-توليد-الخطط-بالوضعين-plan-generation-pipeline-from"><h2 id="h-prompt-14-خط-أنابيب-توليد-الخطط-بالوضعين-plan-generation-pipeline-from"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 14 — خط أنابيب توليد الخطط بالوضعين — Plan Generation Pipeline (from_list &amp; ai_free)</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> سير §8.1 ذو الخطوات السبع، مخطط JSON الملزم، مُنتقي الوضعين D-38، مطابقة تلقائية وتقرير تحقق للوضع الحر، اعتماد الطبيب شرط للنشر.</p>
+<div class="codecard" id="code-15"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P14 — AI plan generation pipeline with two modes (§8.1, §8.2, §8.7, NUT-08..21, table 8 fields).
+
+CONTEXT: Modules done: P01..P13 (reconciler + guards + AI layer + foods ready).
+
+BUILD:
+1. **Generation wizard UI** `/plans/new` (Carbon ProgressIndicator — the 7 steps of §8.1): select patient → targets (prefilled from calc, rails enforced) + macro split + preferences (cuisine, dislikes, meals per day) → **generation mode selector (NUT-08)**:
+   - ① `from_list` (DEFAULT, D-37): candidate foods = ADMIN public list ONLY; doctor's private items included ONLY if the explicit toggle &quot;أدرج أصنافي الخاصة&quot; is ON, and then ranked AFTER admin items (NP-19/20).
+   - ② `ai_free`: BEFORE generation show the mandatory explicit warning (NUT-10): items won't be DB-verified; requires confirmation click.
+2. Candidate payload builder: pass the model a bounded list of eligible foods WITH their real per-100g values; instruct it to choose only from these `food_id`s; server REJECTS any out-of-scope food_id and triggers regeneration (NP-21); if preferences can't be met → clear message + &quot;request food item&quot; button linking FL-15 flow (NP-22).
+3. JSON output enforced against the §8.2 schema (all macro targets required, grams ≥ 1, per-item `source: 'db'|'model'` field). Use chatJson(schema).
+4. Server pipeline per generation (max 3 attempts, provider rotation on failure): schema validate → food existence + scope validate → allergen guard (NUT-01) → contraindications (NUT-03) → pairing (§8.4) → **reconciler (P13)** → rails.
+5. **ai_free extra path (§8.7.3)**: name-based allergy guard via synonyms (NUT-12) with reliability caveat shown; auto-match each item against admin list (fuzzy + synonyms, NUT-13) → on match replace with verified DB values + ✓ badge; produce verification report &quot;تم التحقق من X من Y أصناف&quot; (NUT-14); set plan fields generation_mode='ai_free', values_unverified=true (if any unverified), verified_items_ratio (NUT-17); if unverified &gt; 30% show extra publish warning (NUT-15); contradictory items (kcal deviates &gt; 15% from 4p+4c+9f) rejected (NUT-21); one-click button &quot;حوّل لقائمة معتمدة&quot; swaps each unverified item to nearest-calorie admin item (NUT-16). Contraindication mineral caps NOT enforceable in ai_free → explicit notice (NUT-19).
+6. Result = DRAFT with status `pending_doctor_approval` — ❌ never active/published without doctor approval (§8.1 rule). Editor handoff happens in P15.
+7. APIs: `POST /api/plans/generate` (per-user AI rate limit + quota check from P12), `GET /api/plans/[id]`, list. Persist generation params + attempts for debuggability.
+8. Vitest: out-of-scope food_id rejection + regen path; from_list plan contains only allowed items; ai_free matching replaces values + ratio math; pending_doctor_approval enforced; PF-03 note — log generation wall-time (target &lt; 45s).
+
+ACCEPTANCE: an end-to-end from_list generation yields a reconciled draft (deviation ≤ 5) using ONLY admin foods; ai_free draft shows the verification report and warning styling on unverified items; no path sets status active without approval.
+
+STATE: modules done = P01..P14.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-15-محرر-الخطط-والتعديل-الشامل-والمراجعات-plan-editor-bulk-edit-" data-hid="h-prompt-15-محرر-الخطط-والتعديل-الشامل-والمراجعات-plan-editor-bulk-edit-"><h2 id="h-prompt-15-محرر-الخطط-والتعديل-الشامل-والمراجعات-plan-editor-bulk-edit-"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 15 — محرر الخطط والتعديل الشامل والمراجعات — Plan Editor, Bulk Edit &amp; Revisions</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> محرر وجبات تفاعلي بإعادة حساب لحظية، نطاق تعديل شامل بمعاينة المواضع وتراجع، سجل مراجعات قابل للاسترجاع، سير اعتماد.</p>
+<div class="codecard" id="code-16"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P15 — Interactive plan editor with live recalculation, bulk-edit scope, global swap, revisions (NP-02/07/08/12/13, §7.14 NP-14..18).
+
+CONTEXT: Modules done: P01..P14 (generation produces drafts; reconciler available server-side).
+
+BUILD:
+1. Editor `/plans/[id]` (Carbon Tile + NumberInput + ComboBox food search + custom drag &amp; drop): meals with items; per-meal and daily macro totals; **live recalculation on any gram change (NP-12)** — client computes preview instantly from per-100g values, server recomputes authoritatively on save (never trust client numbers).
+2. Food swap per item via ComboBox (searches allowed scope foods); meal-level add/remove; move items between meals via drag &amp; drop (NP-02).
+3. **Bulk edit scope selector (NP-14)**: when editing an item (grams or swap) choose: this meal only / this day / this week / ALL weeks; BEFORE apply show preview &quot;سيتأثر N موضعًا&quot; listing affected positions with per-position exclusion checkboxes (NP-15); Global Swap mode = replace food X with food Y across the entire plan in one action (NP-18). After apply: instant macro recompute + deviation alert if &gt; ±2% + **auto-run reconciler** to pull totals back to target (NP-16).
+4. **One-step Undo (NP-17)** for any bulk apply — restores the exact pre-apply state.
+5. Revisions (NP-13, table 28): every save creates plan_revisions snapshot (JSON) with revision_no; revisions panel lists versions with diff summary + RESTORE action (creates a new revision, never destructive).
+6. Status workflow (NP-07): draft → pending_doctor_approval → active → archived; &quot;Approve &amp; publish&quot; only from a reconciled state (deviation ≤ 5) and after allergy/contraindication pass re-verified server-side; approval stamps approved_at/approved_by + audit; publishing pushes to patient portal (surfaced in P19).
+7. Multi-week support (NP-08): week tabs, add/copy/delete week; adaptive recompute hook (NP-11) — &quot;recalculate from last visit weight&quot; button updating targets then re-running reconciler.
+8. APIs: `PUT /api/plans/[id]` (transactional full-plan save + revision), `POST /api/plans/[id]/approve`, `POST /api/plans/[id]/restore-revision`, `POST /api/plans/[id]/bulk-edit` (scope + ops + exclusions) — all Zod + ownership + audit.
+9. Vitest: live-recalc math parity client/server, bulk scope affected-count correctness, undo exactness, deviation alert + auto-reconcile trigger, revision restore integrity, approval gating (unreconciled plan cannot be approved).
+
+ACCEPTANCE: change rice grams → totals update live and persist; &quot;all weeks&quot; edit previews 7 positions and applies with undo available; restoring revision #3 recreates it as newest; approving requires reconciled state.
+
+STATE: modules done = P01..P15.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-16-مكتبة-قوالب-الخطط-والخطط-التكيفية-template-library-adaptive-" data-hid="h-prompt-16-مكتبة-قوالب-الخطط-والخطط-التكيفية-template-library-adaptive-"><h2 id="h-prompt-16-مكتبة-قوالب-الخطط-والخطط-التكيفية-template-library-adaptive-"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 16 — مكتبة قوالب الخطط والخطط التكيفية — Template Library &amp; Adaptive Plans</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> حفظ أي خطة كقالب، تطبيقه على مريض مع إعادة قياس الجرامات بالمُصالِح، تحذير ±20%، إعادة فحص الحساسية، قوالب عامة وخاصة، خطط تكيفية بعد الزيارات.</p>
+<div class="codecard" id="code-17"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P16 — Plan template library + adaptive plans (§7.15 PT-01..09, table 38, NP-09).
+
+CONTEXT: Modules done: P01..P15 (editor + reconciler + guards ready).
+
+BUILD:
+1. &quot;Save as template&quot; (PT-02): from any nutrition plan → modal (name, category: رجيم/سكري/رياضي/نباتي/حمل, description) → plan_templates row storing full plan snapshot JSON + reference_calories + reference macros (PT-09). Copy-on-save; later edits don't affect template (PT-08).
+2. Template library `/dashboard/templates` (PT-07): cards grouped by category, search, sort by usage_count; admin-created GLOBAL templates (is_global=true) + doctor private ones (PT-06). Admin management page for global templates (list/edit/archive).
+3. **Apply-to-patient flow (PT-03)**: pick template → pick patient → system proportionally rescales grams to the patient's target calories/macros → **runs the same reconciler (P13)** to land within ±5 kcal; then **re-runs allergy guard + contraindications (PT-05)** removing conflicting items and listing what was removed to the doctor; result = new DRAFT plan (independent copy, PT-08) with usage_count++.
+4. Pre-apply warning (PT-04): if |template reference − patient target| &gt; 20% show confirmation modal with the % difference before proceeding.
+5. **Adaptive plans (NP-09)**: from patient's last visit, one click &quot;اقترح خطة تكيفية&quot; → recompute targets from new weight → generate (or rescale from current active plan) as a NEW draft pending approval — never auto-publishes (§8.1).
+6. Exercise templates noted for P17 (plan_type enum already supports both).
+7. APIs: `POST /api/templates` (from plan), `GET /api/templates` (scope: global + own, filters), `POST /api/templates/[id]/apply` (patientId) → returns created draft plan id; audit on create/apply.
+8. Vitest: rescale math correctness (1800→1400 kcal case), reconciler lands ≤ 5 kcal, &gt; 20% warning triggers, allergen removed on apply, template immutability after apply.
+
+ACCEPTANCE: applying an 1800-kcal template to a 1400-kcal patient produces a reconciled ≤5 kcal draft; حليب-allergic patient's template gets dairy items stripped with a report; original template unchanged afterwards.
+
+STATE: modules done = P01..P16.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-17-خطط-التمارين-exercise-plans" data-hid="h-prompt-17-خطط-التمارين-exercise-plans"><h2 id="h-prompt-17-خطط-التمارين-exercise-plans"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 17 — خطط التمارين — Exercise Plans</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> بناء جدول أسبوعي، توليد AI حسب المستوى، روابط يوتيوب، تعديل شامل بنطاقات ونسخ يوم كامل، نفس بوابة الاعتماد والمراجعات.</p>
+<div class="codecard" id="code-18"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P17 — Exercise plans module (EP-01..08).
+
+CONTEXT: Modules done: P01..P16. plan_revisions + approval flow support plan_type='exercise'.
+
+BUILD:
+1. Editor `/exercises/[id]` (EP-01): weekly schedule — days → exercises (name, sets, reps, rest, notes) with add/reorder (drag &amp; drop) and day-level operations.
+2. AI generation (EP-02): wizard like P14 (simplified): patient goal + level (+ equipment hints) → chatJson against an exercise schema (days/exercises) → validated server-side → DRAFT pending_doctor_approval (same gate as nutrition).
+3. YouTube links per exercise (EP-03): store URL + auto-derive video ID + thumbnail; portal inline embed comes in P19 (EP-05).
+4. **Bulk edit scope (EP-06/07)**: edit exercise/sets/reps with scope: this day / this week / ALL weeks; preview affected positions (counting exercise repeats/sets/reps) with per-position exclusion; one-step undo (leveraging revisions).
+5. **Copy full day (EP-08)**: duplicate a day's exercises to another day and/or to other weeks.
+6. Approval + revisions: same approve gate, plan_revisions with plan_type='exercise', adaptive suggestion from weight change (reuses P16 adaptive logic where relevant).
+7. APIs: `/api/exercise-plans/*` mirroring P15 patterns (Zod, ownership, audit).
+8. Vitest: bulk scope counting, day copy, undo, approval gating.
+
+ACCEPTANCE: generate a beginner weight-loss weekly plan; editing squats sets with &quot;all weeks&quot; previews and applies across weeks with undo; copying Monday to Thursday works.
+
+STATE: modules done = P01..P17.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-18-الطباعة-والعلامة-البيضاء-print-routes-white-label" data-hid="h-prompt-18-الطباعة-والعلامة-البيضاء-print-routes-white-label"><h2 id="h-prompt-18-الطباعة-والعلامة-البيضاء-print-routes-white-label"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 18 — الطباعة والعلامة البيضاء — Print Routes &amp; White-Label</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> مسارات /print محسّنة للطباعة من المتصفح بأنماط مستقلة، ترويسة العيادة (شعار + اسم) من إعدادات الطبيب، بدون Puppeteer.</p>
+<div class="codecard" id="code-19"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P18 — Print-optimized routes + white-label branding (NP-10, EP-04, D-11, WL, SET-05, UI-16).
+
+CONTEXT: Modules done: P01..P17 (plans, patients, settings).
+
+BUILD:
+1. `/print/nutrition/[planId]` and `/print/exercise/[planId]` (SSR, auth'd via cookie or short-lived signed link for sharing): clean A4 print layouts — ❌ no Carbon default styles; dedicated print stylesheet (UI-16): page-break rules, compact tables, 5g-rounded grams (patient-friendly), optional calories display.
+2. White-label (SET-05): doctor settings section to upload clinic logo (secure uploader from P10) + clinic name → print header shows clinic logo + name + doctor info; fallback to platform branding when unset. Store in User.clinic_logo_url / clinic_name.
+3. Print CSS technique: `@media print` + `window.print()` auto-trigger button; hide app chrome; RTL-aware; also LTR when printing from an English locale session.
+4. Preparation flag (open question Q2): per-plan boolean `show_calories_to_patient` (default true) controlling whether calorie numbers appear on the patient-facing print — note in code that the owner decision is pending.
+5. ❌ No Puppeteer / server-side PDF (D-11) — printing via browser (user prints to PDF). Add a small &quot;how to save as PDF&quot; hint.
+6. Vitest/component tests: rail enforcement not bypassable via print (print renders server data only), white-label fallback logic.
+
+ACCEPTANCE: printing a nutrition plan from a real browser shows clinic header + clean A4 layout; uploading a logo updates print output; exercise plan prints with videos as QR-less links/thumbnails.
+
+STATE: modules done = P01..P18.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-19-بوابة-المريض-patient-portal-token-based" data-hid="h-prompt-19-بوابة-المريض-patient-portal-token-based"><h2 id="h-prompt-19-بوابة-المريض-patient-portal-token-based"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 19 — بوابة المريض — Patient Portal (Token-Based)</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> دخول بدون كلمة سر برابط توكن UUID، صلاحيات دقيقة لكل توكن، انتهاء وإلغاء، عرض للقراءة فقط Mobile-First، /p تعيد 301.</p>
+<div class="codecard" id="code-20"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P19 — Patient portal (PP-01..13, D-04, SET-06).
+
+CONTEXT: Modules done: P01..P18 (plans approved/published, messaging tables exist).
+
+BUILD:
+1. Routes: `/portal` token-entry page (PP-10) with a **single generic error** for wrong/expired/revoked tokens (anti-enumeration); `/portal/[token]` main portal (PP-01); `/p/[token]` → **301 redirect** to `/portal/[token]` (D-04).
+2. Tokens: UUID v4 (≥122-bit), permissions JSON per token (PP-02): view_plans / send_weight / send_note / message — doctor selects when generating; expiry presets 7/30/60/90 days (PP-03); revoke action from doctor UI (PP-04); access_count + last_accessed_at updated on each open (PP-08).
+3. Doctor token generator (SET-06): patient page modal — validity selector + permission checkboxes + generate + **CopyButton** for the full link (Carbon Modal + CopyButton + DatePicker).
+4. Portal pages — **strict Mobile-First** (PP-11, design at 375px): home (greeting + active plan summary + quick actions), nutrition plan view (read-only, meals/items with rounded grams; calories visibility per plan flag from P18), exercise plan with **inline YouTube embeds** (EP-05), weight submission form (structured measurement_log), note form, message composer (wired to P20 APIs; hidden when token lacks permission).
+5. **Read-only invariant (PP-12)**: patient can never modify a plan — any change request becomes a message to the doctor.
+6. ❌ No accounts, no passwords (PP-13). Rate-limit portal POST endpoints (weight/note/message) per token.
+7. Doctor notifications: new weight/report/message → in-app + email (PP-09, §13.1 patient→doctor rows).
+8. Vitest: generic error uniformity, expiry/revoke/permission gates, 301 redirect, access counters.
+
+ACCEPTANCE: expired and invalid tokens show identical error; unchecking &quot;message&quot; permission hides composer and blocks API; portal looks correct at 375px width; weight submission lands in patient file.
+
+STATE: modules done = P01..P19.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-20-المراسلة-والصندوق-الوارد-messaging-doctor-inbox" data-hid="h-prompt-20-المراسلة-والصندوق-الوارد-messaging-doctor-inbox"><h2 id="h-prompt-20-المراسلة-والصندوق-الوارد-messaging-doctor-inbox"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 20 — المراسلة والصندوق الوارد — Messaging &amp; Doctor Inbox</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> تراسل غير لحظي REST بلا WebSockets، صندوق وارد مركزي بعدّادات غير مقروء، أنواع رسائل مهيكلة، حدود معدل وحجم، إغلاق محادثة ونافذة حذف 5 دقائق.</p>
+<div class="codecard" id="code-21"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P20 — Asynchronous messaging + central inbox (MSG-01..07, tables 24/25, §11.3).
+
+CONTEXT: Modules done: P01..P19 (portal, notifications, files).
+
+BUILD:
+1. Thread model over patient_messages (patient_id + doctor_id = thread): sender_type, message_type text|image|weight_log|measurement_log|note, payload_json for structured data (weight etc. — renders also into patient charts).
+2. Patient side (portal): compose text + optional image attachment (secure uploader, 10MB — MSG-06); previous replies visible (MSG-01); sent messages NOT editable/deletable except within a 5-minute delete window (MSG-07); rate limit 20 msgs/hour/patient (MSG-06).
+3. Doctor side `/dashboard/inbox` (MSG-02): central inbox — thread list with unread badges per thread + total badge in SideNav bell; open thread → full history; reply as doctor; mark read (is_read + read_at); close/archive thread action (MSG-07).
+4. **No WebSockets (D-11/§4.1)**: lightweight polling every 60s while page is open (MSG-03) via `GET /api/messages/unread-summary` (counts + latest preview) — cheap indexed query; trigger immediate refresh on user actions.
+5. Notifications: new patient message/weight → doctor in-app + email (§13.1); doctor reply → patient email (no push until PWA). Daily digest hook stub for CRON-06.
+6. Structured payloads: weight_log messages also create a PatientSelfReport-linked record so charts (P10) include them; display type-specific renderers in thread (weight card, measurement table, image thumbnail with signed URL).
+7. APIs: `/api/messages/*` (threads, send, read, archive, delete-within-window) — Zod, permission checks against token permissions for patient side and ownership for doctor side; audit deletions.
+8. Vitest: unread counts, permission denial, rate limit, 5-min window boundary, structured payload round-trip.
+
+ACCEPTANCE: patient sends weight from phone → doctor badge increments within 60s; replying from inbox emails the patient; deleting own message after 5 min fails.
+
+STATE: modules done = P01..P20.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-21-المساعد-الذكي-بسياق-المريض-ومحلل-التحاليل-ai-assistant-with-" data-hid="h-prompt-21-المساعد-الذكي-بسياق-المريض-ومحلل-التحاليل-ai-assistant-with-"><h2 id="h-prompt-21-المساعد-الذكي-بسياق-المريض-ومحلل-التحاليل-ai-assistant-with-"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 21 — المساعد الذكي بسياق المريض ومحلل التحاليل — AI Assistant with Patient Context</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> محادثات بإدارة كاملة (عناوين، تثبيت، سلة 30 يوم)، مُنتقي مريض يحمّل السياق تلقائيًا، زر "ما أُرسل للـ AI"، موافقة وتجريد هوية، إخلاء مسؤولية دائم.</p>
+<div class="codecard" id="code-22"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P21 — AI assistant UI + patient-context loading + lab analyzer integration (AI-01..27, §7.16, D-18).
+
+CONTEXT: Modules done: P01..P20 (AiClient, consent, files, visits, plans ready).
+
+BUILD:
+1. `/ai-assistant` chat UI (Carbon): streaming-style send (poll/await), markdown rendering with DOMPurify, **medical disclaimer banner on EVERY AI response** (AI-14).
+2. Conversation management (AI-15..20): auto-title from first message + rename; search (title+content) + filters (active/archived/patient-linked); pin; archive; soft-delete → 30-day trash with restore (AI-17/18) — add deleted_at to conversations; resume exactly where left off with full context (AI-19); export conversation as Markdown (download) (AI-20).
+3. **Patient context picker (AI-21/22)**: select patient → server auto-assembles context: age, sex, height, current weight, BMI/BMR/TDEE, last visit, weight trend, active plan summary, allergies + contraindications, latest labs, medications — injected into the SYSTEM side of subsequent messages; header chip &quot;👤 المريض: [اسم]&quot; + unlink + change-patient warning recommending a new conversation to avoid data mixing (AI-26/27).
+4. Patient files in context (AI-23): attachments (InBody/labs/images) — text extracted/parsed, images via vision; answers cite the source file.
+5. **Transparency (AI-24)**: &quot;👁 ما أُرسل للـ AI&quot; button showing the EXACT outbound payload (post-anonymization) — no black box.
+6. **Privacy gates (AI-25, CMP-02/03/10/11)**: sending patient data requires consent_ai_sharing_at else block + inline consent-capture flow; payload strictly de-identified (❌ no name/phone/address — enforce with a scrubber + unit tests); per-provider zero-retention flag surfaced from settings (CMP-10); EVERY patient-context send writes audit_log.
+7. Lab analyzer integration (D-18): from chat or patient file — upload lab image/paste text → structured extraction → DRAFT values needing explicit doctor approval (reuses P10 logic); approvals audited.
+8. Quota check (AI-11) before each send with the P12 messaging.
+9. Vitest: context assembly correctness, scrubber removes PII, consent gate blocks, trash/restore lifecycle, disclaimer presence.
+
+ACCEPTANCE: selecting a diabetic patient loads his context and the AI answer reflects it; &quot;what was sent&quot; shows zero PII; consent-less patient blocks with capture flow; deleted conversation restorable within 30 days.
+
+STATE: modules done = P01..P21.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-22-لوحة-الأدمن-الأساسية-admin-panel-core" data-hid="h-prompt-22-لوحة-الأدمن-الأساسية-admin-panel-core"><h2 id="h-prompt-22-لوحة-الأدمن-الأساسية-admin-panel-core"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 22 — لوحة الأدمن الأساسية — Admin Panel Core</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> إدارة المستخدمين والتفعيل المعلق بشارة ودفعة، تعديل الاشتراكات، CRUD خطط الأسعار (Super Admin)، CMS، الإعدادات، البريد الجماعي الموجّه، سجل الأخطاء.</p>
+<div class="codecard" id="code-23"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P22 — Admin panel core (ADM-01..07, 11..19, 24, 25) under `/admin` Carbon shell.
+
+CONTEXT: Modules done: P01..P21. RBAC matrix + audit + contacts page (P08) exist.
+
+BUILD:
+1. Admin UI Shell (SideNav: Overview, Users, Pending Activations, Subscriptions, Plans(Prices), CMS, Landing, Food Lists, Blog*, Newsletter*, AI Providers*, Audit*, Contacts, Bulk Email, Errors, Settings) — badge counts on Pending Activations + Contacts.
+2. Overview (ADM-01): live stats (doctors total/active, pending activations, subscriptions by plan, MRR estimate from plans, AI cost month-to-date placeholder).
+3. Users (ADM-02/03): DataTable with search/filter role/status/plan; activate/deactivate (audit + email notify); edit; adjust subscription (change plan, add/remove days) with reason → audit.
+4. **Pending activations queue (ADM-24, AUTH-17/18)**: badge count, filter, bulk activate, reject with reason (emails the doctor), per-row age with &quot;over 24h&quot; highlight (CRON-15 reminder target).
+5. Subscription plans CRUD (ADM-04) — **super_admin only**: price, duration_days, features, is_active, sort (D-19 plans seeded in P04).
+6. CMS (ADM-05/06 partial): landing sections/items editor (show/hide, reorder); CmsContent pages editor (About/Contact content) with ar/en fields. (Blog gets its own module in P26.)
+7. System settings (ADM-11): key/value editor; keys flagged sensitive (SMTP creds, payment, secrets policy) gated super_admin; every change audited.
+8. Email/WhatsApp settings (ADM-12): sender aliases display, test-email button, wa.me template strings.
+9. **Bulk email engine (ADM-18, tables 26 + 26-b)**: composer with alias selector (no-reply/info/admin), audience (all/doctors/selected/admins), channels (in-app and/or email); inserts admin_messages + per-recipient rows; sender processes with per-recipient email_status tracking + retry failures list; uses P05 templates + limiter.
+10. Error log center (ADM-14): SystemErrorLog DataTable, filters (level/source/date/resolved), resolve action + note.
+11. Vitest: permission matrix (admin blocked from plans CRUD &amp; sensitive settings; super_admin allowed), bulk email recipient fan-out + status updates, activation queue actions + audits.
+
+ACCEPTANCE: activating a pending doctor emails him and clears the badge; non-super admin gets 404/redirect on pricing CRUD; bulk email to &quot;doctors&quot; creates tracked recipients.
+
+STATE: modules done = P01..P22.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-23-إدارة-مزودي-ai-والأمان-والتدقيق-والتكلفة-admin-ai-providers-" data-hid="h-prompt-23-إدارة-مزودي-ai-والأمان-والتدقيق-والتكلفة-admin-ai-providers-"><h2 id="h-prompt-23-إدارة-مزودي-ai-والأمان-والتدقيق-والتكلفة-admin-ai-providers-"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 23 — إدارة مزوّدي AI والأمان والتدقيق والتكلفة — Admin: AI Providers, Security, Audit &amp; Cost</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> إدارة المزوّدين والمفاتيح المشفرة مع تدوير واختبار اتصال، ترتيب سلسلة fallback بالسحب، صفحة أمان، عارض سجل التدقيق، لوحة تكلفة AI.</p>
+<div class="codecard" id="code-24"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P23 — Admin AI gateway + security page + audit viewer + AI cost dashboard (ADM-08/09/10/17/20/22/23, §6.6).
+
+CONTEXT: Modules done: P01..P22. AI layer (P12) consumes priority_order.
+
+BUILD:
+1. AI providers admin (ADM-08/20): provider cards (OpenAI/Gemini/Anthropic/Custom) — enable/disable, **drag-to-reorder fallback priority** (persists priority_order, live-affects P12 routing), Custom base URL field; keys: add/edit (encrypted at rest §6.6), display masked hint (prefix + last 4 only — ❌ full key never returned), rotate (sets last_rotated_at + audit), per-key quota display + usage stats (ADM-10).
+2. Test connection (ADM-09): per-provider &quot;ping&quot; button → tiny real call via adapter, reports latency/model list; results logged.
+3. Security page (ADM-17): Turnstile on/off + site/secret keys (stored via settings, masked), password policy editor (min length, complexity toggles, expiry days — SEC-20) consumed by P06 registration/change flows.
+4. Audit log viewer (ADM-22): super_admin-only read-only DataTable, filters (actor, action, entity, date range), no edit/delete endpoints at all (§6.7).
+5. **AI cost dashboard (ADM-23)**: aggregates AiUsageLog — total month consumption (calls/tokens/EGP), cost per doctor table, monthly trend chart (Recharts), top 10 consumers, provider success-rate; export CSV (audited).
+6. AiUsageLog explorer: filters provider/doctor/date/success with estimated cost column.
+7. Vitest: priority reorder reflects in getAiClient order; masked key serialization (no leak test), sensitive-settings gate, cost aggregation math.
+
+ACCEPTANCE: reordering providers changes the live fallback chain (verified via mock adapters); key edit shows only hint; cost dashboard totals match seeded AiUsageLog rows.
+
+STATE: modules done = P01..P23.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-24-الفوترة-وpaymob-billing-paymob-integration" data-hid="h-prompt-24-الفوترة-وpaymob-billing-paymob-integration"><h2 id="h-prompt-24-الفوترة-وpaymob-billing-paymob-integration"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 24 — الفوترة وPaymob — Billing &amp; Paymob Integration</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> دفع Paymob بتفعيل تلقائي، مسار يدوي بقائمة موافقات، فترة سماح 3 أيام ضد القفل الخاطئ R16، تذكيرات الانتهاء، مطابقة يومية.</p>
+<div class="codecard" id="code-25"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P24 — Billing: Paymob + manual path + grace period + subscription lifecycle (BILL, D-05/19/20, R13/R16, §11.1, CRON-01/03/04/05/13).
+
+CONTEXT: Modules done: P01..P23 (auth, plans pricing, notifications, settings).
+
+BUILD:
+1. Checkout flow (§11.1): from /pricing → plan select → if logged-in doctor: Paymob payment (Intention API + iframe/redirect per current Paymob docs; keys from super-admin settings) OR manual path: bank/WhatsApp instructions + &quot;لقد دفعت&quot; request form (method + reference) → pending approval.
+2. **Paymob webhook** `/api/billing/paymob/webhook`: HMAC signature verification (reject 403 — R13), idempotency by transaction id (replays ignored), on success: auto-activate doctor account (isActive=true) + create/extend Subscription (payment_method='paymob', payment_reference) + welcome email with credentials reminder + admin notification (D-20/O7). Store raw payload for CRON-13 reconciliation.
+3. **Manual approvals (ADM-21)**: `/admin/payments` queue of manual requests — approve (activate/extend + notify) / reject with reason (notifies) — all audited. Trial 14-day grant action available.
+4. **Grace period (R16)**: on subscription end date pass → status active→grace (3 days, visible banner to doctor: action required) → grace→expired (AI/features locked per policy) ; EVERY deactivation notifies admins (false-positive protection) + instant manual re-activation from admin users page (D-20).
+5. Subscription service `lib/billing/lifecycle.ts` + cron-task functions (registered in P29): CRON-01 expire (daily 02:00), CRON-03/04/05 reminders 7/3/0 days (email + in-app, idempotent via sent-flags).
+6. **Daily reconciliation (CRON-13 logic)**: compare stored Paymob transactions vs subscriptions; any paid-but-not-extended or extended-but-unpaid mismatch → admin alert report.
+7. Simple printable receipt page per payment (white-label aware). Tax e-invoicing: OUT of scope — code comment referencing open question Q4.
+8. Vitest: webhook bad-signature 403, replay idempotency, auto-activation path, grace transitions + banner states, manual approval/rejection flows, reconciliation diff detector.
+
+ACCEPTANCE: successful webhook instantly unlocks a just-registered doctor without admin action; tampered webhook rejected; expired+grace banner shows; approving a manual request extends days correctly.
+
+STATE: modules done = P01..P24.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-25-المدونة-الواجهة-العامة-والسيو-blog-public-seo" data-hid="h-prompt-25-المدونة-الواجهة-العامة-والسيو-blog-public-seo"><h2 id="h-prompt-25-المدونة-الواجهة-العامة-والسيو-blog-public-seo"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 25 — المدونة: الواجهة العامة والسيو — Blog Public &amp; SEO</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> مسارات المدونة العامة مع ISR بدون إعادة بناء، قواعد ثنائية اللغة D-26، RSS وsitemap، إرجاع Markdown لوكلاء AI، فهرسة تلقائية في llms.txt.</p>
+<div class="codecard" id="code-26"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P25 — Blog public surface + SEO + bilingual rules + AI-agent integration (BLG-24, 25, 27..34, 39, 41, 43..52; tables 29..32 exist).
+
+CONTEXT: Modules done: P01..P24. Blog tables + sitemap hook from P04/P08.
+
+BUILD:
+1. Public routes: `/[locale]/blog` (BLG-31: 12 posts/page, rel=next/prev), `/blog/[slug]`, `/blog/category/[slug]`, `/blog/tag/[slug]`, `/blog/rss.xml` (BLG-30). Newsletter subscribe block on top of blog pages (placeholder wiring note for P27).
+2. **ISR without full rebuild (BLG-29 — critical on cPanel)**: posts rendered statically with `revalidateTag('blog')`; publishing/updating calls revalidateTag from admin/server actions — ❌ no full site rebuild.
+3. **Bilingual rules (§7.12.10, D-26)**: ar is source; `/ar/blog` lists ALL published Arabic posts; `/en/blog` lists ONLY English posts (BLG-47); `hreflang` alternates emitted ONLY when both translations exist, `x-default=ar` (BLG-48/51); canonical ALWAYS self-referencing (BLG-49); `translation_of` relation honored; untranslated Arabic posts publish freely (BLG-43).
+4. SEO per post (BLG-25/27/28): meta_title ≤60 / meta_desc ≤160 / og_image / canonical / noindex respected; JSON-LD Article + BreadcrumbList; auto-inclusion in `sitemap.xml` with lastmod + hreflang alternates when applicable.
+5. Rendering: content_md → content_html generated server-side at save-time and rendered with DOMPurify; iframe whitelist YouTube/Vimeo only (BLG-39); images lazy (BLG-41); reading-time + view_count (BLG-16); related posts (same category/shared tags, latest 3 — BLG-18); auto table-of-contents from headings rendered + included in markdown export (BLG-34).
+6. **AI agents (BLG-32/33)**: `/blog/[slug]` with `Accept: text/markdown` returns the article as Markdown + front-matter (title, date, author, tags, TOC); every published post auto-appended to `/llms.txt` and the api-catalog registry (feeds O5).
+7. Comments: fully disabled — settings toggle placeholder only (D-23, P2).
+8. Vitest: markdown negotiation exactness, hreflang emission rules (both/one/none cases), /en listing exclusion, RSS validity, revalidateTag invocation on publish.
+
+ACCEPTANCE: publishing an Arabic post makes it appear in /ar/blog, sitemap and llms.txt within a minute WITHOUT a rebuild; /en/blog hides it; adding the English translation lights up hreflang on both pages.
+
+STATE: modules done = P01..P25.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-26-لوحة-المدونة-ومكتبة-الوسائط-blog-admin-tiptap-media-library" data-hid="h-prompt-26-لوحة-المدونة-ومكتبة-الوسائط-blog-admin-tiptap-media-library"><h2 id="h-prompt-26-لوحة-المدونة-ومكتبة-الوسائط-blog-admin-tiptap-media-library"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 26 — لوحة المدونة ومكتبة الوسائط — Blog Admin (TipTap) &amp; Media Library</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> محرر TipTap كسول التحميل يخزن Markdown مع معاينة مقسومة وحفظ تلقائي ولصق ذكي، دورة حياة وجدولة ومراجعات، حقول SEO بمعاينة جوجل/واتساب، مكتبة وسائط WebP.</p>
+<div class="codecard" id="code-27"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P26 — Blog admin: TipTap editor + lifecycle + SEO panel + media library (BLG-01..23, 40, 42, 44..46, 50; tables 33/34).
+
+CONTEXT: Modules done: P01..P25 (blog public ready; secure uploads; P25 revalidateTag helper).
+
+BUILD (admin-only — doctors have ZERO blog permissions, D-25):
+1. `/admin/blog` list: status filters, translation badge &quot;غير مترجم&quot; + translation-status filter + untranslated count report (BLG-50), bulk actions (publish/unpublish/archive/delete/change category — BLG-12), scheduled indicator.
+2. Editor `/admin/blog/new` + `/admin/blog/[id]`:
+   - **TipTap lazy-loaded** (BLG-40 — never in visitor bundle), storing **Markdown as canonical source** (D-21): rich toolbar (headings H2–H4, bold/italic/underline, lists, quote, code, link, table, image, video embed, divider, callout, undo/redo — BLG-01).
+   - Split view: WYSIWYG + raw Markdown with live preview both directions (BLG-03); per-block direction toggle RTL/LTR (BLG-02); autosave every 30s with status indicator + draft restore (BLG-04); shortcuts Ctrl+B/I/K/S + floating selection toolbar (BLG-05); smart paste cleaning Word/Docs junk (BLG-06); drag-drop image → uploads to media library + inserts (BLG-07).
+   - Lifecycle (BLG-08..11): draft/scheduled/published/archived; scheduling via published_at future datetime (cron publishes — hook registered for P29 CRON-10); preview via signed `?preview=&lt;token&gt;` link without login (BLG-10); revisions: last 20 snapshots + restore (BLG-11).
+   - Author = admin/super_admin + optional display &quot;guest author name&quot; field + published/updated timestamps + auto reading minutes (BLG-16/D-25).
+   - Bilingual tools: &quot;＋ أضف ترجمة إنجليزية&quot; clones Arabic content as starting point and links translation_of (BLG-44/45); ❌ no auto-translation (BLG-46).
+   - SEO panel (BLG-24..26): slug auto-generated from Arabic title (URL-safe transliteration) + manually editable + uniqueness per locale; meta_title(≤60)/meta_desc(≤160) counters; og_image picker; canonical override; noindex toggle; live Google SERP preview + WhatsApp/OG share preview cards.
+   - Featured image via media library (BLG-17); categories (one-level tree CRUD) + tags (many-to-many CRUD) management pages (BLG-14/15).
+   - &quot;Send to subscribers 📧&quot; checkbox DEFAULT ON + locked `newsletter_sent_at` state display (D-29/NL-27 — the campaign engine consumes this in P28).
+3. **Media library** `/admin/blog/media` (BLG-19..23): drag-drop upload + folders + search by name + type filter; **alt text mandatory** on upload (BLG-20, WCAG); auto WebP conversion + thumbnail/medium/large variants recorded in variants JSON (BLG-21); 10MB limit + real MIME check (BLG-22); reusable across blog/CMS/food lists (BLG-23); delete guarded if referenced.
+4. Every post create/update/delete/publish writes audit_log (BLG-42).
+5. Vitest: markdown⇄html round-trips, paste sanitizer, slug uniqueness per locale, scheduling stays draft until time, revision restore, media variant generation (mock sharp pipeline), alt-required validation.
+
+ACCEPTANCE: §7.12.11 checklist: new post published in &lt;5 min; Word paste clean; revisions restore works; admin list shows untranslated badge and filter.
+
+STATE: modules done = P01..P26.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-27-النشرة-الاشتراك-والموافقة-المزدوجة-newsletter-core-consent" data-hid="h-prompt-27-النشرة-الاشتراك-والموافقة-المزدوجة-newsletter-core-consent"><h2 id="h-prompt-27-النشرة-الاشتراك-والموافقة-المزدوجة-newsletter-core-consent"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 27 — النشرة: الاشتراك والموافقة المزدوجة — Newsletter Core (Consent)</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> اشتراك Double opt-in إلزامي، حماية نماذج، إلغاء بنقرة واحدة فوري، قائمة حظر دائمة، إدارة مشتركين واستيراد/تصدير CSV.</p>
+<div class="codecard" id="code-28"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P27 — Newsletter subscription core (NL-01..08, NL-19..21, tables 35; §7.13).
+
+CONTEXT: Modules done: P01..P26 (email engine, Turnstile, settings, audit).
+
+BUILD:
+1. Subscribe forms (NL-01): footer site-wide + top of blog + optional CMS-controlled landing section — fields: email (required), name (optional), preferred locale ar|en (NL-03); protections: Turnstile (when enabled) + honeypot field + rate 5/h/IP (NL-04).
+2. **Double opt-in mandatory (NL-02)**: create subscriber status=pending → confirmation email with single-use 48h token link → confirm → confirmed + confirmed_at; ❌ nothing is ever sent to pending subscribers.
+3. Duplicate/unified response (NL-08): any duplicate or error returns the SAME neutral &quot;تحقق من بريدك للتأكيد&quot; message (no enumeration).
+4. **One-click unsubscribe (NL-05)**: signed permanent per-subscriber token link in EVERY email footer → immediate status=unsubscribed, no login.
+5. **Permanent suppression (NL-06)**: unsubscribed/bounced emails NEVER receive again — even if re-entered (re-subscribe attempt is silently neutralized per NL-08); suppression checked at every send.
+6. Records: source (footer|blog|landing|manual|import), confirmed_at, ip_hash, user_agent (NL-07/CMP-08).
+7. Public routes: `/newsletter/confirm/[token]`, `/newsletter/unsubscribe/[token]` (branded, bilingual).
+8. Admin `/admin/newsletter/subscribers` (NL-19/20/21): stats (counts by status/locale + monthly growth), DataTable search/filter by status+locale, manual add (stays pending), **hard delete** (right-to-erasure CMP-04), CSV import (rows marked source=import, status=pending until each confirms) + CSV export (audited).
+9. Audit: subscriber add/delete + export events (NL-25).
+10. Vitest: pending never receives, confirm token single-use + 48h expiry, unsubscribe immediate, suppression blocks re-entry, neutral duplicate response, CSV round-trip.
+
+ACCEPTANCE: §7.13.8 items 1–3, 7–8 pass; suppressed email never receives even after re-import.
+
+STATE: modules done = P01..P27.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-28-النشرة-الحملات-والإرسال-التلقائي-newsletter-campaigns-auto-s" data-hid="h-prompt-28-النشرة-الحملات-والإرسال-التلقائي-newsletter-campaigns-auto-s"><h2 id="h-prompt-28-النشرة-الحملات-والإرسال-التلقائي-newsletter-campaigns-auto-s"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 28 — النشرة: الحملات والإرسال التلقائي — Newsletter Campaigns &amp; Auto-Send</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> حملة تلقائية مع كل مقال (افتراضي مفعّل) مع قفل ضد الإرسال المزدوج وتأخير 15 دقيقة، إرسال على دفعات 50/5د، تقارير وإلغاء قبل الإطلاق.</p>
+<div class="codecard" id="code-29"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P28 — Newsletter campaigns + automatic post-to-campaign pipeline (NL-09..18, NL-22..31; tables 36/37; §7.13.3 flow diagram).
+
+CONTEXT: Modules done: P01..P27 (subscribers, suppression, email engine + hourly limiter, blog publish hooks).
+
+BUILD:
+1. Campaign CRUD (NL-10): custom campaigns (subject, HTML from editor/template, text/plain auto-generated, locale, audience_rule locale_exact|locale_with_fallback — NL-11/30), schedule datetime (NL-17), preview + **test send to admin** (NL-15).
+2. **Auto-campaign on publish (NL-26, D-29 default ON)**: when a post first transitions to published AND send_newsletter=true:
+   - Guard: `newsletter_sent_at` NOT NULL → STOP (no re-send on edits — NL-27 lock).
+   - Create campaign(s) per available languages (NL-30): ar-only post → ONE campaign audience_rule=locale_with_fallback (English subscribers receive the Arabic version per D-28); translated post → two locale_exact campaigns.
+   - Content: subject = post title; body = excerpt + featured image + &quot;اقرأ المقال كاملًا&quot; button; status=scheduled at published_at + 15 minutes (NL-29 — guarantees ISR freshness); auto_generated=true.
+   - In-app notification to admins: &quot;حملة مجدولة — راجعها أو ألغِها&quot; (NL-31) — editable/cancellable/editable-delay while status=scheduled from `/admin/newsletter/[id]`.
+   - Post unpublish/archive BEFORE send time → campaign auto-cancelled with reason (NL-28).
+3. **Batched sender — CRON-11 logic (NL-12)**: every eligible campaign (scheduled time reached, status=scheduled) → status=sending; queue newsletter_sends rows for eligible subscribers (confirmed, matching locale rule, not suppressed, not already sent — UNIQUE(campaign_id, subscriber_id) enforces NL-16); send 50 per run respecting the SMTP hourly limit from settings; failures retried max 3 → status=failed + per-subscriber error log (NL-18/24); campaign completes → status=sent + sent_at + **set post.newsletter_sent_at = NOW() (the NL-27 lock)**.
+4. Click tracking (NL-22): campaign links wrapped with tagged redirects → click_count + per-link stats. **Open-tracking pixel: OFF by default behind an explicit settings flag (NL-23/D-30).**
+5. Admin dashboards (NL-19/22/24): campaigns list with status/counters; campaign detail (progress, sent/failed/click rates, per-subscriber error log); per-run audit entries (NL-25).
+6. CRON-12 logic registered (daily 04:00): purge pending subscribers &gt; 7 days unconfirmed + weekly bounces-review reminder (§7.13.5).
+7. Vitest: full auto-pipeline (publish → campaign scheduled +15min → batch sends → lock set), edit-after-send creates nothing, fallback-locale targeting, suppression + uniqueness + retry caps, cancel-on-unpublish, test-send path.
+
+ACCEPTANCE: every §7.13.8 acceptance checkbox demonstrably passes; a 500-subscriber campaign drains in 5-message batches without breaching the SMTP cap.
+
+STATE: modules done = P01..P28.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-29-المهام-المجدولة-والمراقبة-والنسخ-الاحتياطي-cron-framework-ob" data-hid="h-prompt-29-المهام-المجدولة-والمراقبة-والنسخ-الاحتياطي-cron-framework-ob"><h2 id="h-prompt-29-المهام-المجدولة-والمراقبة-والنسخ-الاحتياطي-cron-framework-ob"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 29 — المهام المجدولة والمراقبة والنسخ الاحتياطي — Cron Framework, Observability &amp; Backups</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> إطار Cron محمي بالسر لكل مهام CRON-01..15، Sentry وسجلات بنيوية و/health، نسخ احتياطي مشفر مع تحقق استعادة أسبوعي.</p>
+<div class="codecard" id="code-30"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P29 — Cron framework + observability + backup/restore (§13.2 CRON-01..15, §15.2 OBS-01..05, SEC-08/09/22, PF-08..12).
+
+CONTEXT: Modules done: P01..P28 (all domain logic exists; task functions stubbed in P06/P14/P23/P24/P26/P28).
+
+BUILD:
+1. Cron runner: `/api/cron/[task]` protected by `x-cron-secret` header == CRON_SECRET (CRON-02); every task idempotent (state flags/unique keys), structured start/end/error logging; failure alert via admin notification after 2 consecutive failures; document exact cPanel cron lines (curl with header) for each schedule.
+2. Register ALL tasks: CRON-01 expire subscriptions 02:00 · CRON-03/04/05 reminders 7/3/0 days 09:00 · CRON-06 daily doctor digest 08:00 (new messages/reports via P05 templates) · CRON-07 encrypted mysqldump backup 03:00 (retention 7 daily/4 weekly/3 monthly; upload off-server if S3-compatible env present else secure local dir — PF-08/11) · CRON-08 weekly cleanup (expired OTPs, temp files, stale logs) · CRON-09 every 6h AI provider health probe + auto re-enable (uses P12 health) · CRON-10 every 15min publish scheduled posts → revalidateTag('blog') → trigger P28 auto-campaign check · CRON-11 every 5min newsletter batch sender · CRON-12 daily 04:00 newsletter cleanup + bounces reminder · CRON-13 daily 05:00 payment reconciliation report · CRON-14 every 10min AI retry queue (max 5 attempts → dead-letter + admin alert) · CRON-15 every 12h pending-activation &gt;24h reminders (AUTH-18) · backup verify task.
+3. **Backup restore verification (SEC-22)**: weekly automated job restoring latest backup into a scratch database + row-count checksums vs live + written report; document quarterly manual restore drill (PF-09/10 — RPO 24h/RTO 4h).
+4. Observability: Sentry SDK (server + client) via SENTRY_DSN with PHI-scrubbing beforeSend (OBS-01/05); structured JSON logger with request-id middleware propagated to responses (OBS-03); `/api/health` full: DB ping, SMTP handshake (cached), AI provider minimal probe, cron last-run table — reveals NO secrets (PF-12); admin health dashboard (OBS-02): error rate, p95 latency, AI usage, provider statuses, cron last runs; alert thresholds (OBS-04): error rate &gt; 2%, p95 &gt; 2s, all-providers-down, cron double-failure.
+5. Vitest: task idempotency (run twice → single effect), secret rejection, retry queue caps, health payload shape.
+
+ACCEPTANCE: running each cron endpoint twice consecutively causes no duplicates; restore-verification report generates; health endpoint returns component statuses.
+
+STATE: modules done = P01..P29.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-30-التحصين-الأمني-والامتثال-security-compliance-hardening-pass" data-hid="h-prompt-30-التحصين-الأمني-والامتثال-security-compliance-hardening-pass"><h2 id="h-prompt-30-التحصين-الأمني-والامتثال-security-compliance-hardening-pass"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 30 — التحصين الأمني والامتثال — Security &amp; Compliance Hardening Pass</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> تنفيذ قائمة P0 كاملة (§6.1) وCMP-01..11 كسر'&amp;&amp;'فحص شامل مع إصلاح أي ثغرة وإنتاج تقرير امتثال.</p>
+<div class="codecard" id="code-31"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P30 — Security &amp; compliance hardening sweep (§6 full, SEC-01..22, CMP-01..11, §20.1 security items).
+
+CONTEXT: Modules done: P01..P29 (entire app). This is a VERIFICATION + FIX pass over the whole codebase.
+
+EXECUTE (produce `docs/security-checklist.md` with PASS/FAIL per item + fixes for every FAIL):
+1. P0 list (§6.1): JWT_SECRET enforced no-default (SEC-01) · jose signature verification in middleware (SEC-02) · /api/setup + /api/seed 404 in prod (SEC-03) · zero localStorage token references (SEC-04) · production CSP WITHOUT unsafe-inline/unsafe-eval — implement nonce-based CSP for Next 15 now (SEC-05) · secret-scan clean incl. git history guidance (SEC-06/21) · privacy+terms live (SEC-07) · daily backup tested-restore (SEC-08/22 — from P29) · Sentry active (SEC-09).
+2. Injection &amp; access: grep-audit for SQL interpolation (must be zero; ESLint rule active) · IDOR spot-check script across patient/plan/message/file endpoints (generic 404s) · rate limits verified per policy table · CSRF Origin check on all mutating routes · Zod coverage: EVERY route handler validates input (script-assisted audit).
+3. Uploads &amp; files: re-verify magic bytes, size caps, outside-webroot storage, signed 15-min URLs, image re-encode on EVERY upload surface (patient docs, chat images, media library, logos).
+4. XSS: DOMPurify at save AND render for all user/AI HTML; audit every dangerouslySetInnerHTML (allowlist only sanitized paths); iframe whitelist YouTube/Vimeo.
+5. Secrets &amp; keys: AES-256-GCM verified for AI keys + sensitive medical fields (CMP-07 — ensure medical notes/lab values encrypted at rest via field-level helpers); keys never logged; key rotation runbook documented (90-day with overlap, §6.6).
+6. Compliance (CMP): consent capture + enforcement (CMP-02) · data minimization in ALL AI payloads (CMP-03/11 — automated test) · admin export+erase doctor data flow (CMP-04) · retention jobs (CMP-05) · HTTPS+HSTS enforced (CMP-06) · IP hashing everywhere (CMP-08) · breach-runbook doc 72h (CMP-09) · zero-retention flags per provider recorded (CMP-10).
+7. Abuse scripts: provide `tests/security/` with curl-based repro scripts for the top-10 attacks (SQLi probe, IDOR probe, JWT tamper, CSRF, upload spoof, rate-limit, enumeration, signature forgery, path traversal on files, header bypass) — all must fail against the app.
+8. Produce a fix list for anything failing and APPLY the fixes in this same pass.
+
+ACCEPTANCE: checklist all-PASS after fixes; abuse scripts all negative; CSP headers verified via curl.
+
+STATE: modules done = P01..P30.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-31-الأداء-وإمكانية-الوصول-performance-accessibility-pass" data-hid="h-prompt-31-الأداء-وإمكانية-الوصول-performance-accessibility-pass"><h2 id="h-prompt-31-الأداء-وإمكانية-الوصول-performance-accessibility-pass"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 31 — الأداء وإمكانية الوصول — Performance &amp; Accessibility Pass</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> بلوغ أهداف Lighthouse وp95 مع حوكمة حجم الحزمة بعد Carbon، وفحص WCAG AA بعد ثيم Teal.</p>
+<div class="codecard" id="code-32"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P31 — Performance &amp; accessibility pass (PF-01..07, §14.3, UI-06/07/13/14/17 + §20.1 NFR items).
+
+CONTEXT: Modules done: P01..P30. Bundle baseline documented in docs/carbon-t0.md (P02).
+
+EXECUTE (record results in `docs/perf.md`):
+1. Lighthouse (PF-07): Performance ≥ 85 · Accessibility ≥ 90 · SEO ≥ 95 on: landing, blog post, dashboard, portal.
+2. LCP &lt; 2.5s on 4G (PF-01): font subsetting audit (unicode-range only — UI-06), hero image AVIF/WebP + priority, no render-blocking Carbon CSS beyond selective @use (UI-14), above-fold content server-rendered.
+3. API p95 &lt; 800ms (PF-02): add/verify indexes used by hot queries (cross-check §9 index definitions), kill N+1s in repositories (batch queries), add p95 timing middleware logging.
+4. Plan generation wall-time &lt; 45s (PF-03): measure + optimize prompt size / candidate-food bounding.
+5. Compression &amp; output (PF-04/06): verify gzip/brotli guidance for cPanel (.htaccess snippet), standalone output intact.
+6. **Bundle governance**: heavy Carbon components (DataTable, charts, DatePicker, FileUploader, TipTap) confirmed lazy (UI-13); add `scripts/check-bundle.js` size-ceiling gate (fails build if first-load JS exceeds budget from carbon-t0 baseline +10%) — wired into package.json build pipeline (UI-20/§5.7).
+7. **Accessibility (WCAG 2.1 AA, §14.3)**: keyboard navigation across shells/modals/dialogs; aria-labels on icon-only buttons; focus-visible states; form errors announced; contrast audit AFTER the Teal theme — compute and document ratios for all token pairs, adjust tokens if any &lt; 4.5:1 (UI-17); alt-text enforced (media library already requires); RTL directional icons flipped everywhere (UI-07); mobile-first portal re-check at 375px with 44px touch targets (D-35/UI-08).
+8. Empty/loading/error states: Skeleton/InlineLoading/EmptyState present on all data views.
+9. Fix everything failing; re-run Lighthouse; record before/after.
+
+ACCEPTANCE: docs/perf.md shows targets met; bundle gate script active; contrast report documented.
+
+STATE: modules done = P01..P31.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-32-ci-cd-والنشر-على-cpanel-ci-cd-cpanel-deployment" data-hid="h-prompt-32-ci-cd-والنشر-على-cpanel-ci-cd-cpanel-deployment"><h2 id="h-prompt-32-ci-cd-والنشر-على-cpanel-ci-cd-cpanel-deployment"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 32 — CI/CD والنشر على cPanel — CI/CD &amp; cPanel Deployment</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> بناء في GitHub Actions لا على الخادم، نشر الناتج الجاهز عبر SSH، staging وrollback، بوابات دمج إلزامية وفحص أسرار.</p>
+<div class="codecard" id="code-33"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P32 — CI/CD pipelines + cPanel deployment + staging (§5.7, UI-19/20, QA-05/06/07, R7/R17).
+
+CONTEXT: Modules done: P01..P31 (bundle gate script exists from P31).
+
+BUILD:
+1. `.github/workflows/ci.yml` (PR gate — QA-05): `npm ci` (lockfile strict) → lint → typecheck → unit tests → secret scan (gitleaks) → `next build` → bundle-size gate. ❌ The server NEVER builds (UI-19) — enforce by docs + deploy design.
+2. `.github/workflows/deploy.yml` (on main tag/manual): build in CI → package artifact (`.next` standalone + node_modules subset + package.json + public/) → upload via SSH/FTP to cPanel app dir → symlink switch (releases/NNN → current, keep last 2 releases for rollback — R7) → restart Node app (Passenger touch tmp/restart.txt) → post-deploy `GET /api/health` verification with auto-rollback note if unhealthy.
+3. `.cpanel.yml` alternative path documented; env vars management doc (set in cPanel UI, never committed); staging subdomain deployment job (staging env: separate DB + test keys — R17 mitigation).
+4. Branch protection config doc: main — no force push, PRs require CI green + 1 review; PR template with security-review checklist for PRs touching auth/uploads/SQL/AI keys (QA-06).
+5. Dependabot config + weekly `npm audit` job (QA-07); Carbon updates policy: staging-first with locked versions (UI-20).
+6. `docs/deploy-runbook.md`: step-by-step cPanel setup (Node app selector, MySQL user, env vars list, cron lines from P29, SSL/HTTPS+HSTS), first-deploy checklist, rollback procedure (rehearsed steps), backup/restore quick reference.
+7. Smoke test workflow file for staging post-deploy (login, public pages, health).
+
+ACCEPTANCE: pipelines defined end-to-end with sample successful-run description; rollback procedure documented and rehearsed in doc; no build step exists on the server path.
+
+STATE: modules done = P01..P32.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2 collapsed" id="sec-h-prompt-33-غلاف-android-والتدقيق-النهائي-للقبول-android-wrapper-final-a" data-hid="h-prompt-33-غلاف-android-والتدقيق-النهائي-للقبول-android-wrapper-final-a"><h2 id="h-prompt-33-غلاف-android-والتدقيق-النهائي-للقبول-android-wrapper-final-a"><button class="tog" type="button" onclick="toggleSec(this)" aria-label="طي/توسيع">▾</button>PROMPT 33 — غلاف Android والتدقيق النهائي للقبول — Android Wrapper &amp; Final Acceptance Audit</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> غلاف Capacitor للأنرويد، ثم تنفيذ قوائم §20.1 و§20.2 بندًا بندًا وإنتاج تقرير قبول نهائي مع تسجيل الأسئلة المفتوحة.</p>
+<div class="codecard" id="code-34"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">TASK P33 — Capacitor Android wrapper (§5.6) + FINAL acceptance audit (§20.1 + §20.2).
+
+CONTEXT: Modules done: P01..P32 (complete platform). This is the closing prompt.
+
+BUILD:
+1. Capacitor Android shell: config pointing to APP_URL (WebView loads the platform), plugins App/Browser/Preferences/StatusBar, Teal splash + icons, cookie persistence notes, back-button handling; build instructions → distribute as `/NutriClinic.apk` (§5.6). (PWA stays P1 — out of scope now.)
+2. **FINAL ACCEPTANCE AUDIT** — walk through PRD §20.1 (production-ready gate) and §20.2 (commerce-ready gate) checklist item by item. For EACH item output a table row: requirement → status (PASS/FAIL/PARTIAL) → evidence (file/test/route) → fix prompt if failing. Key gates include: deviation ≤ 5 kcal on all published plans; no publish without approval; allergy guard blocking; contraindications enforced; grace-period protection; /portal live + /p 301; JWT hardening complete; audit coverage; Carbon-only components; Teal tokens; IBM Plex Arabic; CI builds; print works; language switcher; contact flow; food request flow; template rescale; bulk edit; patient-context transparency; blog Markdown + llms.txt; newsletter double-opt-in; batched sends.
+3. Compile `docs/acceptance-report.md` with the full table + a prioritized fix list (map each FAIL to a concrete follow-up prompt).
+4. Flag every location where code awaits an OWNER DECISION from PRD §21.3 open questions (semi-annual price 1,599 Q1 · patient calories visibility Q2 · AI cost policy Q3 · tax invoicing Q4 · data retention post-churn Q5 · e-signature Q6) with the current safe default used.
+5. End with a comprehensive final STATE SNAPSHOT: full module map P01..P33, file-tree summary, DB migration list, test coverage summary, remaining backlog (P1/P2/P3 from §18: PWA, push notifications, English full rollout, comments P2, multi-clinic orgId, iOS…).
+
+ACCEPTANCE: acceptance report generated; all P0-scope items PASS or have explicit fix prompts; APK build documented.
+
+STATE: PROJECT COMPLETE (v1 of the greenfield build). Modules P01..P33.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl1" id="sec-h-4-برومبتات-مساعدة-قابلة-لإعادة-الاستخدام" data-hid="h-4-برومبتات-مساعدة-قابلة-لإعادة-الاستخدام"><h1 id="h-4-برومبتات-مساعدة-قابلة-لإعادة-الاستخدام">4) برومبتات مساعدة قابلة لإعادة الاستخدام</h1><div class="secbody">
+</div></section>
+<section class="sec lvl2" id="sec-h-a-برومبت-الاستكمال-بعد-جلسة-جديدة-continuation-prompt" data-hid="h-a-برومبت-الاستكمال-بعد-جلسة-جديدة-continuation-prompt"><h2 id="h-a-برومبت-الاستكمال-بعد-جلسة-جديدة-continuation-prompt">A) برومبت الاستكمال بعد جلسة جديدة — Continuation Prompt</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> استئناف العمل في محادثة جديدة دون فقدان السياق.</p>
+<div class="codecard" id="code-35"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">I am continuing the NutriClinicEG greenfield build. Attached: (1) PRD v3.8 — the source of truth; (2) PROJECT_RULES.md (PROMPT 00 invariants — read first); (3) below is the last STATE SNAPSHOT from the previous session.
+
+LAST STATE SNAPSHOT:
+[paste the STATE SNAPSHOT block from the previous session here]
+
+TASK: Verify the snapshot by reviewing the current code, then continue with PROMPT P[next-number]. Do not re-implement completed modules; extend them. End with an updated STATE SNAPSHOT.
+</code></pre></div>
+</div></section>
+<section class="sec lvl2" id="sec-h-b-برومبت-إصلاح-خلل-bug-fix-prompt-template" data-hid="h-b-برومبت-إصلاح-خلل-bug-fix-prompt-template"><h2 id="h-b-برومبت-إصلاح-خلل-bug-fix-prompt-template">B) برومبت إصلاح خلل — Bug-Fix Prompt Template</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> إصلاح منضبط لا يكسر المتطلبات ولا يعدل بنية سليمة.</p>
+<div class="codecard" id="code-36"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">BUG REPORT — NutriClinicEG (PRD v3.8 attached + PROJECT_RULES.md).
+
+SYMPTOM: [describe exactly what happens, where, and the expected behavior]
+STEPS TO REPRODUCE: [1..n]
+RELEVANT REQUIREMENT IDs: [e.g., §8.3, NUT-01, SEC-11]
+ERROR OUTPUT/LOGS: [paste]
+
+TASK: Diagnose root cause first (state it in one paragraph), then apply the MINIMAL fix that restores PRD compliance without changing unrelated architecture. Add/adjust a Vitest regression test that fails before and passes after the fix. List every file you touched and why. End with an updated STATE SNAPSHOT.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl2" id="sec-h-c-برومبت-بوابة-الجودة-وإعادة-الهيكلة-quality-gate-refactor-pass" data-hid="h-c-برومبت-بوابة-الجودة-وإعادة-الهيكلة-quality-gate-refactor-pass"><h2 id="h-c-برومبت-بوابة-الجودة-وإعادة-الهيكلة-quality-gate-refactor-pass">C) برومبت بوابة الجودة وإعادة الهيكلة — Quality Gate / Refactor Pass</h2><div class="secbody">
+<p><strong>الهدف العربي:</strong> مراجعة كود كمهندس أول متشكك — يُشغَّل بعد P08 وP18 وP28 وقبل P33 (أو كل 8–10 برومبتات). يكتشف الانحراف المعماري مبكرًا قبل أن يتراكم.</p>
+<div class="codecard" id="code-37"><div class="ccbar"><span class="cclabel">📄 نص البرومبت (English)</span><button class="copybtn" type="button" onclick="copyCode(this)">📋 نسخ</button></div><pre><code class="language-text">QUALITY GATE — NutriClinicEG (PRD v3.8 + PROJECT_RULES.md attached). Modules done: P01..P[last]. Act as a skeptical senior engineer reviewing the ENTIRE repo as one big PR. Audit first, then FIX in this same pass:
+
+1. ARCHITECTURE: verify the layering (thin route → service → repository). Report: any SQL outside repositories, business logic inside handlers, reverse/circular imports, features importing each other's internals.
+2. DUPLICATION: find copy-pasted logic across modules (validation, formatting, guards, chart configs, API response shapes) → extract to shared modules.
+3. FILE HEALTH: flag files &gt; 250 lines, components &gt; 150 lines, functions &gt; 40 lines, dead code, unused exports, any `utils.ts` dumping ground.
+4. CONSISTENCY: one error-handling pattern, one API response shape (helper like `ok(data)` / `fail(code, msg)`), one naming convention, Zod schemas defined once and reused (❌ parallel duplicate schemas).
+5. TYPE SAFETY: ❌ any `any`, unnecessary non-null assertions, missing return types on public functions, unsafe casts at AI/DB boundaries (validate instead of cast).
+6. TESTS: list the top 10 uncovered critical paths and add the missing tests.
+7. OUTPUT: findings table (severity → file → fix applied) + updated STATE SNAPSHOT + a **tech-debt ledger** (anything intentionally left unresolved, with the reason and the prompt that should address it).
+
+CONSTRAINT: do NOT change behavior, public API shapes, or DB schema unless a defect requires it — if it does, call it out explicitly at the top of your response.
+</code></pre></div>
+<hr />
+</div></section>
+<section class="sec lvl1" id="sec-h-5-ملاحظات-ختامية" data-hid="h-5-ملاحظات-ختامية"><h1 id="h-5-ملاحظات-ختامية">5) ملاحظات ختامية</h1><div class="secbody">
+<ul>
+<li><strong>بوابة T0 (P02) وبوابة القبول النهائي (P33)</strong> هما نقطتا التوقف الإجباريتان — لا تتجاوزهما ولو بدا التقدم مغرٍ.</li>
+<li>لو لاحظت أن النموذج يبدأ في "ابتكار" متطلبات خارج الـ PRD، ذكّره: <em>"Cite the PRD ID for that decision or revert to the documented behavior."</em></li>
+<li>عند الحاجة لتعديل قرار معماري (مثل تغيير مزوّد الدفع مستقبلًا)، اطلب من النموذج أولًا تحديث <code>docs/</code> ثم الكود — التزامًا بقاعدة الوثيقة المرجعية.</li>
+<li>احتفظ بكل <code>STATE SNAPSHOT</code> في ملف <code>PROGRESS.md</code> داخل المستودع — هو ذاكرة المشروع بين الجلسات.</li>
+</ul>
+<hr />
+</div></section>
+<section class="sec lvl1" id="sec-h-6-صراحة-كاملة-ما-الذي-يمنع-السباجيتي-فعلا؟" data-hid="h-6-صراحة-كاملة-ما-الذي-يمنع-السباجيتي-فعلا؟"><h1 id="h-6-صراحة-كاملة-ما-الذي-يمنع-السباجيتي-فعلا؟">6) صراحة كاملة: ما الذي يمنع السباجيتي فعلًا؟</h1><div class="secbody">
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>الطبقة</th>
+<th>ما تضمنه</th>
+<th>من يفرضها</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>قواعد <code>CODE QUALITY ARCHITECTURE</code> في P00 (طبقات، سقف 250 سطر/ملف، تسمية، منع التكرار)</td>
+<td>بنية نظيفة <strong>بالتصميم</strong> في كل رد</td>
+<td>النموذج في كل برومبت</td>
+</tr>
+<tr>
+<td>تقسيم السلسلة إلى 34 وحدة مستقلة</td>
+<td>حدود وحدات واضحة منذ اليوم الأول — لا ملف عملاق واحد</td>
+<td>تصميم السلسلة نفسها</td>
+</tr>
+<tr>
+<td>قاعدة MODIFIED vs CREATED</td>
+<td>منع إعادة اختراع الملفات والازدواج بين البرومبتات</td>
+<td>النموذج + مراجعتك</td>
+</tr>
+<tr>
+<td>اختبارات Vitest إلزامية في كل برومبت + بوابات الجودة C</td>
+<td>كشف أي انحدار مبكرًا قبل تراكمه</td>
+<td><strong>أنت</strong> عند تشغيلها</td>
+</tr>
+<tr>
+<td>برومبتات المراجعة (P30/P31/P33) + بوابة الجودة C</td>
+<td>تدقيق دوري شامل وتقرير ديون تقنية</td>
+<td>النموذج كمراجع متشكك</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>الحقيقة التي لا مفر منها:</strong>
+1. ⚠️ البرومبتات = حواجز حماية ممتازة، لكن <strong>الضمان الفعلي يتحقق فقط عندما تشغّل أنت البوابة</strong>: <code>lint + typecheck + test + build</code> بعد كل برومبت. لو حمرّت — لا تنتقل للبرومبت التالي أبدًا. أنت الـ CI في هذه العملية.
+2. 🎯 <strong>أقوى تحسين ممكن:</strong> بدل لصق الكود يدويًا من AI Studio، استخدم <strong>Gemini CLI</strong> (مجاني، نفس نماذج Gemini) <em>داخل مجلد المشروع نفسه</em>: يقرأ ويكتب الملفات فعليًا، يرى الكود القائم فلا يعيد اختراعه، ويحافظ على القواعد عبر ملف <code>GEMINI.md</code> (انسخ فيه محتوى PROMPT 00). السلسلة تعمل حرفيًا دون أي تغيير — لكن جودة الاتساق ترتفع درجة كاملة لأن "النص الملصوق" يتحول إلى "قواعد مفروضة على المستودع".
+3. 📏 إذا رغبت بمستوى هندسي أعلى (Git حقيقي + lint يمنع الدمج)، نفس السلسلة تعمل مع Claude Code أو Cursor بدون تعديل — هي مكتوبة بصيغة agnostic.</p></div></section>
+  <footer style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:40px">
+    NutriClinicEG Build Prompts — مولّد من PRD v3.8 · الملف مستقل تمامًا ويعمل دون اتصال
+  </footer>
+</div>
+
+<button id="toTop" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="العودة لأعلى">⬆</button>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function feedback(btn, ok){
+  btn.classList.add('ok'); var old = btn.textContent;
+  btn.textContent = ok ? '✓ تم النسخ' : '✗ تعذّر النسخ';
+  setTimeout(function(){ btn.classList.remove('ok'); btn.textContent = old; }, 1800);
+}
+function copyCode(btn){
+  var card = btn.closest('.codecard');
+  var pre = card ? card.querySelector('pre') : null;
+  if(!pre) return;
+  var text = pre.innerText;
+  function fallback(){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly','');
+    ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    feedback(btn, ok);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ feedback(btn, true); }, fallback);
+  } else { fallback(); }
+}
+function toggleSec(btn){
+  var sec = btn.closest('section.sec');
+  if(sec) sec.classList.toggle('collapsed');
+}
+function expandAll(open){
+  document.querySelectorAll('section.sec.lvl2').forEach(function(s){
+    if(open) s.classList.remove('collapsed');
+    else if(s.getAttribute('data-hid') !== 'h-prompt-00-القواعد-الرئيسية-للمشروع-تلصق-أولا-system-instructions-قواعد') s.classList.add('collapsed');
+  });
+}
+/* ===== robust navigation: JS scroll (works in sandboxed iframes & with Arabic ids) ===== */
+document.addEventListener('click', function(e){
+  var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+  if(!a) return;
+  var frag = a.getAttribute('href').slice(1);
+  var el = document.getElementById(frag);
+  if(!el) return;
+  e.preventDefault();
+  if(el.classList.contains('sec')) el.classList.remove('collapsed');
+  el.scrollIntoView({behavior:'smooth', block:'start'});
+  try { if(history.replaceState) history.replaceState(null, '', '#' + frag); } catch(err){}
+});
+/* back-to-top visibility */
+window.addEventListener('scroll', function(){
+  var b = document.getElementById('toTop');
+  if(b) b.style.display = (window.scrollY > 500) ? 'block' : 'none';
+}, {passive:true});
+</script>
+</body>
+</html>

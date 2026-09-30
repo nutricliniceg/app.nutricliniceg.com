@@ -1,0 +1,36 @@
+{
+  "ar": {
+    "common": {
+      "language": "العربية",
+      "switch_to_english": "English"
+    },
+    "nav": {
+      "dashboard": "لوحة التحكم"
+    },
+    "t0": {
+      "title": "قائمة المرضى",
+      "info_title": "مرحباً بك",
+      "info_subtitle": "هذه صفحة تجريبية لاختبار نظام الكربون مع RTL.",
+      "button": "زر أساسي",
+      "name_header": "الاسم",
+      "age_header": "العمر"
+    }
+  },
+  "en": {
+    "common": {
+      "language": "English",
+      "switch_to_arabic": "العربية"
+    },
+    "nav": {
+      "dashboard": "Dashboard"
+    },
+    "t0": {
+      "title": "Patient List",
+      "info_title": "Welcome",
+      "info_subtitle": "This is a demo page to test Carbon with LTR.",
+      "button": "Primary Button",
+      "name_header": "Name",
+      "age_header": "Age"
+    }
+  }
+}

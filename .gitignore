@@ -1,0 +1,19 @@
+﻿# dependencies
+node_modules/
+
+# next.js build
+.next/
+out/
+build/
+
+# env & secrets
+.env
+.env.*
+!.env.example
+.secrets/
+
+# misc
+*.tsbuildinfo
+*.log
+coverage/
+.DS_Store

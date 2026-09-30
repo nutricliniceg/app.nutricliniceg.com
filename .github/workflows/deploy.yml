@@ -1,0 +1,116 @@
+name: Deploy to cPanel
+
+# On release tag (v*) or manual dispatch. The server NEVER builds (UI-19):
+# CI builds the standalone artifact, uploads it, then flips a symlink.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Deploy target"
+        required: true
+        default: "staging"
+        type: choice
+        options: [staging, production]
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+        env:
+          BUILD_MODE: "true"
+
+      - name: Package release artifact
+        run: |
+          mkdir -p artifact
+          cp -r .next/standalone/. artifact/
+          mkdir -p artifact/.next
+          cp -r .next/static artifact/.next/static
+          cp package.json artifact/
+          cp -r public artifact/ 2>/dev/null || true
+          tar -czf release.tgz -C artifact .
+
+      - name: Resolve target config
+        id: cfg
+        env:
+          INPUT_TARGET: ${{ github.event.inputs.target }}
+        run: |
+          if [ "$INPUT_TARGET" = "production" ] || [ -z "$INPUT_TARGET" ]; then
+            echo "app_dir=${{ secrets.CPANEL_APP_DIR_PROD }}" >> "$GITHUB_OUTPUT"
+            echo "app_url=https://app.nutricliniceg.com" >> "$GITHUB_OUTPUT"
+          else
+            echo "app_dir=${{ secrets.CPANEL_APP_DIR_STAGE }}" >> "$GITHUB_OUTPUT"
+            echo "app_url=https://${{ secrets.STAGING_HOST }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Copy artifact to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.CPANEL_SSH_HOST }}
+          username: ${{ secrets.CPANEL_SSH_USER }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: ${{ secrets.CPANEL_SSH_PORT || 22 }}
+          source: release.tgz
+          target: ${{ steps.cfg.outputs.app_dir }}/releases/pending
+
+      - name: Activate release (keep last 2 for rollback — R7)
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.CPANEL_SSH_HOST }}
+          username: ${{ secrets.CPANEL_SSH_USER }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: ${{ secrets.CPANEL_SSH_PORT || 22 }}
+          script: |
+            set -e
+            APP_DIR="${{ steps.cfg.outputs.app_dir }}"
+            TS=$(date +%Y%m%d%H%M%S)
+            mkdir -p "$APP_DIR/releases/$TS"
+            tar -xzf "$APP_DIR/releases/pending/release.tgz" -C "$APP_DIR/releases/$TS"
+            rm -rf "$APP_DIR/releases/pending"
+            ln -sfn "$APP_DIR/releases/$TS" "$APP_DIR/current"
+            echo "$TS" > "$APP_DIR/current_release.txt"
+            # Keep last 2 releases, prune older ones.
+            ls -1t "$APP_DIR/releases" | tail -n +3 | xargs -r -I{} rm -rf "$APP_DIR/releases/{}"
+            # Restart the Passenger Node app.
+            mkdir -p "$APP_DIR/current/tmp"
+            touch "$APP_DIR/current/tmp/restart.txt"
+            sleep 20
+
+      - name: Post-deploy health verification
+        id: health
+        run: node scripts/smoke-staging.cjs "${{ steps.cfg.outputs.app_url }}"
+        continue-on-error: true
+
+      - name: Auto-rollback note on unhealthy deploy
+        if: steps.health.outcome == 'failure'
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.CPANEL_SSH_HOST }}
+          username: ${{ secrets.CPANEL_SSH_USER }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: ${{ secrets.CPANEL_SSH_PORT || 22 }}
+          script: |
+            APP_DIR="${{ steps.cfg.outputs.app_dir }}"
+            PREV=$(ls -1t "$APP_DIR/releases" | sed -n '2p')
+            if [ -n "$PREV" ]; then
+              ln -sfn "$APP_DIR/releases/$PREV" "$APP_DIR/current"
+              touch "$APP_DIR/current/tmp/restart.txt"
+              echo "ROLLED BACK to $PREV — investigate the failed release before retrying."
+            else
+              echo "NO previous release to roll back to — manual intervention required."
+            fi
+            exit 1

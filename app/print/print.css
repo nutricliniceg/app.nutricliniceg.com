@@ -1,0 +1,135 @@
+/* P18 print stylesheet (UI-16). Dedicated to /print/* — no Carbon classes
+   are used in print markup. Brand color is defined ONCE here as CSS vars.
+   D-11: no server PDF — the browser prints to PDF. */
+
+.print-sheet {
+  --brand-teal: #008080;
+  --brand-deep: #005f73;
+  --brand-accent: #0a9396;
+  --ink: #132626;
+  --muted: #5b7472;
+  --line: #d3e2e0;
+  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, Arial, sans-serif;
+  color: var(--ink);
+  background: #ffffff;
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 12mm 10mm;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.print-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 3px solid var(--brand-teal);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+
+.print-header img {
+  max-height: 56px;
+  max-width: 160px;
+  object-fit: contain;
+}
+
+.print-header .clinic {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-deep);
+}
+
+.print-header .doctor {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.print-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-bottom: 12px;
+}
+
+.print-day {
+  margin-bottom: 14px;
+  page-break-inside: avoid;
+}
+
+.print-day > h2 {
+  font-size: 15px;
+  color: #ffffff;
+  background: var(--brand-teal);
+  border-radius: 6px;
+  padding: 4px 12px;
+  margin: 0 0 8px;
+}
+
+.print-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.print-table th {
+  background: #eef5f5;
+  color: var(--brand-deep);
+  border: 1px solid var(--line);
+  padding: 5px 8px;
+  text-align: start;
+}
+
+.print-table td {
+  border: 1px solid var(--line);
+  padding: 5px 8px;
+  vertical-align: top;
+}
+
+.print-table img.thumb {
+  width: 96px;
+  height: auto;
+  display: block;
+}
+
+.print-note {
+  border-inline-start: 4px solid var(--brand-accent);
+  background: #f2f9f8;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 12px 0;
+  color: var(--muted);
+}
+
+.print-footer {
+  margin-top: 16px;
+  border-top: 1px dashed var(--line);
+  padding-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-sheet {
+    max-width: none;
+    padding: 0;
+  }
+  .print-day {
+    page-break-inside: avoid;
+  }
+  .print-table {
+    page-break-inside: auto;
+  }
+  .print-table tr {
+    page-break-inside: avoid;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 12mm 10mm;
+}

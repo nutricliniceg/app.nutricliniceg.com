@@ -2,6 +2,7 @@
 
 ## STATE SNAPSHOT
 - **Modules Completed:** P01–P32 (CI/CD + cPanel deployment runbook; target: app.nutricliniceg.com) + P32 gitleaks-allowlist fix
+- **P32-fix3 (cpanel db-create):** `scripts/db-create.sql` rewritten cPanel-safe (no CREATE DATABASE/USE, plain CREATE TABLE IF NOT EXISTS, runs in selected nutrvbis_* DB) + `scripts/build-db-create.cjs` generator (mirrors prisma/schema.sql, appends schema_migrations/allergy_synonyms/revoked_tokens alias).
 - **P32-fix (gitleaks allowlist):** `.gitleaks.toml` (NEW — test-fixture allowlist for `tests/env.test.ts` + `tests/setup.ts` only, defaults extended, SEC-06 intact elsewhere) + `ci.yml` (MODIFIED — gitleaks step now uses `config-path: .gitleaks.toml`); verified no hardcoded secrets outside `tests/`; commit `1060fd3` pushed to main; CI green pending user confirm (no `gh` CLI on this machine).
 - **P32-fix2 (durable):** `.gitleaks.toml` allowlist extended to `.env.example`; `.env.example` + `tests/{env.test,setup,jwt,cron}.ts` placeholders rewritten as plain-words low-entropy strings (schema lengths kept: JWT/ENC ≥32, CRON ≥16); invalid `config-path` input removed from gitleaks step (action auto-loads toml); commit `911b2f7` pushed; targeted vitest 19/19 green.
 - **Key Files Map (P32 additions):**

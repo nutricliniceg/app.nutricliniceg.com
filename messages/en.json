@@ -958,5 +958,14 @@
     "alertCronFailing": "Cron task failing",
     "alertDbDown": "Database unreachable",
     "alertSmtpDown": "SMTP verification failed"
+  },
+  "home": {
+    "title": "NutriClinicEG",
+    "subtitle": "Nutrition clinic platform — meal and exercise plans reviewed by your doctor.",
+    "pricing": "Pricing & subscription",
+    "blog": "Blog",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "login": "Sign in"
   }
 }

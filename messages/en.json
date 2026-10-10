@@ -959,6 +959,24 @@
     "alertDbDown": "Database unreachable",
     "alertSmtpDown": "SMTP verification failed"
   },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Enter your email and password to access the dashboard.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "errors": {
+      "invalidCredentials": "Invalid email or password.",
+      "accountInactive": "This account is not activated. Please contact support.",
+      "emailNotVerified": "Please verify your email first.",
+      "passwordExpired": "Your password has expired. Please reset it.",
+      "rateLimited": "Too many login attempts. Please try again shortly.",
+      "securityCheckFailed": "Security check failed. Please try again.",
+      "invalidInput": "Please check your email and password.",
+      "generic": "Sign-in failed. Please try again."
+    }
+  },
   "home": {
     "title": "NutriClinicEG",
     "subtitle": "Nutrition clinic platform — meal and exercise plans reviewed by your doctor.",

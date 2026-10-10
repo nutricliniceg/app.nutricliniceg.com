@@ -5,13 +5,14 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { activationBulkSchema } from '@/lib/admin/admin.schema';
 import { adminUsersService } from '@/lib/admin/users.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:activations`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { searchParams } = new URL(request.url);
@@ -25,7 +26,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:bulk-activate`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   let body: unknown;

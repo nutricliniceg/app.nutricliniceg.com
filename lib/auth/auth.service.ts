@@ -4,7 +4,7 @@ import { auditService } from '@/lib/security/audit';
 import { createSessionCookie, destroySession, verifyTokenString } from '@/lib/security/session';
 import bcrypt from 'bcrypt';
 import { randomInt, randomUUID } from 'crypto';
-import { notificationService } from '@/lib/notifications/service';
+import { notifyPagedAdmins } from '@/lib/notifications/admin-alerts';
 import { sendEmail } from '@/lib/email/mailer';
 import { assertPasswordPolicy, getPasswordPolicy, isExpiredByPolicy } from './password-policy';
 
@@ -52,16 +52,14 @@ export const authService = {
 
     await authRepository.logEvent(userId, 'USER_REGISTERED', { email: data.email });
 
-    const admins = await userRepository.listDoctors(1, 100);
-    for (const admin of admins.users.filter((u) => u.role === 'admin' || u.role === 'super_admin')) {
-      await notificationService.notify({
-        userId: admin.id,
-        title: 'طبيب جديد في انتظار التفعيل',
-        body: `تم تسجيل الطبيب ${data.name} (${data.email}) ويحتاج لتفعيل الحساب.`,
-        type: 'system',
-        link: '/admin/users',
-      });
-    }
+    await notifyPagedAdmins({
+      title: 'طبيب جديد في انتظار التفعيل',
+      body: `تم تسجيل الطبيب ${data.name} (${data.email}) ويحتاج لتفعيل الحساب.`,
+      link: '/admin/users',
+      // Historical behaviour: the first failed notify aborts the loop and
+      // propagates to the caller (no per-admin catch here).
+      isolate: false,
+    });
 
     try {
       await sendEmail({

@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { bulkService } from '@/lib/plans/bulk.service';
 import { planWeeksService } from '@/lib/plans/plan-weeks.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 // NP-11: recalculate from the last visit weight, update targets, reconcile.

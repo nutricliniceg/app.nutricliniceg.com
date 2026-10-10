@@ -15,8 +15,6 @@ const dirs = [
   'lib/email',
   'lib/files',
   'lib/i18n',
-  'lib/validation',
-  'ui/composites',
   'messages',
   'prisma',
   'scripts',

@@ -4,14 +4,11 @@ import { getRequestMeta } from '@/lib/api/request-meta';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { planGenerateSchema } from '@/lib/plans/plans.schema';
-import { generationService, generationErrorCode, generationErrorExtra } from '@/lib/plans/generation.service';
+import { generationService } from '@/lib/plans/generation.service';
+import { generationErrorCode, generationErrorExtra } from '@/lib/errors/fail';
 import { chainErrorCode } from '@/lib/ai/chain';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
-
+import { isAdminRole } from '@/lib/security/rbac';
 // POST /api/plans/generate — AI generation in from_list / ai_free modes.
 // Always persists a DRAFT (pending_doctor_approval); never publishes (§8.1).
 export async function POST(request: NextRequest) {

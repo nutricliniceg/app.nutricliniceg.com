@@ -6,12 +6,9 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { planSaveSchema } from '@/lib/plans/editor.schema';
 import { editorService } from '@/lib/plans/editor.service';
 import { plansRepository } from '@/lib/db/repositories/plans.repo';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);

@@ -3,7 +3,7 @@ import { ok, fail, failZod, notFound } from '@/lib/api/response';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { portalMessageSchema } from '@/lib/portal/portal.schema';
 import { portalService, PORTAL_INVALID } from '@/lib/portal/portal.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;

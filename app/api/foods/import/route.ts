@@ -6,11 +6,7 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { foodsService } from '@/lib/foods/foods.service';
 import { isXlsxMagic, parseImportWorkbook, MAX_IMPORT_BYTES } from '@/lib/foods/excel';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
-
+import { isAdminRole } from '@/lib/security/rbac';
 // FL-03/12: Excel import — admin scope=global → public items,
 // doctor (or admin scope=mine) → private items owned by the actor.
 export async function POST(request: NextRequest) {

@@ -5,17 +5,14 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { campaignCreateSchema, campaignListQuerySchema } from '@/lib/newsletter/campaign.schema';
 import { campaignsService } from '@/lib/newsletter/campaigns.service';
 import { campaignsRepository } from '@/lib/db/repositories/campaigns.repo';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const parsed = campaignListQuerySchema.safeParse(Object.fromEntries(new URL(request.url).searchParams));
   if (!parsed.success) return failZod(parsed.error);
   const result = await campaignsRepository.list({
@@ -27,7 +24,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   let body: unknown;
   try {
     body = await request.json();
@@ -62,7 +59,7 @@ export async function DELETE(request: NextRequest) {
   // Cancel a scheduled/draft campaign (NL-31 manual intervention).
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const id = new URL(request.url).searchParams.get('id');
   if (!id) return fail('ID_REQUIRED', 'Query param id is required', 400);
   try {
@@ -84,7 +81,7 @@ export async function PATCH(request: NextRequest) {
   // Fetch a report: ?view=report&id=…  (NL-22 sent/failed/clicks)
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const params = new URL(request.url).searchParams;
   if (params.get('view') !== 'report' || !params.get('id')) {
     return fail('BAD_REQUEST', 'Use ?view=report&id=…', 400);
@@ -96,6 +93,8 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
+// CORS preflight. A 204 must not carry a body, so this uses a bare
+// NextResponse rather than the JSON envelope helpers.
 export function OPTIONS() {
-  return NextResponse.json(null, { status: 204 });
+  return new NextResponse(null, { status: 204 });
 }

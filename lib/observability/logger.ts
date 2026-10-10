@@ -9,10 +9,6 @@ export function setRequestId(id: string | null): void {
   currentRequestId = id;
 }
 
-export function getRequestId(): string | null {
-  return currentRequestId;
-}
-
 export function newRequestId(): string {
   return randomUUID();
 }

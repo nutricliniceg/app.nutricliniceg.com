@@ -1,5 +1,5 @@
 import { portalService, PORTAL_INVALID } from '@/lib/portal';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import '../portal.css';
 import { WeightForm, NoteForm, MessageForm } from '../_components/portal-forms';
 import ThreadSection from '../_components/thread-section';

@@ -1,18 +1,12 @@
 import { userRepository } from '@/lib/db/repositories/users.repo';
 import { billingRepository } from '@/lib/db/repositories/billing.repo';
 import { notificationService } from '@/lib/notifications/service';
+import { notifyPagedAdmins } from '@/lib/notifications/admin-alerts';
 import { sendEmail } from '@/lib/email/mailer';
 import { lifecycleState, detectMismatches } from './lifecycle';
 
 async function notifyAdmins(title: string, body: string): Promise<void> {
-  const { users } = await userRepository.listDoctors(1, 100);
-  for (const admin of users.filter((u) => u.role === 'admin' || u.role === 'super_admin')) {
-    try {
-      await notificationService.notify({ userId: admin.id, title, body, type: 'system' });
-    } catch {
-      // Best-effort per admin.
-    }
-  }
+  await notifyPagedAdmins({ title, body });
 }
 
 // Cron-task bodies (P29 registers the endpoints). Split from

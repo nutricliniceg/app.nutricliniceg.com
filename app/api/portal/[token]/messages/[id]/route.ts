@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { messagingService } from '@/lib/messages/messaging.service';
 import { portalTokensRepository } from '@/lib/db/repositories/portal-tokens.repo';
 import { PORTAL_INVALID } from '@/lib/portal';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 // Patient delete of their own message within 5 minutes (MSG-07).

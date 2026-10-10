@@ -6,12 +6,9 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { postPublishSchema, revisionRestoreSchema } from '@/lib/blog-admin/post.schema';
 import { postsService } from '@/lib/blog-admin/posts.service';
 import { mintPreviewToken } from '@/lib/blog-admin/preview';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 async function readJson(request: NextRequest): Promise<unknown | null> {
   try {
@@ -26,7 +23,7 @@ async function readJson(request: NextRequest): Promise<unknown | null> {
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string; op: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:blog-op`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { id, op } = await params;

@@ -1,9 +1,9 @@
 // CRON-02 runner: secret gate (x-cron-secret), structured start/end/error
 // logging, CronRun ledger, admin notification after 2 consecutive failures.
 import { NextRequest, NextResponse } from 'next/server';
+import { ok, fail, notFound } from '@/lib/api/response';
 import { cronRepository } from '@/lib/db/repositories/cron.repo';
-import { userRepository } from '@/lib/db/repositories/users.repo';
-import { notificationService } from '@/lib/notifications/service';
+import { notifyAllAdmins } from '@/lib/notifications/admin-alerts';
 import { logger, setRequestId, newRequestId } from '@/lib/observability/logger';
 import { captureErrorSafe } from '@/lib/observability/sentry';
 import { cronTasks } from './tasks';
@@ -14,14 +14,10 @@ export function cronSecretOk(request: NextRequest): boolean {
   return request.headers.get('x-cron-secret') === secret;
 }
 
-function notFound() {
-  return NextResponse.json({ success: false, error: { code: 'NOT_FOUND', message: 'Not found' } }, { status: 404 });
-}
-
 export async function runCronTask(taskId: string, request: NextRequest): Promise<NextResponse> {
-  if (!cronSecretOk(request)) return notFound();
+  if (!cronSecretOk(request)) return notFound('Not found');
   const handler = cronTasks[taskId];
-  if (!handler) return notFound();
+  if (!handler) return notFound('Not found');
   setRequestId(newRequestId());
   logger.info('cron.start', { task: taskId });
   let runId: string | null = null;
@@ -35,7 +31,7 @@ export async function runCronTask(taskId: string, request: NextRequest): Promise
     if (runId) await cronRepository.finishRun(runId, 'ok', JSON.stringify(data));
     logger.info('cron.end', { task: taskId, ...data });
     setRequestId(null);
-    return NextResponse.json({ success: true, data });
+    return ok(data);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Cron task failed';
     let failures = 1;
@@ -45,18 +41,15 @@ export async function runCronTask(taskId: string, request: NextRequest): Promise
     logger.error('cron.error', { task: taskId, error: message, failures });
     await captureErrorSafe(err, { task: taskId });
     if (failures >= 2) {
-      try {
-        const admins = await userRepository.listAllForBroadcast(null);
-        for (const a of admins.filter((u) => u.role === 'admin' || u.role === 'super_admin')) {
-          await notificationService.notify({
-            userId: a.id, title: `Cron task failing: ${taskId}`,
-            body: `Task ${taskId} failed ${failures} consecutive times. Last error: ${message.slice(0, 300)}`,
-            type: 'system',
-          });
-        }
-      } catch { /* alerting best effort */ }
+      await notifyAllAdmins({
+        title: `Cron task failing: ${taskId}`,
+        body: `Task ${taskId} failed ${failures} consecutive times. Last error: ${message.slice(0, 300)}`,
+        // Historical behaviour: the first failed notify aborts the remaining
+        // recipients, and the outer handler swallows it.
+        isolate: false,
+      });
     }
     setRequestId(null);
-    return NextResponse.json({ success: false, error: { code: 'TASK_FAILED', message } }, { status: 500 });
+    return fail('TASK_FAILED', message, 500);
   }
 }

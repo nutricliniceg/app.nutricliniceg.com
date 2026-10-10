@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from 'crypto';
+import { z } from 'zod';
 import { settingsRepository } from '@/lib/db/repositories/settings.repo';
 import { fail } from '@/lib/plans';
 
@@ -68,6 +69,15 @@ export interface IntentionResult {
   paymentUrl: string;
 }
 
+// The intention response is third-party data crossing a trust boundary, so it
+// is parsed with Zod rather than cast (SEC: validate, never cast at the
+// AI/DB/HTTP boundaries). `payment_keys[].key` is Paymob's legacy alias for
+// `client_secret`; both are optional in the schema and reconciled below.
+const intentionResponseSchema = z.object({
+  client_secret: z.string().min(1).optional(),
+  payment_keys: z.array(z.object({ key: z.string().min(1).optional() }).passthrough()).optional(),
+});
+
 export async function createIntention(input: {
   planId: string; userId: string; userEmail: string; userName: string;
   amountCents: number; currency: string;
@@ -90,8 +100,9 @@ export async function createIntention(input: {
       signal: controller.signal,
     });
     if (!res.ok) throw fail('PAYMOB_ERROR', `Paymob intention failed (${res.status})`);
-    const data = (await res.json()) as { client_secret?: string; payment_keys?: Array<{ key?: string }> };
-    const clientSecret = data.client_secret ?? data.payment_keys?.[0]?.key;
+    const parsed = intentionResponseSchema.safeParse(await res.json());
+    if (!parsed.success) throw fail('PAYMOB_ERROR', 'Paymob returned an unexpected response shape');
+    const clientSecret = parsed.data.client_secret ?? parsed.data.payment_keys?.[0]?.key;
     if (!clientSecret) throw fail('PAYMOB_ERROR', 'Paymob returned no payment key');
     return { clientSecret, paymentUrl: `${config.baseUrl}/v1/intention/${clientSecret}` };
   } catch (err) {

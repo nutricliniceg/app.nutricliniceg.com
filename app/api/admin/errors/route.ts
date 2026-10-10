@@ -6,11 +6,12 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { errorListQuerySchema, errorResolveSchema } from '@/lib/admin/admin.schema';
 import { errorsRepository } from '@/lib/db/repositories/errors.repo';
 import { auditService } from '@/lib/security/audit';
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { searchParams } = new URL(request.url);
   const parsed = errorListQuerySchema.safeParse(Object.fromEntries(searchParams));
   if (!parsed.success) return failZod(parsed.error);
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:errors`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { searchParams } = new URL(request.url);

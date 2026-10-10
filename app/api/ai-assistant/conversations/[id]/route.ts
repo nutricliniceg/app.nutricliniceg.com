@@ -4,7 +4,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { conversationPatchSchema } from '@/lib/assistant/assistant.schema';
 import { assistantService } from '@/lib/assistant/assistant.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);

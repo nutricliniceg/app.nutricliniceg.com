@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { printLinkCreateSchema } from '@/lib/print/print.schema';
 import { printService } from '@/lib/print/print.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 // Doctor-minted short-lived share links for print pages (24h, HMAC).

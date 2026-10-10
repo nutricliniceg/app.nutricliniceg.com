@@ -12,8 +12,10 @@ export const FULL_PERMISSIONS: PortalPermissions = {
 
 export function parsePermissions(raw: unknown): PortalPermissions {
   const fallback = { ...FULL_PERMISSIONS };
-  if (!raw || typeof raw !== 'object') return fallback;
-  const obj = raw as Record<string, unknown>;
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return fallback;
+  // Narrow with an index signature on a locally-typed alias instead of casting
+  // `unknown` straight to Record (no trust in the stored JSON).
+  const obj: { [K in keyof PortalPermissions]?: unknown } = raw as Partial<PortalPermissions>;
   return {
     view_plans: obj.view_plans !== false,
     send_weight: obj.send_weight !== false,

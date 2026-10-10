@@ -6,15 +6,12 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { cmsVisibilitySchema, cmsPageSchema } from '@/lib/admin/admin.schema';
 import { cmsRepository } from '@/lib/db/repositories/cms.repo';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { searchParams } = new URL(request.url);
   const kind = searchParams.get('kind') ?? 'landing';
   if (kind === 'page') {
@@ -34,7 +31,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:cms`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { searchParams } = new URL(request.url);

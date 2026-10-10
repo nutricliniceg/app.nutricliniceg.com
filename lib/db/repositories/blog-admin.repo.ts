@@ -98,13 +98,18 @@ export const blogAdminRepository = {
       meta_desc: 'meta_desc', og_image: 'og_image', canonical_url: 'canonical_url', noindex: 'noindex',
       guest_author: 'guest_author', reading_minutes: 'reading_minutes', send_newsletter: 'send_newsletter',
       published_at: 'published_at', translation_of: 'translation_of',
+      // Written by postsService.autoNewsletter to lock first-publish-only
+      // campaign creation (P28). Without it here the UPDATE silently no-ops
+      // (fields stays empty) and a post could re-trigger a campaign on every
+      // subsequent publish.
+      newsletter_sent_at: 'newsletter_sent_at',
     };
     const fields: string[] = [];
-    const values: Array<string | number | boolean | null> = [];
+    const values: Array<string | number | boolean | null | Date> = [];
     for (const [key, value] of Object.entries(data)) {
       if (value !== undefined && map[key]) {
         fields.push(`${map[key]} = ?`);
-        values.push(value as string | number | boolean | null);
+        values.push(value as string | number | boolean | null | Date);
       }
     }
     if (fields.length === 0) return;

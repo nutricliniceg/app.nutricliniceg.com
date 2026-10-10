@@ -5,13 +5,10 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { conversationSendSchema } from '@/lib/assistant/assistant.schema';
 import { assistantService } from '@/lib/assistant/assistant.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { chainErrorCode } from '@/lib/ai/chain';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);

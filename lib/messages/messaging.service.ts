@@ -8,7 +8,7 @@ import { sendEmail } from '@/lib/email/mailer';
 import { mintFileToken } from '@/lib/files/signed-url';
 import { fail } from '@/lib/plans';
 import { PORTAL_INVALID } from '@/lib/portal';
-import { parsePermissions, hasPermission } from '@/lib/portal/permissions';
+import { parsePermissions, hasPermission } from '@/lib/portal';
 import type { ThreadReplyInput } from './messaging.schema';
 
 // 5-minute sender delete window (MSG-07).

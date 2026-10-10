@@ -6,15 +6,12 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { aiKeyMetaSchema, aiKeyRotateSchema } from '@/lib/admin/admin.schema';
 import { aiGatewayService } from '@/lib/admin/ai-gateway.service';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ keyId: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:ai-keys`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { keyId } = await params;
@@ -37,7 +34,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ keyId: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { keyId } = await params;
   await aiGatewayService.removeKey(keyId);
   await auditService.logAction({
@@ -50,7 +47,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 export async function POST(request: NextRequest, { params }: { params: Promise<{ keyId: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:ai-rotate`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { keyId } = await params;

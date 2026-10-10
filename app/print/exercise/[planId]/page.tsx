@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { verifyTokenString } from '@/lib/security/session';
 import { printService } from '@/lib/print/print.service';
 import { printStrings, printDir } from '@/lib/print/strings';
-import PrintButton from '../../_components/print-button';
+import PrintShell from '../../_components/print-shell';
 
 export default async function ExercisePrintPage({
   params,
@@ -33,20 +33,12 @@ export default async function ExercisePrintPage({
   }
 
   return (
-    <div dir={printDir(locale)}>
-      <header className="print-header">
-        {view.brand.logoUrl && (
-          // eslint-disable-next-line @next/next/no-img-element -- print fidelity: plain img prints reliably; next/image wrappers break @media print
-          <img src={view.brand.logoUrl} alt={view.brand.clinicName} />
-        )}
-        <div>
-          <div className="clinic">{view.brand.clinicName}</div>
-          <div className="doctor">{view.brand.doctorName}</div>
-        </div>
-      </header>
-      <div className="print-meta">
-        <span>{`${t.patient}: ${view.patientName}`}</span>
-      </div>
+    <PrintShell
+      dir={printDir(locale)}
+      brand={view.brand}
+      patientName={`${t.patient}: ${view.patientName}`}
+      strings={t}
+    >
       {view.days.map((day) => (
         <section className="print-day" key={day.day}>
           <h2>{`${t.day} ${day.day}`}</h2>
@@ -86,13 +78,6 @@ export default async function ExercisePrintPage({
           </table>
         </section>
       ))}
-      <p className="print-note">{t.medicalNote}</p>
-      <footer className="print-footer">
-        <div>{t.platformFooter}</div>
-        <div className="no-print">
-          <PrintButton label={t.print} /> <span>{t.pdfHint}</span>
-        </div>
-      </footer>
-    </div>
+    </PrintShell>
   );
 }

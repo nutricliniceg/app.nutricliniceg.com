@@ -4,18 +4,15 @@ import { getRequestMeta } from '@/lib/api/request-meta';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { campaignUpdateSchema, campaignTestSchema } from '@/lib/newsletter/campaign.schema';
 import { campaignsService } from '@/lib/newsletter/campaigns.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   // Edit a draft/scheduled campaign (NL-31) or test-send (?op=test).
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { id } = await params;
   let body: unknown;
   try {

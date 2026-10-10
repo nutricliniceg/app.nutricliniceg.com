@@ -4,7 +4,7 @@ import { getRequestMeta } from '@/lib/api/request-meta';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { editorService } from '@/lib/plans/editor.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 // NP-07: approve & publish — only from a reconciled state (deviation ≤ 5)

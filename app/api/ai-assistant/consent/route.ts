@@ -6,7 +6,7 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { z } from 'zod';
 import { uuidSchema } from '@/lib/api/validation';
 import { assistantService } from '@/lib/assistant/assistant.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 // CMP-02 inline consent capture for AI sharing (unblocks AI-25 gate).

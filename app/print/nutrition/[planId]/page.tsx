@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { verifyTokenString } from '@/lib/security/session';
 import { printService } from '@/lib/print/print.service';
 import { printStrings, printDir } from '@/lib/print/strings';
-import PrintButton from '../../_components/print-button';
+import PrintShell from '../../_components/print-shell';
 
 // SSR A4 print view (D-11: browser printing only, no server PDF).
 // Auth: doctor cookie OR short-lived share ?key=. Renders server-persisted
@@ -36,21 +36,15 @@ export default async function NutritionPrintPage({
   }
 
   return (
-    <div dir={printDir(locale)}>
-      <header className="print-header">
-        {view.brand.logoUrl && (
-          // eslint-disable-next-line @next/next/no-img-element -- print fidelity: plain img prints reliably; next/image wrappers break @media print
-          <img src={view.brand.logoUrl} alt={view.brand.clinicName} />
-        )}
-        <div>
-          <div className="clinic">{view.brand.clinicName}</div>
-          <div className="doctor">{view.brand.doctorName}</div>
-        </div>
-      </header>
-      <div className="print-meta">
-        <span>{`${t.patient}: ${view.patientName}`}</span>
+    <PrintShell
+      dir={printDir(locale)}
+      brand={view.brand}
+      patientName={`${t.patient}: ${view.patientName}`}
+      meta={
         <span>{`${t.targets}: ${view.targets.calories} ${t.kcalUnit}`}</span>
-      </div>
+      }
+      strings={t}
+    >
       {view.meals.map((meal, i) => (
         <section className="print-day" key={i}>
           <h2>{`${t.day} ${meal.day} — ${meal.mealName}`}</h2>
@@ -74,13 +68,6 @@ export default async function NutritionPrintPage({
           </table>
         </section>
       ))}
-      <p className="print-note">{t.medicalNote}</p>
-      <footer className="print-footer">
-        <div>{t.platformFooter}</div>
-        <div className="no-print">
-          <PrintButton label={t.print} /> <span>{t.pdfHint}</span>
-        </div>
-      </footer>
-    </div>
+    </PrintShell>
   );
 }

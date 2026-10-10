@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { threadReplySchema } from '@/lib/messages/messaging.schema';
 import { messagingService } from '@/lib/messages/messaging.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ patientId: string }> }) {

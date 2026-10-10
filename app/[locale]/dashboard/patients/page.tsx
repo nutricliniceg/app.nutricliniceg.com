@@ -24,6 +24,7 @@ import { Add, ChevronLeft, ChevronRight } from '@carbon/icons-react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { calculateAge } from '@/lib/nutrition/calc';
 
 interface Patient {
   id: string;
@@ -178,7 +179,7 @@ export default function PatientsListPage() {
                   <TableRow key={patient.id}>
                     <TableCell>{patient.name_ar}</TableCell>
                     <TableCell>{t(patient.gender)}</TableCell>
-                    <TableCell>{calculateAge(patient.birth_date)}</TableCell>
+                    <TableCell>{calculateAge(new Date(patient.birth_date))}</TableCell>
                     <TableCell>{`${patient.current_weight_kg ?? patient.initial_weight_kg} kg`}</TableCell>
                     <TableCell>{t(patient.goal)}</TableCell>
                     <TableCell>
@@ -233,15 +234,4 @@ function PrevIcon(props: { className?: string }) {
 
 function NextIcon(props: { className?: string }) {
   return <ChevronRight className={`flip-rtl${props.className ? ` ${props.className}` : ''}`} />;
-}
-
-function calculateAge(birthDate: string): number {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  return age;
 }

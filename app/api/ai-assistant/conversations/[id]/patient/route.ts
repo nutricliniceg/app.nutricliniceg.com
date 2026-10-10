@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { conversationLinkSchema } from '@/lib/assistant/assistant.schema';
 import { assistantService } from '@/lib/assistant/assistant.service';
-import { generationErrorCode, generationErrorExtra } from '@/lib/plans/generation.service';
+import { generationErrorCode, generationErrorExtra } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

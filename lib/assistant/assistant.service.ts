@@ -4,7 +4,7 @@ import { aiConversationsRepository } from '@/lib/db/repositories/ai-conversation
 import { getAiClientForDoctor } from '@/lib/ai/client';
 import { MEDICAL_DISCLAIMER } from '@/lib/ai/disclaimer';
 import { sanitizeUntrusted, fencePatientData } from '@/lib/ai/sanitize';
-import { labService } from '@/lib/labs/lab.service';
+import { labService } from '@/lib/labs';
 import { readBuffer } from '@/lib/files/store';
 import { fail } from '@/lib/plans';
 import { assembleContext, retentionFlags } from './context';

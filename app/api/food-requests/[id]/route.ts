@@ -6,11 +6,7 @@ import { foodRequestReviewSchema } from '@/lib/foods/foods.schema';
 import { foodRequestsService } from '@/lib/foods/food-requests.service';
 import { notificationService } from '@/lib/notifications/service';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
-
+import { isAdminRole } from '@/lib/security/rbac';
 // FL-16: admin approve (→ GLOBAL item, requesting doctor notified) or reject with reason.
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);

@@ -5,13 +5,9 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { bulkEditSchema } from '@/lib/plans/editor.schema';
 import { bulkService } from '@/lib/plans/bulk.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
-
+import { isAdminRole } from '@/lib/security/rbac';
 // NP-14/15/16/18: pass {preview: true} for the affected-positions preview,
 // otherwise applies with pre/post revisions (undo via restore-revision).
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

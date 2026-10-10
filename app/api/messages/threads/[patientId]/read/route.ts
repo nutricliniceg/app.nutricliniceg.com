@@ -3,7 +3,7 @@ import { ok, fail, unauthorized, notFound } from '@/lib/api/response';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { messagingService } from '@/lib/messages/messaging.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ patientId: string }> }) {
   const payload = await verifyTokenFromRequest(request);

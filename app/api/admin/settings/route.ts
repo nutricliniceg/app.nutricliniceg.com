@@ -5,24 +5,21 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { settingSetSchema, testEmailSchema } from '@/lib/admin/admin.schema';
 import { settingsAdminService } from '@/lib/admin/settings-admin.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { sendEmail } from '@/lib/email/mailer';
 import { auditService } from '@/lib/security/audit';
-
-function isSuper(role: string) {
-  return role === 'super_admin';
-}
+import { isAdminRole, isSuperRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && !isSuper(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { searchParams } = new URL(request.url);
   const key = searchParams.get('key');
   try {
-    if (key) return ok({ key, value: await settingsAdminService.get(isSuper(payload.role), key) });
+    if (key) return ok({ key, value: await settingsAdminService.get(isSuperRole(payload.role), key) });
     const aliases = settingsAdminService.senderAliases();
-    return ok({ settings: await settingsAdminService.list(isSuper(payload.role)), sender_aliases: aliases });
+    return ok({ settings: await settingsAdminService.list(isSuperRole(payload.role)), sender_aliases: aliases });
   } catch (err) {
     const code = generationErrorCode(err);
     if (code === 'NOT_FOUND') return fail('NOT_FOUND', 'Setting not found', 404);
@@ -34,7 +31,7 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && !isSuper(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:settings`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { searchParams } = new URL(request.url);
@@ -49,7 +46,7 @@ export async function PUT(request: NextRequest) {
   const parsed = settingSetSchema.safeParse(body);
   if (!parsed.success) return failZod(parsed.error);
   try {
-    const result = await settingsAdminService.set(isSuper(payload.role), key, parsed.data.value, payload.sub);
+    const result = await settingsAdminService.set(isSuperRole(payload.role), key, parsed.data.value, payload.sub);
     await auditService.logAction({
       actorId: payload.sub, actorRole: payload.role, action: 'SETTING_UPDATED',
       entityType: 'SystemSettings', entityId: key, req: getRequestMeta(request),
@@ -64,7 +61,7 @@ export async function PUT(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && !isSuper(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:test-email`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   let body: unknown;

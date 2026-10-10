@@ -33,6 +33,7 @@ import { useParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { LongitudinalPanel, DocumentsPanel, LabDraftsPanel, AiSummaryPanel } from './_components/p10-panels';
 import PortalTokenModal from './_components/portal-token-modal';
+import { calculateAge } from '@/lib/nutrition/calc';
 
 // UI-13: weight chart loads on demand, not with the detail bundle.
 const WeightChart = dynamic(() => import('./_components/weight-chart'), { ssr: false });
@@ -304,7 +305,7 @@ function InfoTab({ patient, t, onUpdateWeight }: { patient: Patient; t: T; onUpd
           <dt style={{ color: '#525252' }}>{t('gender')}</dt>
           <dd style={{ margin: 0 }}><Tag type="cool-gray">{t(patient.gender)}</Tag></dd>
           <dt style={{ color: '#525252' }}>{t('age')}</dt>
-          <dd style={{ margin: 0 }}>{calculateAge(patient.birth_date)} {t('years')}</dd>
+          <dd style={{ margin: 0 }}>{calculateAge(new Date(patient.birth_date))} {t('years')}</dd>
           <dt style={{ color: '#525252' }}>{t('height')}</dt>
           <dd style={{ margin: 0 }}>{patient.height_cm} cm</dd>
           <dt style={{ color: '#525252' }}>{t('currentWeight')}</dt>
@@ -497,15 +498,4 @@ function StatCard({ label, value }: { label: string; value: string }) {
       <div style={{ fontSize: '24px', fontWeight: 600, color: '#161616' }}>{value}</div>
     </div>
   );
-}
-
-function calculateAge(birthDate: string): number {
-  const today = new Date();
-  const birth = new Date(birthDate);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    age--;
-  }
-  return age;
 }

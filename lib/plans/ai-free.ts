@@ -1,7 +1,7 @@
 import { foodsRepository } from '@/lib/db/repositories/foods.repo';
 import { runPlanChecks, MAX_RECONCILE_ATTEMPTS } from '@/lib/nutrition/pipeline';
 import { getAllergySynonyms, itemMatchesAllergy } from '@/lib/nutrition/allergy-guard';
-import { checkKcalConsistency } from '@/lib/foods/consistency';
+import { checkKcalConsistency } from '@/lib/foods';
 import { getAiClientForDoctor } from '@/lib/ai/client';
 import { matchFoodByName } from './matching';
 import { dbItem, toCheckMeals, applyReconciledGrams, toPayload } from './day-items';

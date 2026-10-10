@@ -6,11 +6,12 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { contactStatusSchema } from '@/lib/admin/admin.schema';
 import { contactsRepository } from '@/lib/db/repositories/contacts.repo';
 import { auditService } from '@/lib/security/audit';
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const status = new URL(request.url).searchParams.get('status') || undefined;
   return ok({ messages: await contactsRepository.list(status) });
 }
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:contacts`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { searchParams } = new URL(request.url);

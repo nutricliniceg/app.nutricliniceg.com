@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import { ok, fail, notFound } from '@/lib/api/response';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { portalService, PORTAL_INVALID } from '@/lib/portal/portal.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 // Public token endpoint (PP-10): wrong/expired/revoked share ONE generic
 // error (anti-enumeration). No accounts, no passwords (PP-13).

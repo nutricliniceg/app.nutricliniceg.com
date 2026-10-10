@@ -3,16 +3,16 @@ import { ok, fail, unauthorized, notFound } from '@/lib/api/response';
 import { getRequestMeta } from '@/lib/api/request-meta';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { privacyService } from '@/lib/admin/privacy.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
+import { isAdminRole } from '@/lib/security/rbac';
 // CMP-04: admin export (GET → JSON download, audited) + erasure
 // (DELETE → cascade hard-delete, audited). Super-admin and admin allowed;
 // self-erasure is blocked in the service.
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { id } = await params;
   try {
     const data = await privacyService.exportDoctorData(id);
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'admin' && payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { id } = await params;
   const confirm = new URL(request.url).searchParams.get('confirm');
   if (confirm !== 'erase') return fail('CONFIRM_REQUIRED', 'Add ?confirm=erase to confirm erasure', 400);

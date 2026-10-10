@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { adaptiveSuggestSchema } from '@/lib/templates/templates.schema';
 import { adaptiveService } from '@/lib/templates/adaptive.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 export async function POST(request: NextRequest) {

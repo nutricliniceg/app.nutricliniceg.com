@@ -18,7 +18,7 @@ async function autoNewsletter(fresh: {
     if (!fresh.newsletter_sent_at && fresh.send_newsletter) {
       const { ids } = await campaignsService.autoFromPost({ ...fresh, newsletter_sent_at: null });
       if (ids.length > 0) {
-        await blogAdminRepository.update(fresh.id, { newsletter_sent_at: new Date() } as Record<string, unknown> as never);
+        await blogAdminRepository.update(fresh.id, { newsletter_sent_at: new Date() });
       }
     }
   } catch {

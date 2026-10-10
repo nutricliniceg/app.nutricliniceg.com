@@ -6,12 +6,13 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { foodListsService } from '@/lib/foods/food-lists.service';
 import { serviceErrorCode } from '@/lib/foods/foods.service';
 import { auditService } from '@/lib/security/audit';
+import { isDoctorRole } from '@/lib/security/rbac';
 
 // FL-13: "Copy public list as base" — editable private copy for the doctor.
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'doctor') return fail('FORBIDDEN', 'Only doctors copy public lists', 403);
+  if (!isDoctorRole(payload.role)) return fail('FORBIDDEN', 'Only doctors copy public lists', 403);
   const rateLimit = await checkRateLimit(`${payload.sub}:foodlists:copy`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { id } = await params;

@@ -7,10 +7,7 @@ import { foodRequestCreateSchema } from '@/lib/foods/foods.schema';
 import { foodRequestsService } from '@/lib/foods/food-requests.service';
 import { serviceErrorCode } from '@/lib/foods/foods.service';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
+import { isAdminRole, isDoctorRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
@@ -25,7 +22,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'doctor') return forbidden('Only doctors submit food requests');
+  if (!isDoctorRole(payload.role)) return forbidden('Only doctors submit food requests');
   const rateLimit = await checkRateLimit(`${payload.sub}:foodrequests:create`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   let body: unknown;

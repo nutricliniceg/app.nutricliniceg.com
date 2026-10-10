@@ -5,7 +5,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { restoreRevisionSchema } from '@/lib/plans/editor.schema';
 import { editorService } from '@/lib/plans/editor.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

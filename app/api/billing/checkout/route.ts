@@ -4,7 +4,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { checkoutSchema } from '@/lib/billing/billing.schema';
 import { billingService } from '@/lib/billing/billing.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);

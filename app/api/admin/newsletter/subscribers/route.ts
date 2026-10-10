@@ -7,17 +7,14 @@ import { subscriberAddSchema, subscriberListQuerySchema } from '@/lib/newsletter
 import { newsletterService } from '@/lib/newsletter/newsletter.service';
 import { subscribersToCsv } from '@/lib/newsletter/tokens-csv';
 import { subscribersRepository } from '@/lib/db/repositories/subscribers.repo';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { searchParams } = new URL(request.url);
   if (searchParams.get('view') === 'stats') {
     return ok(await subscribersRepository.stats());
@@ -34,7 +31,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:sub-add`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   let body: unknown;
@@ -61,7 +58,7 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const id = new URL(request.url).searchParams.get('id');
   if (!id) return fail('ID_REQUIRED', 'Query param id is required', 400);
   try {
@@ -81,7 +78,7 @@ export async function PUT(request: NextRequest) {
   // CSV import (source=import, pending until each confirms).
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:sub-import`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   let text: string;
@@ -104,7 +101,7 @@ export async function PATCH(request: NextRequest) {
   // CSV export (audited). Toggle via ?format=csv on this route.
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const parsed = subscriberListQuerySchema.safeParse(Object.fromEntries(new URL(request.url).searchParams));
   if (!parsed.success) return failZod(parsed.error);
   const result = await subscribersRepository.list({

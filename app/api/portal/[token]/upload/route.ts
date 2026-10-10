@@ -4,7 +4,7 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { portalTokensRepository } from '@/lib/db/repositories/portal-tokens.repo';
 import { filesService, uploadErrorCode } from '@/lib/files/files.service';
 import { PORTAL_INVALID } from '@/lib/portal';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 // Token-authed image upload for message attachments (MSG-06: images only,
 // 10MB, magic-byte verified + re-encoded by the P10 pipeline).

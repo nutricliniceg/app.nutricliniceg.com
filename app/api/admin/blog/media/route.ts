@@ -5,16 +5,13 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { mediaUploadMetaSchema, mediaListQuerySchema, mediaPatchSchema } from '@/lib/blog-admin/post.schema';
 import { mediaService } from '@/lib/blog-admin/media.service';
 import { mediaRepository } from '@/lib/db/repositories/media.repo';
-import { generationErrorCode } from '@/lib/plans/generation.service';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { generationErrorCode } from '@/lib/errors/fail';
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { searchParams } = new URL(request.url);
   const parsed = mediaListQuerySchema.safeParse(Object.fromEntries(searchParams));
   if (!parsed.success) return failZod(parsed.error);
@@ -25,7 +22,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:media`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   let form: FormData;
@@ -60,7 +57,7 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const id = new URL(request.url).searchParams.get('id');
   if (!id) return fail('ID_REQUIRED', 'Query param id is required', 400);
   let body: unknown;
@@ -80,7 +77,7 @@ export async function PATCH(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const id = new URL(request.url).searchParams.get('id');
   if (!id) return fail('ID_REQUIRED', 'Query param id is required', 400);
   try {

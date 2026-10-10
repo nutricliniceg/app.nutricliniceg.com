@@ -3,7 +3,8 @@ import { ok, fail, unauthorized, notFound } from '@/lib/api/response';
 import { getRequestMeta } from '@/lib/api/request-meta';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
-import { generationService, generationErrorCode } from '@/lib/plans/generation.service';
+import { generationService } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
 
 // NUT-16: swap every unverified item to the nearest-calorie ADMIN item.

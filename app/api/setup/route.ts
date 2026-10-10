@@ -1,24 +1,21 @@
-import { NextResponse } from 'next/server';
 import { env } from '@/lib/env';
+import { ok, notFound } from '@/lib/api/response';
 
+// SEC-01/SEC-03: /api/setup returns 404 in production — the endpoint must not
+// be discoverable there. Non-production answers use the shared envelope so
+// every route in the app speaks one response shape.
 export async function GET() {
   if (env.NODE_ENV === 'production') {
-    return new NextResponse('Not Found', { status: 404 });
+    return notFound('Not Found');
   }
 
-  return NextResponse.json({
-    status: 'ok',
-    message: 'Setup endpoint placeholder (development only)',
-  });
+  return ok({ status: 'ok', message: 'Setup endpoint placeholder (development only)' });
 }
 
 export async function POST() {
   if (env.NODE_ENV === 'production') {
-    return new NextResponse('Not Found', { status: 404 });
+    return notFound('Not Found');
   }
 
-  return NextResponse.json({
-    status: 'ok',
-    message: 'Setup execution placeholder (development only)',
-  });
+  return ok({ status: 'ok', message: 'Setup execution placeholder (development only)' });
 }

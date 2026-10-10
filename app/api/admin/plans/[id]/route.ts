@@ -5,8 +5,9 @@ import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { subscriptionPlanPatchSchema } from '@/lib/admin/admin.schema';
 import { pricingService } from '@/lib/admin/pricing.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 import { auditService } from '@/lib/security/audit';
+import { isSuperRole } from '@/lib/security/rbac';
 
 const SNAKE_TO_CAMEL: Record<string, string> = {
   name_ar: 'nameAr', name_en: 'nameEn', description_ar: 'descriptionAr', description_en: 'descriptionEn',
@@ -18,7 +19,7 @@ const SNAKE_TO_CAMEL: Record<string, string> = {
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isSuperRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:plans`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { id } = await params;
@@ -50,7 +51,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (payload.role !== 'super_admin') return fail('NOT_FOUND', 'Not found', 404);
+  if (!isSuperRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const { id } = await params;
   try {
     await pricingService.remove(true, id);

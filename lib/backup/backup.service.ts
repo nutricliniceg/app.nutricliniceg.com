@@ -7,7 +7,7 @@ import { execFile } from 'child_process';
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { executeQuery } from '@/lib/db/pool';
+import { backupRepository, CHECKSUM_TABLES } from '@/lib/db/repositories/backup.repo';
 import { logger } from '@/lib/observability/logger';
 
 function backupDir(): string {
@@ -61,20 +61,8 @@ async function maybeUploadOffServer(filePath: string): Promise<string | null> {
   return `${bucket}/${name}`;
 }
 
-const CHECKSUM_TABLES = ['User', 'Patient', 'Subscription', 'NewsletterSubscriber', 'BlogPost', 'AuditLog'];
-
 async function rowCounts(db: string): Promise<Record<string, number>> {
-  const out: Record<string, number> = {};
-  for (const t of CHECKSUM_TABLES) {
-    try {
-      // eslint-disable-next-line no-restricted-syntax -- db/table are fixed allowlists (D-01)
-      const rows = await executeQuery<Array<{ count: number }>>(`SELECT COUNT(*) as count FROM \`${db}\`.\`${t}\``);
-      out[t] = Number(rows[0]?.count ?? -1);
-    } catch {
-      out[t] = -1;
-    }
-  }
-  return out;
+  return backupRepository.rowCounts(db);
 }
 
 export const backupService = {
@@ -93,10 +81,11 @@ export const backupService = {
       return null;
     });
     const pruned = await this.prune(dir);
-    await executeQuery(
-      'INSERT INTO BackupReport (id, file_path, bytes, off_server, status, detail) VALUES (UUID(), ?, ?, ?, ?, ?)',
-      [file, enc.length, offServer, offServer ? 'ok' : 'local-only', offServer ? 'uploaded off-server' : 'S3 env absent — local only']
-    ).catch(() => undefined);
+    await backupRepository.insertReport({
+      filePath: file, bytes: enc.length, offServer,
+      status: offServer ? 'ok' : 'local-only',
+      detail: offServer ? 'uploaded off-server' : 'S3 env absent — local only',
+    }).catch(() => undefined);
     logger.info('backup.done', { file, bytes: enc.length, offServer });
     return { file, bytes: enc.length, offServer, pruned };
   },
@@ -120,7 +109,6 @@ export const backupService = {
         }
       }
     }
-    void dir;
     return pruned;
   },
 
@@ -143,10 +131,10 @@ export const backupService = {
     const restored = await rowCounts(scratch);
     const match = CHECKSUM_TABLES.every((t) => live[t] === restored[t] && live[t] >= 0);
     const detail = JSON.stringify({ live, restored, match });
-    await executeQuery(
-      'INSERT INTO BackupReport (id, file_path, bytes, off_server, status, detail) VALUES (UUID(), ?, ?, NULL, ?, ?)',
-      [file, blob.length, match ? 'verified' : 'mismatch', detail]
-    ).catch(() => undefined);
+    await backupRepository.insertReport({
+      filePath: file, bytes: blob.length, offServer: null,
+      status: match ? 'verified' : 'mismatch', detail,
+    }).catch(() => undefined);
     logger.info('backup.verify', { file, match });
     return { file, match, live, restored };
   },

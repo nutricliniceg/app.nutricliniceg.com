@@ -3,7 +3,7 @@ import { ok, fail, unauthorized, notFound } from '@/lib/api/response';
 import { checkRateLimit, RATE_LIMITS } from '@/lib/security/rate-limit';
 import { verifyTokenFromRequest } from '@/lib/security/session';
 import { assistantService } from '@/lib/assistant/assistant.service';
-import { generationErrorCode } from '@/lib/plans/generation.service';
+import { generationErrorCode } from '@/lib/errors/fail';
 
 // Transparency (AI-24): the EXACT last outbound payload, post-anonymization.
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

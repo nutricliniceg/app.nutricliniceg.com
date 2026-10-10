@@ -44,11 +44,3 @@ export function forbidden(message = 'Forbidden'): NextResponse {
 export function notFound(message = 'Resource not found'): NextResponse {
   return fail('NOT_FOUND', message, 404);
 }
-
-export function serverError(message = 'Internal server error'): NextResponse {
-  return fail('INTERNAL_ERROR', message, 500);
-}
-
-export function tooManyRequests(message = 'Too many requests'): NextResponse {
-  return fail('RATE_LIMITED', message, 429);
-}

@@ -2,8 +2,5 @@
 // 6 identical local copies removed). This module keeps the plans-domain
 // names AND the original 'GENERATION_FAILED' fallback so existing importers
 // observe byte-identical behavior.
-export { serviceFail as fail, serviceErrorExtra as generationErrorExtra } from '@/lib/errors/fail';
-
-export function generationErrorCode(err: unknown): string {
-  return (err as { code?: string }).code ?? 'GENERATION_FAILED';
-}
+export { serviceFail as fail } from '@/lib/errors/fail';
+export { generationErrorCode, generationErrorExtra } from '@/lib/errors/fail';

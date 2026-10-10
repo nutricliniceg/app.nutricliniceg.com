@@ -6,10 +6,7 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { foodListCreateSchema } from '@/lib/foods/foods.schema';
 import { foodListsService } from '@/lib/foods/food-lists.service';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);

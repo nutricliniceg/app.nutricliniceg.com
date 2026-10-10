@@ -8,19 +8,13 @@ import { aiProviderRepository } from '@/lib/db/repositories/ai.repo';
 import { messagesRepository } from '@/lib/db/repositories/messages.repo';
 import { userRepository } from '@/lib/db/repositories/users.repo';
 import { notificationService } from '@/lib/notifications/service';
+import { notifyAllAdmins } from '@/lib/notifications/admin-alerts';
 import { sendEmail } from '@/lib/email/mailer';
 import { backupService } from '@/lib/backup/backup.service';
 import { logger } from '@/lib/observability/logger';
 
 async function notifyAdmins(title: string, body: string): Promise<void> {
-  try {
-    const admins = await userRepository.listAllForBroadcast(null);
-    for (const a of admins.filter((u) => u.role === 'admin' || u.role === 'super_admin')) {
-      try {
-        await notificationService.notify({ userId: a.id, title, body, type: 'system' });
-      } catch { /* per-admin best effort */ }
-    }
-  } catch { /* never fail a cron task on alerting */ }
+  await notifyAllAdmins({ title, body });
 }
 
 // Every handler is idempotent: state flags (reminder sent-flags, unique

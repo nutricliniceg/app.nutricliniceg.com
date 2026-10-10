@@ -2,19 +2,14 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { fail, failZod } from './response';
 
+/** Canonical UUID field validator, reused across API boundaries (hard invariant #1). */
 export const uuidSchema = z.string().uuid({ message: 'Invalid UUID format' });
 
-export const emailSchema = z.string().email({ message: 'Invalid email format' });
-
-export const paginationSchema = z.object({
-  page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(100).default(20),
-});
-
-export const dateRangeSchema = z.object({
-  from: z.string().datetime().optional(),
-  to: z.string().datetime().optional(),
-});
+// NOTE: email / pagination / date-range fragments are intentionally NOT defined
+// here. They already have one owner each (lib/auth/auth.schema.ts and the
+// per-feature *.schema.ts modules); a parallel copy here would be exactly the
+// duplicate-schema drift this module is meant to prevent. Add a fragment to
+// the owning feature schema instead.
 
 export function parseJsonBody<T>(schema: z.ZodSchema<T>) {
   return async (request: Request): Promise<{ data: T } | NextResponse> => {

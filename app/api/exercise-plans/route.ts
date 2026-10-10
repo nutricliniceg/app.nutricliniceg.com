@@ -7,10 +7,7 @@ import { exerciseGenerateSchema, exerciseListQuerySchema } from '@/lib/exercises
 import { exerciseGenerationService, exerciseErrorCode } from '@/lib/exercises/generation.service';
 import { chainErrorCode } from '@/lib/ai/chain';
 import { auditService } from '@/lib/security/audit';
-
-function isAdminRole(role: string): boolean {
-  return role === 'admin' || role === 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);

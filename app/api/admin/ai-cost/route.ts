@@ -6,10 +6,7 @@ import { verifyTokenFromRequest } from '@/lib/security/session';
 import { aiCostQuerySchema } from '@/lib/admin/admin.schema';
 import { aiGatewayService } from '@/lib/admin/ai-gateway.service';
 import { auditService } from '@/lib/security/audit';
-
-function denied(role: string) {
-  return role !== 'admin' && role !== 'super_admin';
-}
+import { isAdminRole } from '@/lib/security/rbac';
 
 function monthBounds(now = new Date()): { from: string; to: string } {
   const from = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0).toISOString();
@@ -20,7 +17,7 @@ function monthBounds(now = new Date()): { from: string; to: string } {
 export async function GET(request: NextRequest) {
   const payload = await verifyTokenFromRequest(request);
   if (!payload) return unauthorized();
-  if (denied(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
+  if (!isAdminRole(payload.role)) return fail('NOT_FOUND', 'Not found', 404);
   const rateLimit = await checkRateLimit(`${payload.sub}:admin:ai-cost`, RATE_LIMITS.ai);
   if (!rateLimit.allowed) return fail('RATE_LIMITED', 'Too many requests', 429);
   const { searchParams } = new URL(request.url);

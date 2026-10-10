@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
+import { ok } from '@/lib/api/response';
 import { maintenanceRepository } from '@/lib/db/repositories/maintenance.repo';
 import { cronRepository } from '@/lib/db/repositories/cron.repo';
 import { aiProviderRepository } from '@/lib/db/repositories/ai.repo';
@@ -38,7 +39,8 @@ async function smtpCheck(): Promise<{ ok: boolean; cached: boolean }> {
 }
 
 export async function GET(_request: NextRequest) {
-  setRequestId(newRequestId());
+  const requestId = newRequestId();
+  setRequestId(requestId);
   const [db, smtp, providers, cronRuns] = await Promise.all([
     dbPing(),
     smtpCheck(),
@@ -47,11 +49,13 @@ export async function GET(_request: NextRequest) {
   ]);
   const providerStatuses = providers.map((p) => ({
     id: p.id, type: p.type, enabled: Boolean(p.is_enabled),
-    failures: Number((p as unknown as { failure_count?: number }).failure_count ?? 0),
+    failures: Number(p.failure_count ?? 0),
   }));
   const body = {
     status: db.ok ? 'ok' : 'degraded',
-    requestId: null as string | null,
+    // Surfaced so an operator can correlate a degraded probe with the JSON logs
+    // (OBS-03); it is a fresh UUID, never any secret.
+    requestId,
     components: {
       db,
       smtp,
@@ -63,5 +67,5 @@ export async function GET(_request: NextRequest) {
     },
   };
   setRequestId(null);
-  return NextResponse.json({ success: true, data: body });
+  return ok(body);
 }

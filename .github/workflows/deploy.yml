@@ -41,7 +41,22 @@ jobs:
           mkdir -p artifact/.next
           cp -r .next/static artifact/.next/static
           cp package.json artifact/
-          cp -r public artifact/ 2>/dev/null || true
+          # P32-fix: fail LOUDLY if public/ is missing.
+          # Next standalone does not copy public/ itself, so a missing public/
+          # means the self-hosted IBM Plex fonts (ui/styles/_fonts.scss ->
+          # /fonts/*.woff2) would 404 and the site would silently render with
+          # the wrong typeface. This used to be `cp ... 2>/dev/null || true`,
+          # which swallowed the failure and shipped a font-less release.
+          if [ ! -d public ]; then
+            echo "::error::public/ not found - self-hosted Plex fonts would not ship."
+            exit 1
+          fi
+          cp -r public artifact/
+          # Sanity-check the copy actually produced files before tarring.
+          if [ -z "$(find artifact/public -type f -print -quit)" ]; then
+            echo "::error::public/ copied but artifact/public is empty."
+            exit 1
+          fi
           tar -czf release.tgz -C artifact .
 
       - name: Resolve target config

@@ -797,7 +797,7 @@
     "featuredBadge": "Most popular",
     "planIncludes": "What's included",
     "planCta": "Subscribe to {plan}",
-    "planTagline": "Total price for the whole period â€” not a monthly rate.",
+    "planTagline": "Total price for the whole period â—” not a monthly rate.",
     "period_month": "one month",
     "period_sixMonths": "6 months",
     "period_year": "full year",
@@ -999,7 +999,7 @@
     "login": "Sign in",
     "heroTitle": "The nutrition clinic platform that",
     "heroTitleAccent": "starts with the patient and ends with an approved plan",
-    "heroSubtitle": "Create meal and exercise plans, review them, and share them with your patients in minutes â€” with complete privacy for health data.",
+    "heroSubtitle": "Create meal and exercise plans, review them, and share them with your patients in minutes â—” with complete privacy for health data.",
     "heroCtaPrimary": "See pricing",
     "heroCtaSecondary": "Start free",
     "heroStat1": "steps to get going",
@@ -1008,7 +1008,7 @@
     "valueTitle": "Why NutriClinicEG?",
     "valueSubtitle": "Everything a nutrition clinic needs, in one place.",
     "value1Title": "Fully generated plans",
-    "value1Body": "A balanced algorithm that respects calories, fibre and chronic conditions â€” not just a meal grid.",
+    "value1Body": "A balanced algorithm that respects calories, fibre and chronic conditions â—” not just a meal grid.",
     "value2Title": "Doctor review before publish",
     "value2Body": "No plan reaches a patient until you have reviewed and approved it, as it should be.",
     "value3Title": "A portal that needs no signup",
@@ -1024,7 +1024,7 @@
     "how3Title": "Review and publish",
     "how3Body": "Edit what you need, confirm approval, and share the link with the patient.",
     "templatesTitle": "Ready-made template library",
-    "templatesSubtitle": "Start from a prepared template instead of from scratch â€” balanced, keto, low-sodium and vegetarian.",
+    "templatesSubtitle": "Start from a prepared template instead of from scratch â—” balanced, keto, low-sodium and vegetarian.",
     "templatesEmpty": "Templates will appear here as soon as they are available.",
     "blogTitle": "From the blog",
     "blogSubtitle": "Practical writing on clinical nutrition for practitioners.",
@@ -1034,6 +1034,6 @@
     "ctaTitle": "Ready to start?",
     "ctaBody": "Start with a table and see everything before you decide.",
     "ctaButton": "See pricing",
-    "footerNote": "A clinical decision-support platform â€” not a substitute for medical advice."
+    "footerNote": "A clinical decision-support platform â—” not a substitute for medical advice."
   }
 }

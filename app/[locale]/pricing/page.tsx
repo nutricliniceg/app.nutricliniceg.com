@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { billingService } from '@/lib/billing/billing.service';
 import CheckoutPanel from './_components/checkout-panel';
 import SiteFooter from '../_components/site-footer';
+import SiteHeader from '../_components/site-header';
 
 interface PublicPlan {
   id: string;
@@ -20,8 +21,18 @@ interface PublicPlan {
 // P32-DESIGN: the zero-DB-404 rule still holds — if the plans query fails the
 // panel renders an informational notice instead of throwing, so /ar/pricing
 // returns 200 on an empty database.
-export default async function PricingPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function PricingPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { locale } = await params;
+  const sp = (await searchParams) ?? {};
+  const search = new URLSearchParams(
+    Object.entries(sp).map(([k, v]) => [k, String(v)] as [string, string])
+  ).toString();
   const t = await getTranslations({ locale, namespace: 'billing' });
   let plans: PublicPlan[] = [];
   try {
@@ -31,6 +42,7 @@ export default async function PricingPage({ params }: { params: Promise<{ locale
   }
   return (
     <div>
+      <SiteHeader locale={locale === 'en' ? 'en' : 'ar'} pathname={`/${locale === 'en' ? 'en' : 'ar'}/pricing`} search={search} />
       <main className="nc-container">
         <h1 className="nc-section__title">{t('pricingTitle')}</h1>
         <CheckoutPanel plans={plans} locale={locale} />

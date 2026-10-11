@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { Button } from '@carbon/react';
 import SiteFooter from './_components/site-footer';
+import SiteHeader from './_components/site-header';
 import { blogService } from '@/lib/blog/blog.service';
 import { templatesRepository } from '@/lib/db/repositories/templates.repo';
 
@@ -17,8 +18,18 @@ import { templatesRepository } from '@/lib/db/repositories/templates.repo';
  * calls notFound() nowhere, so an empty database renders the full marketing
  * page with empty-state copy instead of throwing.
  */
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function HomePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { locale } = await params;
+  const sp = (await searchParams) ?? {};
+  const search = new URLSearchParams(
+    Object.entries(sp).map(([k, v]) => [k, String(v)] as [string, string])
+  ).toString();
   const loc: 'ar' | 'en' = locale === 'en' ? 'en' : 'ar';
   const t = await getTranslations({ locale: loc, namespace: 'home' });
 
@@ -49,6 +60,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <div>
+      <SiteHeader locale={loc} pathname={`/${loc}`} search={search} />
       <main>
         <section className="nc-hero">
           <div className="nc-container">

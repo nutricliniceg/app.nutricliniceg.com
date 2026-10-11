@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { Tag } from '@carbon/react';
 import { blogService } from '@/lib/blog/blog.service';
 import NewsletterCta from './_components/newsletter-cta';
+import SiteHeader from '../_components/site-header';
 
 // P32-DESIGN §4 — blog index as a card grid (cover placeholder + reading time).
 // Zero-DB-404 preserved: the list call is wrapped so an empty database renders
@@ -20,6 +21,7 @@ export default async function BlogIndexPage({
   const t = await getTranslations({ locale: loc, namespace: 'blog' });
   const th = await getTranslations({ locale: loc, namespace: 'home' });
   const page = Math.max(1, Number(query.page ?? 1) || 1);
+  const search = query.page ? `page=${page}` : '';
 
   let posts: Array<{
     id: string;
@@ -44,6 +46,7 @@ export default async function BlogIndexPage({
   const base = `/${loc}/blog`;
   return (
     <div className="nc-container">
+      <SiteHeader locale={loc} pathname={`/${loc}/blog`} search={search} />
       <h1 className="nc-section__title">{t('indexTitle')}</h1>
       <p className="nc-section__subtitle">{t('postCount', { n: total })}</p>
 

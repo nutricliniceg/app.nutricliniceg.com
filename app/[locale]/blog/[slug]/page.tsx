@@ -6,6 +6,7 @@ import { blogService } from '@/lib/blog/blog.service';
 import { canonicalFor, hreflangAlternates, articleJsonLd, breadcrumbJsonLd, extractToc } from '@/lib/blog/seo';
 import { sanitizeBlogHtml, readingMinutes, injectHeadingIds } from '@/lib/blog/render';
 import NewsletterCta from '../_components/newsletter-cta';
+import SiteHeader from '../../_components/site-header';
 
 function tagsOf(post: { tags: string | null }): string[] {
   if (!post.tags) return [];
@@ -45,10 +46,16 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { locale, slug } = await params;
+  const sp = (await searchParams) ?? {};
+  const search = new URLSearchParams(
+    Object.entries(sp).map(([k, v]) => [k, String(v)] as [string, string])
+  ).toString();
   const loc = locale === 'en' ? 'en' : 'ar';
   const t = await getTranslations({ locale: loc, namespace: 'blog' });
   const post = await blogService.getBySlug(loc, slug);
@@ -69,6 +76,7 @@ export default async function BlogPostPage({
 
     return (
     <article className="nc-container">
+      <SiteHeader locale={loc} pathname={`/${loc}/blog/${slug}`} search={search} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }} />
 

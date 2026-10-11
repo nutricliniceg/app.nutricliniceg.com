@@ -95,15 +95,21 @@ export const blogRepository = {
     await executeQuery('UPDATE BlogPost SET view_count = view_count + 1 WHERE id = ?', [id]);
   },
 
+  // NOTE: `liveClause()` qualifies every column with `p.` (p.status,
+  // p.published_at). These two selects previously read FROM BlogPost with NO
+  // alias, so MySQL 8 rejected the `p.` qualifier:
+  //   ER_BAD_FIELD_ERROR (1054) "Unknown column 'p.status' in 'WHERE'"
+  // which 500'd /sitemap.xml and /llms.txt on staging (P32-DYNAMIC). Fixed by
+  // aliasing the table exactly like listPublished/getBySlug already do.
   async sitemapRows(): Promise<Array<{ slug: string; locale: string; updated_at: Date; translation_of: string | null; id: string }>> {
     return executeQuery<Array<{ slug: string; locale: string; updated_at: Date; translation_of: string | null; id: string }>>(
-      'SELECT slug, locale, updated_at, translation_of, id FROM BlogPost WHERE ' + liveClause() + ' ORDER BY published_at DESC LIMIT 5000'
+      'SELECT p.slug, p.locale, p.updated_at, p.translation_of, p.id FROM BlogPost p WHERE ' + liveClause() + ' ORDER BY p.published_at DESC LIMIT 5000'
     );
   },
 
   async llmsRows(): Promise<Array<{ slug: string; locale: string; title: string; published_at: Date | null }>> {
     return executeQuery<Array<{ slug: string; locale: string; title: string; published_at: Date | null }>>(
-      'SELECT slug, locale, title, published_at FROM BlogPost WHERE ' + liveClause() + ' ORDER BY published_at DESC LIMIT 500'
+      'SELECT p.slug, p.locale, p.title, p.published_at FROM BlogPost p WHERE ' + liveClause() + ' ORDER BY p.published_at DESC LIMIT 500'
     );
   },
 };

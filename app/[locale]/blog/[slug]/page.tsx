@@ -67,15 +67,21 @@ export default async function BlogPostPage({
   });
   const crumbLd = breadcrumbJsonLd(loc, post.slug, post.title);
 
-  return (
-    <article>
+    return (
+    <article className="nc-container">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }} />
-      <h1>{post.title}</h1>
-      <p>{`${t('readingTime', { n: minutes })} · ${t('views', { n: Number(post.view_count) + 1 })}`}</p>
+
+      <header className="nc-articleheader">
+        <h1 className="nc-section__title">{post.title}</h1>
+        <p style={{ color: 'var(--cds-text-secondary)' }}>
+          {`${t('readingTime', { n: minutes })} — ${t('views', { n: Number(post.view_count) + 1 })}`}
+        </p>
+      </header>
+
       {toc.length > 0 && (
-        <nav aria-label={t('toc')}>
-          <ul>
+        <nav aria-label={t('toc')} className="nc-card" style={{ marginBlockEnd: '2rem' }}>
+          <ul style={{ margin: 0, paddingInlineStart: '1.25rem' }}>
             {toc.map((e) => (
               <li key={e.anchor}>
                 <a href={`#${e.anchor}`}>{e.text}</a>
@@ -84,15 +90,26 @@ export default async function BlogPostPage({
           </ul>
         </nav>
       )}
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+
+      {/* P32-DESIGN §4 — `.nc-article` supplies IBM Plex typography, the
+          heading hierarchy, table styling and RTL-first spacing for the
+          sanitised Markdown HTML. */}
+      <div className="nc-article" dangerouslySetInnerHTML={{ __html: html }} />
+
       {related.length > 0 && (
-        <section>
-          <h2>{t('related')}</h2>
-          {related.map((r) => (
-            <h3 key={r.id}>
-              <Link href={`/${loc}/blog/${r.slug}`}>{r.title}</Link>
-            </h3>
-          ))}
+        <section style={{ marginBlockStart: '3rem' }}>
+          <h2 className="nc-section__title">{t('related')}</h2>
+          <div className="nc-postgrid">
+            {related.map((r) => (
+              <article className="nc-card" key={r.id}>
+                <h3 className="nc-post__title">
+                  <Link href={`/${loc}/blog/${r.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {r.title}
+                  </Link>
+                </h3>
+              </article>
+            ))}
+          </div>
         </section>
       )}
       <NewsletterCta />

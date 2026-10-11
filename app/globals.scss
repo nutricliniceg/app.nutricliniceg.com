@@ -1,11 +1,132 @@
+@use './ui/styles/fonts';
 @use './ui/styles/theme';
+@use './ui/styles/public';
 
+/* P32-DESIGN font root-cause fix: apply the Plex stack at the root, not just
+   on <body>. Previously only `body` carried a font-family, so any element that
+   Carbon's own type module styled (headings, form controls, tables) could fall
+   through to the UA default serif. Setting it on :root and inheriting makes the
+   whole document — public and authenticated — render IBM Plex Sans Arabic for
+   Arabic and Latin alike. */
+:root {
+  font-family: var(--nc-font-sans);
+}
+
+html,
 body {
-  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-family: var(--nc-font-sans);
+  /* Stop the browser faking a heavier weight when a real face is missing. */
+  font-synthesis-weight: none;
+}
+
+/* Headings and emphasis inherit the stack explicitly so they can never resolve
+   to the UA serif default, and read as Plex in both scripts. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b,
+em,
+button,
+input,
+select,
+textarea,
+label,
+th,
+td {
+  font-family: inherit;
 }
 
 /* UI-07: mirror directional icons in RTL locales. Apply class="flip-rtl"
    (or flip-rtl className) to chevrons/arrows whose meaning is "forward". */
 [dir='rtl'] .flip-rtl {
   transform: scaleX(-1);
+}
+
+/* P32-DESIGN: public article typography (blog post + legal pages). */
+.nc-article {
+  font-family: var(--nc-font-sans);
+  line-height: 1.75;
+}
+
+.nc-article h1,
+.nc-article h2,
+.nc-article h3,
+.nc-article h4 {
+  font-family: var(--nc-font-sans);
+  font-weight: 600;
+  line-height: 1.35;
+  margin-block-start: 1.5em;
+  margin-block-end: 0.5em;
+}
+
+.nc-article h1 {
+  font-size: 2rem;
+}
+.nc-article h2 {
+  font-size: 1.5rem;
+}
+.nc-article h3 {
+  font-size: 1.25rem;
+}
+
+.nc-article p,
+.nc-article li {
+  font-family: var(--nc-font-sans);
+  line-height: 1.8;
+  margin-block-end: 1em;
+}
+
+.nc-article ul,
+.nc-article ol {
+  padding-inline-start: 1.5em;
+  margin-block-end: 1em;
+}
+
+.nc-article li {
+  margin-block-end: 0.35em;
+}
+
+.nc-article code,
+.nc-article pre {
+  font-family: 'IBM Plex Mono', 'IBM Plex Sans Arabic', monospace;
+}
+
+.nc-article blockquote {
+  border-inline-start: 4px solid var(--cds-interactive);
+  padding-inline-start: 1rem;
+  margin-inline: 0;
+  color: var(--cds-text-secondary);
+}
+
+.nc-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: 1.5em;
+  font-family: var(--nc-font-sans);
+}
+
+.nc-article th,
+.nc-article td {
+  border: 1px solid var(--cds-border-subtle, #e0e0e0);
+  padding: 0.6rem 0.75rem;
+  text-align: start;
+}
+
+.nc-article th {
+  font-weight: 600;
+  background: var(--cds-layer-01, #f4f4f4);
+}
+
+/* Direction-agnostic number rendering: isolates a Latin/numeric run inside RTL
+   text so "1,599 ج.م" never reflows or reorders. */
+.nc-num {
+  font-family: var(--nc-font-numeric);
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: isolate;
+  direction: ltr;
+  display: inline-block;
 }

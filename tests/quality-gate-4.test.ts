@@ -85,14 +85,30 @@ describe('deleted dead modules stay deleted', () => {
   });
 
   it('both legal pages import the one shared module', () => {
+    // P32-DESIGN-2: the two legal pages now render a single shared
+    // `LegalDocument` component (which owns the legalPage() call, the safe
+    // text rendering and the page shell), so the properties this gate protects
+    // are asserted on that component and the pages are checked for delegation.
+    const shared = fs.readFileSync(
+      path.join(ROOT, 'app/[locale]/_components/legal-document.tsx'),
+      'utf8',
+    );
+    expect(shared).toContain("from '@/lib/cms/legal'");
+    // Never dangerouslySetInnerHTML on a CMS-sourced legal body (SEC-07).
+    // (The word may appear in a comment explaining why it is avoided — so both
+    // line AND block comments are stripped before scanning.)
+    const strip = (s: string) =>
+      s.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/[^\n]*/g, '$1 ');
+    const code = strip(shared);
+    expect(code).not.toContain('dangerouslySetInnerHTML');
+    expect(code).toContain('whiteSpace: \'pre-line\'');
+
     for (const p of ['app/[locale]/privacy/page.tsx', 'app/[locale]/terms/page.tsx']) {
       const src = fs.readFileSync(path.join(ROOT, p), 'utf8');
-      expect(src, p).toContain("from '@/lib/cms/legal'");
-      // Never dangerouslySetInnerHTML on a CMS-sourced legal body (SEC-07).
-      // (The word may appear in a comment explaining why it is avoided.)
-      const code = src.replace(/\/\/.*$/gm, '');
-      expect(code, p).not.toContain('dangerouslySetInnerHTML');
-      expect(code, p).toContain('whiteSpace: \'pre-line\'');
+      // The pages must delegate, not re-implement: exactly one import, and no
+      // second call site for legalPage().
+      expect(src, p).toContain("from '../_components/legal-document'");
+      expect(strip(src), p).not.toContain('legalPage(');
     }
   });
 });

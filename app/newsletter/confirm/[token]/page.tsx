@@ -1,21 +1,10 @@
+import { getTranslations } from 'next-intl/server';
 import { newsletterService } from '@/lib/newsletter/newsletter.service';
 import '../../../portal/portal.css';
 
-const COPY = {
-  ar: {
-    doneTitle: 'تم تأكيد الاشتراك',
-    doneBody: 'شكرًا — ستصلك نشرتنا.',
-    badTitle: 'الرابط غير صالح أو منتهٍ',
-    badBody: 'رابط التأكيد غير صالح أو مستخدم أو أقدم من 48 ساعة.',
-  },
-  en: {
-    doneTitle: 'Subscription confirmed',
-    doneBody: 'Thank you — you will receive our newsletter.',
-    badTitle: 'Link invalid or expired',
-    badBody: 'This confirmation link is invalid, already used, or older than 48 hours.',
-  },
-} as const;
-
+// P32-DESIGN-2: the copy used to live in a hardcoded COPY constant in this file,
+// which broke invariant 8 (no hardcoded user-facing strings). It now comes from
+// the `newsletter` namespace in messages/{ar,en}.json.
 export default async function NewsletterConfirmPage({
   params,
   searchParams,
@@ -25,13 +14,15 @@ export default async function NewsletterConfirmPage({
 }) {
   const { token } = await params;
   const query = await searchParams;
-  const ar = query.locale !== 'en';
-  const t = ar ? COPY.ar : COPY.en;
+  const locale = query.locale === 'en' ? 'en' : 'ar';
+  const t = await getTranslations({ locale, namespace: 'newsletter' });
+
   const result = await newsletterService.confirm(token);
+
   return (
-    <div className="portal-wrap" dir={ar ? 'rtl' : 'ltr'}>
-      <h1>{result.ok ? t.doneTitle : t.badTitle}</h1>
-      <p>{result.ok ? t.doneBody : t.badBody}</p>
+    <div className="portal-wrap" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+      <h1>{result.ok ? t('confirmedTitle') : t('confirmFailedTitle')}</h1>
+      <p>{result.ok ? t('confirmedBody') : t('confirmFailedBody')}</p>
     </div>
   );
 }

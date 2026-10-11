@@ -1,0 +1,62 @@
+// P32-DESIGN-2 — public form + centered-page layout classes.
+//
+// Split into its own partial (rather than appended to _public.scss) because that
+// file is already at the ~250-line ceiling and one responsibility per file is a
+// project rule. Every value here is a token or a spacing scale entry — no raw
+// hex, no new colours, no new fonts (UI-03 / UI-11).
+
+/* Login / auth pages: single centered column, comfortable measure. */
+.nc-auth {
+  max-width: 34rem;
+  margin-inline: auto;
+  padding-block: 3rem 4rem;
+}
+
+.nc-auth__card {
+  margin-block-start: 1.5rem;
+  padding: 1.5rem;
+}
+
+/* Vertical rhythm for stacked Carbon form controls. Carbon's own field spacing
+   is not reliably applied inside a plain <form>, so the rhythm is set once
+   here and reused by every public form. */
+.nc-form > * + * {
+  margin-block-start: 1.25rem;
+}
+
+.nc-form__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-block-start: 1.5rem;
+}
+
+.nc-form__status {
+  color: var(--cds-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Localized 404 back-link, styled like the other public links. */
+.nc-notfound__link {
+  display: inline-block;
+  margin-block-start: 1.5rem;
+  color: var(--cds-link-primary, #008080);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nc-notfound__link:hover {
+  text-decoration: underline;
+}
+
+/* Legal pages: the statutory copy is long-form text, so it gets the same
+   measure as a blog article rather than the full page width. */
+.nc-legal {
+  max-width: 46rem;
+}
+
+/* Small print under the public footer. */
+.nc-footer__note {
+  margin-block: 0 2.5rem;
+}

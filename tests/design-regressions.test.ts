@@ -97,7 +97,7 @@ describe('Defect 1: messages/*.json encoding', () => {
     expect(en.home.heroSubtitle).not.toMatch(/[\u0600-\u06FF]/);
   });
 
-  it('ar/en key parity holds (locale switcher asymmetry is allowlisted)', () => {
+  it('ar/en key parity holds strictly', () => {
     const ar = JSON.parse(fs.readFileSync(path.join(ROOT, 'messages/ar.json'), 'utf8')) as Record<
       string,
       Record<string, unknown>
@@ -106,16 +106,31 @@ describe('Defect 1: messages/*.json encoding', () => {
       string,
       Record<string, unknown>
     >;
-    const ALLOWED = new Set(['common.switch_to_english', 'common.switch_to_arabic']);
+    // No allowlist: the subscribe form's locale <Select> renders BOTH language
+    // labels in every locale, so each dictionary must define both keys.
     for (const ns of Object.keys(ar)) {
       const a = Object.keys(ar[ns] ?? {});
       const e = Object.keys(en[ns] ?? {});
       for (const k of a) {
-        if (!e.includes(k)) expect(ALLOWED.has(`${ns}.${k}`), `${ns}.${k} missing from en.json`).toBe(true);
+        if (!e.includes(k)) expect(`${ns}.${k} missing from en.json`).toBe('');
       }
       for (const k of e) {
-        if (!a.includes(k)) expect(ALLOWED.has(`${ns}.${k}`), `${ns}.${k} missing from ar.json`).toBe(true);
+        if (!a.includes(k)) expect(`${ns}.${k} missing from ar.json`).toBe('');
       }
+    }
+  });
+
+  it('both locale-switch keys exist in BOTH dictionaries', () => {
+    const ar = JSON.parse(fs.readFileSync(path.join(ROOT, 'messages/ar.json'), 'utf8'));
+    const en = JSON.parse(fs.readFileSync(path.join(ROOT, 'messages/en.json'), 'utf8'));
+    for (const f of ['ar.json', 'en.json'] as const) {
+      const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'messages', f), 'utf8'));
+      expect(j.common.switch_to_english, `${f} common.switch_to_english`).toBeTruthy();
+      expect(j.common.switch_to_arabic, `${f} common.switch_to_arabic`).toBeTruthy();
+    }
+    // The Arabic label must be real Arabic in both files.
+    for (const j of [ar, en]) {
+      expect(j.common.switch_to_arabic).toMatch(/[\u0600-\u06FF]/);
     }
   });
 

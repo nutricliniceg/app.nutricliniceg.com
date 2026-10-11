@@ -6,7 +6,7 @@ import { blogService } from '@/lib/blog/blog.service';
 import { canonicalFor, hreflangAlternates, articleJsonLd, breadcrumbJsonLd, extractToc } from '@/lib/blog/seo';
 import { sanitizeBlogHtml, readingMinutes, injectHeadingIds } from '@/lib/blog/render';
 import NewsletterCta from '../_components/newsletter-cta';
-import SiteHeader from '../../_components/site-header';
+import PublicShell from '../../_components/public-shell';
 
 function tagsOf(post: { tags: string | null }): string[] {
   if (!post.tags) return [];
@@ -75,8 +75,8 @@ export default async function BlogPostPage({
   const crumbLd = breadcrumbJsonLd(loc, post.slug, post.title);
 
     return (
-    <article className="nc-container">
-      <SiteHeader locale={loc} pathname={`/${loc}/blog/${slug}`} search={search} />
+    <PublicShell locale={loc} pathname={`/${loc}/blog/${slug}`} search={search} container={false}>
+      <article className="nc-container">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }} />
 
@@ -121,6 +121,7 @@ export default async function BlogPostPage({
         </section>
       )}
       <NewsletterCta />
-    </article>
+      </article>
+    </PublicShell>
   );
 }

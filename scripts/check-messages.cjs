@@ -57,14 +57,15 @@ for (const f of files) {
 const ar = JSON.parse(fs.readFileSync(path.join(dir, 'ar.json'), 'utf8'));
 const en = JSON.parse(fs.readFileSync(path.join(dir, 'en.json'), 'utf8'));
 
-// Intentionally locale-specific: each locale shows the OTHER language's name,
-// so the key differs by design and must not be reported as a mismatch.
-const ALLOWED_ASYMMETRY = new Set(['common.switch_to_english', 'common.switch_to_arabic']);
+// P32-DESIGN-2: both dictionaries now define `common.switch_to_english` AND
+// `common.switch_to_arabic` (the subscribe form's locale <Select> renders both
+// labels in every locale), so the previous asymmetry allowlist is gone and
+// parity is enforced strictly again.
 const cmp = (ns) => {
   const a = Object.keys(ar[ns] || {}).sort();
   const e = Object.keys(en[ns] || {}).sort();
-  const onlyAr = a.filter((k) => !e.includes(k) && !ALLOWED_ASYMMETRY.has(`${ns}.${k}`));
-  const onlyEn = e.filter((k) => !a.includes(k) && !ALLOWED_ASYMMETRY.has(`${ns}.${k}`));
+  const onlyAr = a.filter((k) => !e.includes(k));
+  const onlyEn = e.filter((k) => !a.includes(k));
   const status = onlyAr.length === 0 && onlyEn.length === 0 ? 'OK' : 'MISMATCH';
   console.log(`parity ${ns}: ${status} (${a.length} keys)` + (status === 'MISMATCH' ? ` ar-only=${onlyAr} en-only=${onlyEn}` : ''));
   if (status === 'MISMATCH') problems++;

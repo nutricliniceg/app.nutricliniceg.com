@@ -1,6 +1,6 @@
-// P32-DESIGN — styling for the public marketing surfaces (home, pricing, blog).
+// P32-DESIGN â€” styling for the public marketing surfaces (home, pricing, blog).
 // Every colour comes from a Carbon token (--cds-*); no raw hex here (UI-11).
-// Layout only — typography is inherited from --nc-font-sans in globals.scss.
+// Layout only â€” typography is inherited from --nc-font-sans in globals.scss.
 
 :root {
   --nc-max-width: 72rem;
@@ -33,7 +33,7 @@
   margin-block-end: 2rem;
 }
 
-// ── Home: hero ────────────────────────────────────────────────────────────────
+// â”€â”€ Home: hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 .nc-hero {
   background: linear-gradient(
     180deg,
@@ -87,7 +87,7 @@
   font-size: 0.95rem;
 }
 
-// ── Home: value / how-it-works cards ──────────────────────────────────────────
+// â”€â”€ Home: value / how-it-works cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 .nc-cardgrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -141,7 +141,7 @@
   font-size: 0.95rem;
 }
 
-// ── Pricing ───────────────────────────────────────────────────────────────────
+// â”€â”€ Pricing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 .nc-pricing {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
@@ -249,88 +249,3 @@
   width: 100%;
 }
 
-// ── Blog ──────────────────────────────────────────────────────────────────────
-.nc-postgrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  gap: var(--nc-gap);
-}
-
-.nc-post {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--cds-border-subtle, #e0e0e0);
-  border-radius: var(--nc-radius);
-  overflow: hidden;
-  background: var(--cds-layer-01, #ffffff);
-  height: 100%;
-}
-
-.nc-post__cover {
-  aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, var(--cds-interactive, #008080) 0%, var(--cds-link-secondary, #005f73) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nc-post__cover span {
-  color: var(--cds-background, #ffffff);
-  font-weight: 600;
-  font-size: 1.1rem;
-  opacity: 0.9;
-  padding-inline: 1rem;
-  text-align: center;
-}
-
-.nc-post__body {
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.nc-post__meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-block-end: 0.6rem;
-}
-
-.nc-post__title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin-block-end: 0.5rem;
-}
-
-.nc-post__excerpt {
-  color: var(--cds-text-secondary, #525252);
-  font-size: 0.95rem;
-  line-height: 1.7;
-  margin-block-end: 1rem;
-  flex: 1;
-}
-
-.nc-post__more {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--cds-link-primary, #008080);
-  text-decoration: none;
-}
-
-.nc-post__more:hover {
-  text-decoration: underline;
-}
-
-.nc-articleheader {
-  max-width: 46rem;
-  margin-block-end: 2rem;
-}
-
-.nc-pagination {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-block-start: 2.5rem;
-}

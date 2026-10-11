@@ -1,8 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { billingService } from '@/lib/billing/billing.service';
 import CheckoutPanel from './_components/checkout-panel';
-import SiteFooter from '../_components/site-footer';
-import SiteHeader from '../_components/site-header';
+import PublicShell from '../_components/public-shell';
 
 interface PublicPlan {
   id: string;
@@ -34,6 +33,7 @@ export default async function PricingPage({
     Object.entries(sp).map(([k, v]) => [k, String(v)] as [string, string])
   ).toString();
   const t = await getTranslations({ locale, namespace: 'billing' });
+  const loc = locale === 'en' ? 'en' : 'ar';
   let plans: PublicPlan[] = [];
   try {
     plans = (await billingService.publicPlans()) as unknown as PublicPlan[];
@@ -41,13 +41,9 @@ export default async function PricingPage({
     plans = [];
   }
   return (
-    <div>
-      <SiteHeader locale={locale === 'en' ? 'en' : 'ar'} pathname={`/${locale === 'en' ? 'en' : 'ar'}/pricing`} search={search} />
-      <main className="nc-container">
-        <h1 className="nc-section__title">{t('pricingTitle')}</h1>
-        <CheckoutPanel plans={plans} locale={locale} />
-      </main>
-      <SiteFooter />
-    </div>
+    <PublicShell locale={loc} pathname={`/${loc}/pricing`} search={search}>
+      <h1 className="nc-section__title">{t('pricingTitle')}</h1>
+      <CheckoutPanel plans={plans} locale={locale} />
+    </PublicShell>
   );
 }

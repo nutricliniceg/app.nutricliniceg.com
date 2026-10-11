@@ -5,8 +5,10 @@
   max-width: 480px;
   margin: 0 auto;
   padding: 16px 14px 48px;
-  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, Arial, sans-serif;
-  color: #132626;
+  /* P32-DESIGN-2: consume the shared Plex stack token rather than redeclaring
+     the family, so this surface cannot drift from the rest of the app. */
+  font-family: var(--nc-font-sans, 'IBM Plex Sans Arabic', 'IBM Plex Sans', 'Segoe UI', Tahoma, Arial, sans-serif);
+  color: var(--cds-text-primary, #132626);
   background: #ffffff;
   min-height: 100vh;
 }
@@ -19,7 +21,7 @@
 .portal-wrap h2 {
   font-size: 17px;
   margin: 20px 0 8px;
-  color: #005f73;
+  color: var(--cds-link-secondary, #005f73);
 }
 
 .portal-card {

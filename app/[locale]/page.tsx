@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { Button } from '@carbon/react';
-import SiteFooter from './_components/site-footer';
-import SiteHeader from './_components/site-header';
+import PublicShell from './_components/public-shell';
 import { blogService } from '@/lib/blog/blog.service';
 import { templatesRepository } from '@/lib/db/repositories/templates.repo';
 
@@ -13,6 +12,11 @@ import { templatesRepository } from '@/lib/db/repositories/templates.repo';
  * hero + value props + how-it-works + seeded template names + blog teaser +
  * CTA. Every string comes from messages/{ar,en}.json; colours come from
  * Carbon tokens via ui/styles/_public.scss.
+ *
+ * P32-DESIGN-2: renders through the shared PublicShell (header + locale
+ * switcher + footer) instead of assembling its own chrome. `container={false}`
+ * because this page is full-bleed by design — each section carries its own
+ * `.nc-container`.
  *
  * THE ZERO-DB-404 RULE IS PRESERVED: this page is wrapped in one try/catch and
  * calls notFound() nowhere, so an empty database renders the full marketing
@@ -59,9 +63,8 @@ export default async function HomePage({
   ];
 
   return (
-    <div>
-      <SiteHeader locale={loc} pathname={`/${loc}`} search={search} />
-      <main>
+    <PublicShell locale={loc} pathname={`/${loc}`} search={search} container={false}>
+      <>
         <section className="nc-hero">
           <div className="nc-container">
             <h1 className="nc-hero__title">
@@ -175,11 +178,13 @@ export default async function HomePage({
             </Button>
           </div>
         </section>
-      </main>
-      <SiteFooter />
-      <p className="nc-container" style={{ color: 'var(--cds-text-secondary)', fontSize: '0.85rem' }}>
-        {t('footerNote')}
-      </p>
-    </div>
+        <p
+          className="nc-container nc-footer__note"
+          style={{ color: 'var(--cds-text-secondary)', fontSize: '0.85rem' }}
+        >
+          {t('footerNote')}
+        </p>
+      </>
+    </PublicShell>
   );
 }

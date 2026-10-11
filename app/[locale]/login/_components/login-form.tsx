@@ -48,9 +48,17 @@ export default function LoginForm({ locale }: { locale: string }) {
   }
 
   return (
-    <form onSubmit={(e) => void submit(e)} aria-busy={busy}>
-      {errorKey && <InlineNotification kind="error" lowContrast title={t(`errors.${errorKey}`)} />}
+    <form className="nc-form" onSubmit={(e) => void submit(e)} aria-busy={busy}>
+      {errorKey && (
+        <InlineNotification
+          className="nc-form__row"
+          kind="error"
+          lowContrast
+          title={t(`errors.${errorKey}`)}
+        />
+      )}
       <TextInput
+        className="nc-form__row"
         id="login-email"
         name="email"
         type="email"
@@ -61,6 +69,7 @@ export default function LoginForm({ locale }: { locale: string }) {
         disabled={busy}
       />
       <TextInput
+        className="nc-form__row"
         id="login-password"
         name="password"
         type="password"
@@ -70,10 +79,12 @@ export default function LoginForm({ locale }: { locale: string }) {
         onChange={(e) => setPassword(e.target.value)}
         disabled={busy}
       />
-      <Button type="submit" disabled={busy}>
-        {t('submit')}
-      </Button>
-      {busy && <InlineLoading description={t('submitting')} />}
+      <div className="nc-form__actions">
+        <Button type="submit" disabled={busy}>
+          {t('submit')}
+        </Button>
+        {busy && <InlineLoading description={t('submitting')} />}
+      </div>
     </form>
   );
 }

@@ -1,15 +1,25 @@
 /* P18 print stylesheet (UI-16). Dedicated to /print/* — no Carbon classes
-   are used in print markup. Brand color is defined ONCE here as CSS vars.
-   D-11: no server PDF — the browser prints to PDF. */
+   are used in print markup, so @media print fidelity is never fought by Carbon
+   CSS. D-11: no server PDF — the browser prints to PDF.
+
+   P32-DESIGN-2 — typography and brand colour now come from the SAME tokens as
+   every other public surface:
+     · font-family  -> var(--nc-font-sans)  (the shared Plex stack)
+     · brand colours -> the Carbon teal tokens (--cds-interactive family)
+   Previously print.css redeclared its own --brand-* vars with raw hex and its
+   own font-family list, so a brand or font change on the site would silently
+   leave printed plans behind. Each var keeps a literal fallback because the
+   print sheet is also used in contexts where the Carbon theme may not be
+   loaded (e.g. a saved standalone PDF). */
 
 .print-sheet {
-  --brand-teal: #008080;
-  --brand-deep: #005f73;
+  --brand-teal: var(--cds-interactive, #008080);
+  --brand-deep: var(--cds-link-secondary, #005f73);
   --brand-accent: #0a9396;
-  --ink: #132626;
-  --muted: #5b7472;
-  --line: #d3e2e0;
-  font-family: "IBM Plex Sans Arabic", "IBM Plex Sans", "Segoe UI", Tahoma, Arial, sans-serif;
+  --ink: var(--cds-text-primary, #132626);
+  --muted: var(--cds-text-secondary, #5b7472);
+  --line: var(--cds-border-subtle, #d3e2e0);
+  font-family: var(--nc-font-sans, 'IBM Plex Sans Arabic', 'IBM Plex Sans', 'Segoe UI', Tahoma, Arial, sans-serif);
   color: var(--ink);
   background: #ffffff;
   max-width: 210mm;
@@ -58,6 +68,7 @@
 }
 
 .print-day > h2 {
+  font-family: var(--nc-font-sans);
   font-size: 15px;
   color: #ffffff;
   background: var(--brand-teal);

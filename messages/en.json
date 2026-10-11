@@ -24,7 +24,8 @@
     "date": "Date",
     "name": "Name",
     "searchPlaceholder": "Search...",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "switch_to_english": "English"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -922,7 +923,13 @@
     "locale": "Language",
     "subscribe": "Subscribe",
     "neutral": "Check your email to confirm",
-    "name": "Name"
+    "name": "Name",
+    "confirmedTitle": "Subscription confirmed",
+    "confirmedBody": "Thank you — you will receive our newsletter.",
+    "confirmFailedTitle": "Link invalid or expired",
+    "confirmFailedBody": "This confirmation link is invalid, already used, or older than 48 hours.",
+    "unsubscribedTitle": "Unsubscribed",
+    "unsubscribedBody": "You will not receive our emails anymore."
   },
   "adminNewsletter": {
     "title": "Subscribers",

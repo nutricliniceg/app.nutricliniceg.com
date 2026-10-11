@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/check-messages.cjs && cross-env BUILD_MODE=true next build && node scripts/check-bundle.cjs && node scripts/check-css.cjs",
+    "build": "node scripts/check-messages.cjs && cross-env BUILD_MODE=true next build && node scripts/audit-public-routes.cjs && node scripts/check-bundle.cjs && node scripts/check-css.cjs",
     "start": "next start",
     "lint": "eslint .",
     "check:messages": "node scripts/check-messages.cjs",
+    "audit:routes": "node scripts/audit-public-routes.cjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:migrate": "node scripts/db-migrate.js",

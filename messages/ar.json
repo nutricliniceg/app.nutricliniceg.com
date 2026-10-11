@@ -24,7 +24,8 @@
     "date": "التاريخ",
     "name": "الاسم",
     "searchPlaceholder": "ابحث...",
-    "noResults": "لا توجد نتائج"
+    "noResults": "لا توجد نتائج",
+    "switch_to_arabic": "العربية"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
@@ -922,7 +923,13 @@
     "locale": "اللغة",
     "subscribe": "اشترك",
     "neutral": "تحقق من بريدك للتأكيد",
-    "name": "الاسم"
+    "name": "الاسم",
+    "confirmedTitle": "تم تأكيد الاشتراك",
+    "confirmedBody": "شكرًا — ستصلك نشرتنا.",
+    "confirmFailedTitle": "الرابط غير صالح أو منتهٍ",
+    "confirmFailedBody": "رابط التأكيد غير صالح أو مستخدم أو أقدم من 48 ساعة.",
+    "unsubscribedTitle": "تم إلغاء الاشتراك",
+    "unsubscribedBody": "لن تصلك رسائلنا بعد الآن."
   },
   "adminNewsletter": {
     "title": "المشتركون",

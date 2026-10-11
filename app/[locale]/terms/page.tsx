@@ -1,14 +1,9 @@
-import { legalPage } from '@/lib/cms/legal';
+import LegalDocument from '../_components/legal-document';
 
-// Rendered as plain text (whitespace-pre-line, no dangerouslySetInnerHTML)
-// so CMS copy can never inject scripts into a public page.
+// Rendered through the shared legal document shell (P32-DESIGN-2): same header,
+// locale switcher, footer and `.nc-article` typography as the blog articles.
 export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const { title, body } = await legalPage('terms', locale);
-  return (
-    <main>
-      <h1>{title}</h1>
-      <p style={{ whiteSpace: 'pre-line' }}>{body}</p>
-    </main>
-  );
+  const loc = locale === 'en' ? 'en' : 'ar';
+  return <LegalDocument slug="terms" locale={locale} pathname={`/${loc}/terms`} />;
 }

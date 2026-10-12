@@ -395,6 +395,18 @@
 
 ## TECH DEBT LEDGER
 
+### P35 additions (P32-admin empty-id INSERT — same defect class still OPEN elsewhere)
+
+- **🔴 `AuditLog` empty-id INSERT — FIXED in this pass** (`lib/db/repositories/auth.repo.ts::logEvent`). `AuditLog.id` is `varchar(36) PRIMARY KEY` NOT NULL with **no default**; the INSERT omitted the column, so MySQL bound `''`. The first call "succeeded" (one row with `id=''`, still present on staging from a `LOGIN_FAILED` on 2026-10-12 14:35) and **every subsequent call threw `ER_DUP_ENTRY "Duplicate entry '' for key 'PRIMARY'"`**. Because `logEvent` backs doctor registration (`USER_REGISTERED`) and login-failure logging (`LOGIN_FAILED`), the audit trail was broken app-wide after a single call. Now generates `randomUUID()` and binds it as the first parameter (P33 convention — never inline `UUID()` in SQL text). Note: `auth.repo.ts` was the **only** file of 49 importing `node:crypto`; webpack rejects the `node:` scheme, so it uses bare `'crypto'` like the rest of the codebase.
+- **🔴 THREE SIBLING TABLES HAVE THE IDENTICAL DEFECT — NOT FIXED, deliberately out of scope.** Verified against the live staging schema (`SHOW COLUMNS`): each has a `varchar(36)` PRIMARY KEY, NOT NULL, **no default**, and its repository INSERT omits the id column. Each will bind `''` and fail on its **second** insert:
+  | Table | PK | Repository | Consequence after 1 insert |
+  |---|---|---|---|
+  | `AiUsageLog` | `id` | `lib/db/repositories/ai.repo.ts:219` | AI token/cost tracking stops recording |
+  | `VerificationCode` | `id` | `lib/db/repositories/auth.repo.ts:18` (`createCode`) | email-verification / password-reset codes stop being issued |
+  | `Notification` | `id` | `lib/db/repositories/notifications.repo.ts:14` | admin/user notifications stop being created |
+  Checked and **confirmed OK** (the INSERT does supply the PK): `RevokedToken` (`jti`), `BlogPostTag` (`post_id`), `SystemSettings` (`key`). `rate_limits` does not exist on this schema.
+- **Recommended fix (same shape as the AuditLog fix):** generate `randomUUID()` in the repository and bind it as the first parameter. No schema change, no data migration — the legacy `id=''` rows are historical and must be left in place (§6.7 append-only).
+
 ### P34 additions (quality gate — intentionally unresolved)
 
 | Item | Reason | Target Prompt |

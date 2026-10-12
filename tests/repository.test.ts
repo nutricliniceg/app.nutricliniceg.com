@@ -118,8 +118,14 @@ describe('Auth Repository', () => {
 
     await authRepository.logEvent('user-123', 'TEST_EVENT', { key: 'value' });
     const calls = (executeQuery as any).mock.calls;
-    expect(calls[0][0]).toBe('INSERT INTO AuditLog (actor_id, actor_role, action, entity_type, entity_id, ip_hash, user_agent, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-    expect(calls[0][1]).toEqual(['user-123', 'system', 'TEST_EVENT', 'System', null, null, null, '{"key":"value"}']);
+    // P32-admin: AuditLog.id is varchar(36) PRIMARY KEY NOT NULL with no
+    // default. Omitting it made MySQL bind '', so the first call consumed the
+    // only '' row and every later call died with ER_DUP_ENTRY. The id is now
+    // generated in-process and bound as the FIRST parameter.
+    expect(calls[0][0]).toBe('INSERT INTO AuditLog (id, actor_id, actor_role, action, entity_type, entity_id, ip_hash, user_agent, metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())');
+    const params = calls[0][1] as unknown[];
+    expect(params[0]).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(params.slice(1)).toEqual(['user-123', 'system', 'TEST_EVENT', 'System', null, null, null, '{"key":"value"}']);
   });
 });
 

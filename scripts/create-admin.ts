@@ -67,6 +67,10 @@ import { closeDbPool } from './seed-runtime/seed-pool';
 
 // ── args ───────────────────────────────────────────────────────────────────────
 
+/** Set when the account was written but its audit write failed. The account
+ *  exists; the process still exits non-zero so the gap is noticed. */
+let auditWriteFailed = false;
+
 function parseArgs(argv: string[]): {
   dry: boolean;
   resetPassword: boolean;
@@ -239,21 +243,31 @@ async function main(): Promise<void> {
     }
 
     if (!args.dry) {
-      // §6.7 — a role/activation grant is a critical event: audit it.
-      await authRepository.logEvent(existing.id, 'ADMIN_BOOTSTRAP_RECONCILE', {
-        email: maskEmail(email),
-        changed: Object.keys(changes),
-        passwordReset: Boolean(args.resetPassword),
-      });
-      await auditService.logAction({
-        actorId: existing.id,
-        actorRole: 'super_admin',
-        action: 'ADMIN_BOOTSTRAP_RECONCILE',
-        entityType: 'User',
-        entityId: existing.id,
-        req: { ip: '127.0.0.1', userAgent: 'scripts/create-admin' },
-        metadata: { email: maskEmail(email), changed: Object.keys(changes) },
-      });
+      // §6.7 — a role/activation grant is a critical event: audit it. Same
+      // rule as the create path: the reconcile has ALREADY been applied, so an
+      // audit failure is reported separately and must not be dressed up as
+      // "nothing was written".
+      try {
+        await authRepository.logEvent(existing.id, 'ADMIN_BOOTSTRAP_RECONCILE', {
+          email: maskEmail(email),
+          changed: Object.keys(changes),
+          passwordReset: Boolean(args.resetPassword),
+        });
+        await auditService.logAction({
+          actorId: existing.id,
+          actorRole: 'super_admin',
+          action: 'ADMIN_BOOTSTRAP_RECONCILE',
+          entityType: 'User',
+          entityId: existing.id,
+          req: { ip: '127.0.0.1', userAgent: 'scripts/create-admin' },
+          metadata: { email: maskEmail(email), changed: Object.keys(changes) },
+        });
+      } catch (err) {
+        auditWriteFailed = true;
+        console.log('');
+        console.log('  *** CHANGES APPLIED, BUT THE AUDIT WRITE FAILED ***');
+        console.log('      Audit error: ' + (err instanceof Error ? err.message : String(err)));
+      }
     }
 
     console.log('');
@@ -295,24 +309,43 @@ async function main(): Promise<void> {
   // path rejects unverified accounts, so verify immediately after creating.
   await userRepository.verifyEmail(userId);
 
-  await authRepository.logEvent(userId, 'ADMIN_BOOTSTRAP_CREATE', {
-    email: maskEmail(email),
-  });
-  await auditService.logAction({
-    actorId: userId,
-    actorRole: 'super_admin',
-    action: 'ADMIN_BOOTSTRAP_CREATE',
-    entityType: 'User',
-    entityId: userId,
-    req: { ip: '127.0.0.1', userAgent: 'scripts/create-admin' },
-    metadata: { email: maskEmail(email) },
-  });
+  // Audit (§6.7) is a hard invariant, but by this point the account ALREADY
+  // EXISTS. A failure here must never be reported as a bare "FAILED", because
+  // that reads as "nothing was created" and sends the owner hunting for a
+  // missing account that is in fact sitting in the database. The account
+  // identity is printed first, then any audit problem is called out
+  // separately and the process still exits non-zero.
+  let auditError: string | null = null;
+  try {
+    await authRepository.logEvent(userId, 'ADMIN_BOOTSTRAP_CREATE', {
+      email: maskEmail(email),
+    });
+    await auditService.logAction({
+      actorId: userId,
+      actorRole: 'super_admin',
+      action: 'ADMIN_BOOTSTRAP_CREATE',
+      entityType: 'User',
+      entityId: userId,
+      req: { ip: '127.0.0.1', userAgent: 'scripts/create-admin' },
+      metadata: { email: maskEmail(email) },
+    });
+  } catch (err) {
+    auditError = err instanceof Error ? err.message : String(err);
+  }
 
   console.log('');
   console.log('  id    : ' + userId);
   console.log('  email : ' + maskEmail(email));
   console.log('  role  : super_admin');
   console.log('');
+  if (auditError) {
+    console.log('  *** ACCOUNT CREATED, BUT THE AUDIT WRITE FAILED ***');
+    console.log('      The account above EXISTS and can sign in at /ar/login.');
+    console.log('      Audit error: ' + auditError);
+    console.log('');
+    auditWriteFailed = true;
+    return;
+  }
   console.log('  Created. Sign in at /ar/login');
 }
 
@@ -321,7 +354,9 @@ main()
     // Close the CLI-only pool so the keep-alive sockets do not hold the
     // process open.
     await closeDbPool().catch(() => undefined);
-    process.exit(0);
+    // Non-zero when the account exists but its audit write failed: the work is
+    // done and usable, but the §6.7 audit trail has a hole that needs attention.
+    process.exit(auditWriteFailed ? 3 : 0);
   })
   .catch(async (err: unknown) => {
     const message = err instanceof Error ? err.message : String(err);

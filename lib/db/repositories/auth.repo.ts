@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { executeQuery } from '@/lib/db/pool';
 
 export const authRepository = {
@@ -30,10 +31,18 @@ export const authRepository = {
     return true;
   },
 
+  // AuditLog.id is `varchar(36) PRIMARY KEY` NOT NULL with NO default. This
+  // insert used to omit the column entirely, so MySQL bound the empty string:
+  // the FIRST call "succeeded" (one row with id='') and EVERY subsequent call
+  // died with ER_DUP_ENTRY "Duplicate entry '' for key 'PRIMARY'". Because
+  // logEvent backs doctor registration (USER_REGISTERED) and login-failure
+  // logging (LOGIN_FAILED), audit was silently broken app-wide after one call.
+  // The id is now generated here as a bound parameter, matching the P33
+  // convention used by backup.repo.ts (never an inline UUID() in the SQL text).
   logEvent: async (userId: string | null, eventType: string, details: Record<string, unknown>): Promise<void> => {
     await executeQuery(
-      'INSERT INTO AuditLog (actor_id, actor_role, action, entity_type, entity_id, ip_hash, user_agent, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [userId, 'system', eventType, 'System', null, null, null, JSON.stringify(details)]
+      'INSERT INTO AuditLog (id, actor_id, actor_role, action, entity_type, entity_id, ip_hash, user_agent, metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+      [randomUUID(), userId, 'system', eventType, 'System', null, null, null, JSON.stringify(details)]
     );
   },
 };

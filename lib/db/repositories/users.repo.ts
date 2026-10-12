@@ -98,6 +98,22 @@ export const userRepository = {
     await executeQuery(`UPDATE User SET ${fields.join(', ')} WHERE id = ?`, values);
   },
 
+  /**
+   * Change a user's role. Deliberately NOT part of `update()`.
+   *
+   * `update()`'s column allowlist deliberately omits `role`, so no ordinary
+   * update path anywhere in the app can escalate a doctor to admin — that is a
+   * real security property and widening it would undo it. Role assignment is
+   * therefore a single-purpose, explicitly-typed method: the only way to write
+   * the column is to call this, and its presence is the permission.
+   *
+   * Used by the super_admin bootstrap CLI (scripts/create-admin.ts). No other
+   * caller exists, by design.
+   */
+  setRole: async (id: string, role: 'doctor' | 'admin' | 'super_admin'): Promise<void> => {
+    await executeQuery('UPDATE User SET role = ? WHERE id = ?', [role, id]);
+  },
+
   setPasswordHash: async (id: string, passwordHash: string): Promise<void> => {
     await executeQuery('UPDATE User SET password_hash = ?, password_changed_at = ? WHERE id = ?', [passwordHash, new Date(), id]);
   },

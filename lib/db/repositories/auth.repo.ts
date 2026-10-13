@@ -14,10 +14,17 @@ export const authRepository = {
     return rows[0].count > 0;
   },
 
+  // VerificationCode.id is `varchar(36) PRIMARY KEY` NOT NULL with NO default.
+  // This insert omitted the column, so MySQL bound the empty string: the first
+  // call "succeeded" and every later one died with ER_DUP_ENTRY "Duplicate
+  // entry '' for key 'PRIMARY'", silently breaking email verification and
+  // password-reset codes. Same class as the AuditLog defect fixed in logEvent
+  // below; id is generated here and bound as the first parameter (P33
+  // convention — never an inline UUID() in the SQL text).
   createCode: async (userId: string, code: string, expiresAt: Date): Promise<void> => {
     await executeQuery(
-      'INSERT INTO VerificationCode (user_id, code, expires_at) VALUES (?, ?, ?)',
-      [userId, code, expiresAt]
+      'INSERT INTO VerificationCode (id, user_id, code, expires_at) VALUES (?, ?, ?, ?)',
+      [randomUUID(), userId, code, expiresAt]
     );
   },
 

@@ -91,10 +91,14 @@ describe('Auth Repository', () => {
 
     await authRepository.createCode('user-123', '123456', new Date('2025-01-01'));
     const calls = (executeQuery as any).mock.calls;
-    expect(calls[0][0]).toBe('INSERT INTO VerificationCode (user_id, code, expires_at) VALUES (?, ?, ?)');
-    expect(calls[0][1][0]).toBe('user-123');
-    expect(calls[0][1][1]).toBe('123456');
-    expect(calls[0][1][2]).toBeInstanceOf(Date);
+    // P32-AUDITFIX: VerificationCode.id is varchar(36) PRIMARY KEY NOT NULL
+    // with no default; omitting it made MySQL bind '' and every call after the
+    // first failed with ER_DUP_ENTRY. The id is now bound first.
+    expect(calls[0][0]).toBe('INSERT INTO VerificationCode (id, user_id, code, expires_at) VALUES (?, ?, ?, ?)');
+    expect(calls[0][1][0]).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(calls[0][1][1]).toBe('user-123');
+    expect(calls[0][1][2]).toBe('123456');
+    expect(calls[0][1][3]).toBeInstanceOf(Date);
   });
 
   it('should consume verification code', async () => {

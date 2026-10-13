@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { executeQuery } from '@/lib/db/pool';
 
 export type AiProviderType = 'openai' | 'gemini' | 'anthropic' | 'custom';
@@ -214,11 +215,16 @@ export const aiKeyRepository = {
 };
 
 export const aiUsageRepository = {
+  // AiUsageLog.id is `varchar(36) PRIMARY KEY` NOT NULL with NO default; this
+  // insert omitted it, so MySQL bound '' and every call after the first failed
+  // with ER_DUP_ENTRY — silently stopping AI token/cost tracking. Same class as
+  // the AuditLog defect: generate the id here, bind it first (P33 convention).
   insert: async (data: AiUsageInsert): Promise<void> => {
     await executeQuery(
-      `INSERT INTO AiUsageLog (provider_id, api_key_id, doctor_id, prompt_tokens, completion_tokens, total_tokens, estimated_cost, response_time_ms, success, error_message, request_type)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO AiUsageLog (id, provider_id, api_key_id, doctor_id, prompt_tokens, completion_tokens, total_tokens, estimated_cost, response_time_ms, success, error_message, request_type)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
+        randomUUID(),
         data.providerId,
         data.apiKeyId,
         data.doctorId,

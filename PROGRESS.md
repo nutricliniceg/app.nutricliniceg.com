@@ -395,17 +395,19 @@
 
 ## TECH DEBT LEDGER
 
-### P35 additions (P32-admin empty-id INSERT — same defect class still OPEN elsewhere)
+### P35 additions (P32-admin empty-id INSERT — class now fully CLOSED)
 
 - **🔴 `AuditLog` empty-id INSERT — FIXED in this pass** (`lib/db/repositories/auth.repo.ts::logEvent`). `AuditLog.id` is `varchar(36) PRIMARY KEY` NOT NULL with **no default**; the INSERT omitted the column, so MySQL bound `''`. The first call "succeeded" (one row with `id=''`, still present on staging from a `LOGIN_FAILED` on 2026-10-12 14:35) and **every subsequent call threw `ER_DUP_ENTRY "Duplicate entry '' for key 'PRIMARY'"`**. Because `logEvent` backs doctor registration (`USER_REGISTERED`) and login-failure logging (`LOGIN_FAILED`), the audit trail was broken app-wide after a single call. Now generates `randomUUID()` and binds it as the first parameter (P33 convention — never inline `UUID()` in SQL text). Note: `auth.repo.ts` was the **only** file of 49 importing `node:crypto`; webpack rejects the `node:` scheme, so it uses bare `'crypto'` like the rest of the codebase.
-- **🔴 THREE SIBLING TABLES HAVE THE IDENTICAL DEFECT — NOT FIXED, deliberately out of scope.** Verified against the live staging schema (`SHOW COLUMNS`): each has a `varchar(36)` PRIMARY KEY, NOT NULL, **no default**, and its repository INSERT omits the id column. Each will bind `''` and fail on its **second** insert:
-  | Table | PK | Repository | Consequence after 1 insert |
+- **✅ THREE SIBLING TABLES — FIXED (P32-AUDITFIX).** Same fix as `AuditLog`: generate `randomUUID()` in the repository and bind it as the first parameter.
+  | Table | Repository | Was silently breaking | Now |
   |---|---|---|---|
-  | `AiUsageLog` | `id` | `lib/db/repositories/ai.repo.ts:219` | AI token/cost tracking stops recording |
-  | `VerificationCode` | `id` | `lib/db/repositories/auth.repo.ts:18` (`createCode`) | email-verification / password-reset codes stop being issued |
-  | `Notification` | `id` | `lib/db/repositories/notifications.repo.ts:14` | admin/user notifications stop being created |
-  Checked and **confirmed OK** (the INSERT does supply the PK): `RevokedToken` (`jti`), `BlogPostTag` (`post_id`), `SystemSettings` (`key`). `rate_limits` does not exist on this schema.
-- **Recommended fix (same shape as the AuditLog fix):** generate `randomUUID()` in the repository and bind it as the first parameter. No schema change, no data migration — the legacy `id=''` rows are historical and must be left in place (§6.7 append-only).
+  | `VerificationCode` | `lib/db/repositories/auth.repo.ts` (`createCode`) | email-verification & password-reset codes | ✅ id supplied |
+  | `AiUsageLog` | `lib/db/repositories/ai.repo.ts:219` | AI token/cost tracking | ✅ id supplied |
+  | `Notification` | `lib/db/repositories/notifications.repo.ts:14` | all notifications | ✅ id supplied |
+
+- **✅ THE DEFECT CLASS IS NOW PROVABLY CLOSED — `scripts/audit-insert-ids.cjs`.** A schema-driven sweep, not a spot fix. It parses every `CREATE TABLE` in `prisma/schema.sql` to learn each table's PRIMARY KEY column, type, `DEFAULT` and `EXTRA (auto_increment)`, then cross-references **every** `INSERT INTO <table> (<columns>)` found under `lib/**/*.repo.ts` and classifies each table as `SAFE (auto_increment PK)` / `SAFE (PK supplied)` / `VULNERABLE` / `NO REPO INSERT`. Exits non-zero on any `VULNERABLE`, so it can be wired in as a permanent gate.
+  **Final coverage: 55 tables, 52 INSERT sites — `VULNERABLE: 0`, `CHECK: 0`.** Of the 55 tables, 49 have a repository INSERT and **every one now supplies its primary key**; 6 have no repository INSERT at all (`AiProvider`, `CmsContent`, `LandingPageItem`, `LandingPageSection`, `PatientShareToken`, `SiteVisitor`). `RevokedToken` (`jti`), `BlogPostTag` (`post_id`) and `SystemSettings` (`key`) were checked and supply their PK correctly. Guarded against a vacuous pass: a test asserts the sweep still discovers ≥50 tables and ≥45 INSERT sites, so a parser regression cannot silently make the gate green.
+  No schema change, no data migration. Legacy `id=''` rows on staging are historical and are deliberately left in place (§6.7 append-only).
 
 ### P34 additions (quality gate — intentionally unresolved)
 

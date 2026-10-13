@@ -22,8 +22,13 @@ describe('Notification Service', () => {
 
     expect(executeQuery).toHaveBeenCalledWith(
       expect.stringContaining('INSERT INTO Notification'),
-      ['user-123', 'Test Title', 'Test body', 'new_message', '/messages/123']
+      // P32-AUDITFIX: Notification.id is varchar(36) PRIMARY KEY NOT NULL with
+      // no default; omitting it made MySQL bind '' and every notification after
+      // the first failed with ER_DUP_ENTRY. The id is now bound first.
+      expect.arrayContaining(['user-123', 'Test Title', 'Test body', 'new_message', '/messages/123'])
     );
+    const params = (executeQuery as any).mock.calls[0][1] as unknown[];
+    expect(params[0]).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
   });
 
   it('should get unread count', async () => {
